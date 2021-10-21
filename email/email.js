@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const handlebars = require("handlebars");
 const fs = require("fs");
 const path = require("path");
-
+// Try
 const email = (to, subject, text, html) => {
     return new Promise((resolve, reject) => {
         try {
