@@ -1,0 +1,18 @@
+@font-face {
+    font-family: Poppins;
+    src: url(fonts/poppins/Poppins-Regular.ttf);
+    font-family: Feather;
+    src: url(fonts/feather/feather.ttf);
+    font-family: Coolvetica;
+    src: url(fonts/coolvetica/coolvetica_rg.ttf);
+}
+
+@font-face {
+    font-family: Feather;
+    src: url(fonts/feather/feather.ttf);
+}
+
+@font-face {
+    font-family: Coolvetica;
+    src: url(fonts/coolvetica/coolvetica_rg.ttf);
+}
