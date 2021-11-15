@@ -6,7 +6,7 @@ $(document).ready(function () {
     //For stats page only
     if (window.location.toString().includes("stats")) {
 
-        $(".header").load("rightbar.html", function () {
+        $(".header").load("topbar.html", function () {
             document.getElementById("name").innerHTML = getName();
         })
 
