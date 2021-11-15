@@ -1,8 +1,38 @@
-<div class="py-3">
-    <div class="justify-content-end d-flex align-items-center">
-        <div class="d-inline me-3"><a href="#" class="link-warning"><i class="far fa-bell fa-lg"></i></a></div>
-        <div class="d-inline me-3"><a href="profile.html" class="link-warning"><i class="fas fa-user fa-lg"></i></a></div>
-        <div class="d-inline me-3">Hello! <span id="name"></span></div>
-        <div class="d-inline me-3"><button class="btn btn-sm" id="logoutBtn" style="color: rgb(235, 177, 1);background-color: #fefae0; border-radius: 15px;">Logout</button></div>
+<script src="./javascript/notification.js"></script>
+
+<div style="background-color: #B1DBFF" class="container-fluid p-0 py-2 row m-0">
+    <div class="col">
+        <b>PSLE ONLINE</b>
+    </div>
+    <div class="col d-flex align-items-center justify-content-end">
+        <a href="#" class="me-3" onclick="return false"><img src="images/bell.png" style="width: 25px; height: auto;" class="img-fluid" id="bellBtn" onclick="displayNotification()" alt="notification" /></a>
+        <a href="profile.html" style="width: 25px; height: auto;"><img src="images/profile.png" class="img-fluid" alt="profile" /></a>
+    </div>
+</div>
+<div id="notificationBox" class="position-absolute end-0 me-2 mt-2" style="background-color: #F1FAFF; box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25); border-radius: 5px; z-index:100; width: 500px; display: none;">
+    <div class="row container-fluid m-0 p-0 my-2">
+        <div class="col p-0 ms-3">
+            <b>Notification</b>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end p-0 me-3">
+            <a href="#" onclick="return false"><i class="fas fa-times fa-lg link-dark" onclick="displayNotification()"></i></a>
+        </div>
+    </div>
+    <div class="row container-fluid my-1 p-0 py-2 m-0" style="background-color: #D4EBFF">
+        <div class="col-2 p-1 ps-3">
+            <img src="images/class3b.png" class="img-fluid" style="width:50px;" />
+        </div>
+        <div class="col-10 my-auto">
+            <p style="font-size: 12px; font-family: Poppins;" class="my-auto">You have been assigned new homework<br>Start doing them here now!</p>
+        </div>
+    </div>
+    <div class="row">
+    
+    </div>
+    <div class="row">
+        
+    </div>
+    <div class="row">
+        
     </div>
 </div>
