@@ -2,7 +2,7 @@
 /* EVENT LISTENERS & API CALLS */
 // onload get all levels
 $(document).ready(function () {
-    $(".header").load("rightbar.html", function () {
+    $(".header").load("topbar.html", function () {
         document.getElementById("name").innerHTML = getName();
     });
 

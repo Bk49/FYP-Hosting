@@ -8,7 +8,7 @@ $(document).ready(function () {
     let path = 'level';
     let id = '';
 
-    $(".header").load("rightbar.html", function () {
+    $(".header").load("topbar.html", function () {
         document.getElementById("name").innerHTML = getName();
     });
 

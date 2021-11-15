@@ -6,7 +6,7 @@ $(document).ready(function(){
     else if(role == "parent" || role == "teacher") {
         window.location.href = "/group.html";
     }
-    $(".header").load("rightbar.html", function () {
+    $(".header").load("topbar.html", function () {
         document.getElementById("name").innerHTML = getName();
     });
     getRecommendation();
