@@ -124,23 +124,35 @@ function displayMyGroups(data) {
         data.forEach(group => {
             content += `
                 <div id="${group._id}" class="group">
-                    <div class="group-body">
-                        <span class="group_name">${group.group_name}</span><br>
-                        <div class="latest-msg-wrapper">
-                            <span class="sender_name">
-                                ${group.posts && group.posts.sender_name? group.posts.sender_name +": " : ""}
-                            </span>
-                            <span class="latest_msg">
-                                ${group.posts && group.posts.content? group.posts.content : "No Messages"}
+                    <div class="row">
+                        <div class="col-md-2 col-sm-3 d-flex justify-content-center">
+                            <img src="../images/sample_groupimg.png" class="group_img img-fluid" />
+                        </div>
+                        <div class="col p-0 my-auto">
+                            <div class="group-body">
+                                <span class="group_name">${group.group_name}</span><br>
+                                <div class="latest-msg-wrapper">
+                                    <span class="sender_name">
+                                        <i class="fas fa-user-circle"></i>
+                                    </span>
+                                    <span class="latest_msg">
+                                        ${group.posts && group.posts.content? group.posts.content : "No Messages"}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <span class="group-owner">
+                                Owner:&nbsp&nbsp
+                                <span class="group-icon">
+                                    <i class="fas fa-user-circle"></i>
+                                </span>
+                                <span class="owner">${group.owner_name}</span>
                             </span>
                         </div>
                     </div>
-                    <span class="group-owner">
-                        <span class="group-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </span>
-                        <span class="owner">${group.owner_name}</span>
-                    </span>
                 </div>
             `;
 

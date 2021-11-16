@@ -29,7 +29,8 @@
 }
 
 .title {
-    font-family: 'Segoe UI', 'Roboto', Arial, Helvetica, sans-serif;
+    font-family: Coolvetica;
+    font-size: 36px;
     text-align: center;
     margin: 0.3em 0 0.2em;
     /* font-weight: 700; */
@@ -66,7 +67,7 @@
 /* GROUP WRAPPER */
 #group-list {
     max-width: 996px;
-    margin: 0 auto;
+    margin: 20px auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -74,19 +75,22 @@
 
 .group {
     --margin: 12px;
-    --col-num: 3;
+    padding: 10px;
+    padding-bottom: 0;
+    --col-num: 1;
     cursor: pointer;
-    width: 31%;
+    width: 70%;
     width: calc((100% / var(--col-num)) - (2*var(--margin)));
-    background-color: #fff;
+    background: #FFFFFF;
     color: #003844;
     background-repeat: no-repeat;
     border: 1px solid rgba(0,0,0,.07);
-    border-radius: 15px;
+    border-radius: 10px;
     margin: 8px var(--margin);
     display: flex;
     flex-direction: column;
-    box-shadow: 3px 8px 14px rgba(59, 59, 59, 0.054);
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     transition: 0.2s ease-in-out;
 }
 
@@ -97,28 +101,33 @@
 }
 
 .group-body {
-    border-bottom: 1px solid rgba(0,0,0,.07);
-    margin: 16px 14px 0;
-    padding-bottom: 14px;
+    margin-right: 14px;
+    margin-left: 0;
     flex: 1 1 0px;
 }
 
 .group_name{
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
+    font-family: Feather;
 }
 
+.group_img {
+    width: 80px;
+}
 
-
-.latest_msg, .sender_name {
+.latest_msg {
     font-size: 14px;
     color: #256573;
+}
+
+.sender_name {
+    font-size: 24px;
 }
 
 .latest-msg-wrapper {
     overflow: hidden;
     position: relative;
-    height: 1.25em;
 
 }
 
@@ -129,10 +138,15 @@
 }
 
 .group-owner {
-    padding: 6px 12px;
+    border-top: 1px solid rgba(0,0,0,.07);
+    margin: 10px;
+    margin-bottom: 0;
     font-size: 12px;
     display: flex;
     align-items: center;
+    font-family: Poppins;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 /* ADD GROUP MODAL CONTENT */
@@ -311,18 +325,12 @@
     font-weight: 500;
 }
 
-@media (max-width: 768px) {
-    .group {
-        --margin: 6px;
-        --col-num: 2;
-        /* width: 46%; */
-        /* margin: 2%; */
-    }
-}
-
 @media (max-width: 576px) {
     .group {
         --margin: 6px;
-        --col-num: 1;
+        --col-num: 2;
+    }
+    .group-body {
+        text-align: center;
     }
 }
