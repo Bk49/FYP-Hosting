@@ -326,10 +326,10 @@ async (req, res) => {
  */
 router.post("/leaderboard",
     async (req, res) => {
-        const { groupId } = req.query;
+        const { groupId, sort } = req.query;
         try {
             console.time("POST group leaderboard");
-            const result = await groupModel.viewGroupLeaderboard(groupId);
+            const result = await groupModel.viewGroupLeaderboard(groupId, parseInt(sort));
 
             res.status(200).send(result);
         } catch (err) {
