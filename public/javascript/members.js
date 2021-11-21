@@ -1,10 +1,11 @@
 const urlSearchParams = new URLSearchParams(window.location.search);
 let groupId = urlSearchParams.get("groupId");
-
 /* EVENT LISTENERS */
 $(document).ready(function () {
     getGroupById();
     getGroupMembers();
+    $(".header").load("topbar.html", function () {
+    });
 });
 
 
@@ -56,10 +57,12 @@ $(document).on("click", ".result", function () {
     const owner_id = document.querySelector("#group_owner").dataset.owner_id;
     console.log(id, owner_id)
     if(owner_id && (id != owner_id)) {
-        const name = this.children[0].innerHTML;
-        const email = this.children[1].innerHTML;
-        const role = this.children[2].innerHTML;
-        addMemberToGroup(groupId, id, name, email, role);
+        const pic = this.children[0].children[0].src;
+        const name = this.children[1].children[0].children[0].innerHTML;
+        const email = this.children[1].children[1].children[0].innerHTML;
+        const role = this.children[1].children[2].children[0].innerHTML;
+
+        addMemberToGroup(groupId, id, pic, name, email, role);
     } else {
         document.querySelector("#error").innerHTML = "User is already the owner of the group";
     }
@@ -94,17 +97,21 @@ $(document).on("click", "#delGroup", function () {
 
 /* API CALLS */
 function getGroupById() {
+    console.log("incall")
     if (!groupId) window.location.href = "/group.html";
+    console.log("incall2")
 
     $.ajax({
         url: `/group/${groupId}`,
         dataType: 'JSON',
         success: function (data, textStatus, xhr) {
             displayGroup(data);
+            console.log("success");
         },
         error: function (xhr, textStatus, errorThrown) {
             console.log(errorThrown);
             window.location.href = "/404.html";
+            console.log("erorr");
         }
     });
 }
@@ -138,13 +145,13 @@ function searchUserEmail() {
     });
 }
 
-function addMemberToGroup(groupId, id, name, email, role) {
+function addMemberToGroup(groupId, id, pic, name, email, role) {
     $.ajax({
         url: `/group/addMember?groupId=${groupId}&userId=${id}`,
         method: "POST",
         dataType: 'JSON',
         success: function (data, textStatus, xhr) {
-            displayAdded(id, name, email, role);
+            displayAdded(id, pic, name, email, role);
             let adddedList = document.querySelector("#added-list");
             adddedList.scrollTo(0, adddedList.scrollHeight);
             document.querySelector("#error").innerHTML = "";
@@ -257,7 +264,7 @@ function updateGroupName(groupId, groupName, successCallback) {
 
 /* DISPLAY DATA */
 function displayGroup(data) {
-    document.querySelector(".title").textContent = data.group_name;
+    // document.querySelector(".title").textContent = data.group_name;
 
     // display group name on modal
     document.querySelector("#group_name").value = data.group_name;
@@ -289,10 +296,10 @@ function displayGroup(data) {
 
 function displayMembers(data) {
     // main page
-    let ownerList = document.querySelector("#owner");
-    let parentList = document.querySelector("#parent");
-    let teacherList = document.querySelector("#teacher");
-    let studentList = document.querySelector("#student");
+    let ownerList = document.querySelector("#owner-list");
+    let parentList = document.querySelector("#parent-list");
+    let teacherList = document.querySelector("#teacher-list");
+    let studentList = document.querySelector("#student-list");
 
     // modal page
     let addedList = document.querySelector("#added-list");
@@ -301,7 +308,8 @@ function displayMembers(data) {
     // display owner
     ownerList.innerHTML += `
         <div class="member" id="${data.owner._id}">
-            <span class="member-name">${data.owner.first_name} ${data.owner.last_name}</span>
+            <div><i class="fas fa-user-circle fa-lg"></i>&nbsp&nbsp<span class="member-name">${data.owner.first_name} ${data.owner.last_name}</span></div>
+            <img src="images/crown.png" style="width:20px" alt="owner"/>
         </div>
     `;
 
@@ -317,24 +325,24 @@ function displayMembers(data) {
                 if (member.role == "student") {
                     studentList.innerHTML += `
                     <div class="member" id="${member.user_id}">
-                        <span class="member-name">${member.user_name}</span>
-                        ${member.is_admin ? '<span class="admin-tag">Admin</span>' : ""}
+                        <div><i class="fas fa-user-circle fa-lg"></i>&nbsp&nbsp<span class="member-name">${member.user_name}</span></div>
+                        ${member.is_admin ? '<img src="images/crown.png" style="width:20px" alt="admin"/>' : ""}
                     </div>
                     `;
                 }
                 else if (member.role == "parent") {
                     parentList.innerHTML += `
                     <div class="member" id="${member.user_id}">
-                        <span class="member-name">${member.user_name}</span>
-                        ${member.is_admin ? '<span class="admin-tag">Admin</span>' : ""}
+                        <div><i class="fas fa-user-circle fa-lg"></i>&nbsp&nbsp<span class="member-name">${member.user_name}</span></div>
+                        ${member.is_admin ? '<img src="images/crown.png" style="width:20px" alt="admin"/>' : ""}
                     </div>
                     `;
                 }
                 else {
                     teacherList.innerHTML += `
                     <div class="member" id="${member.user_id}">
-                        <span class="member-name">${member.user_name}</span>
-                        ${member.is_admin ? '<span class="admin-tag">Admin</span>' : ""}
+                        <div><i class="fas fa-user-circle fa-lg"></i>&nbsp&nbsp<span class="member-name">${member.user_name}</span></div>
+                        ${member.is_admin ? '<img src="images/crown.png" style="width:20px" alt="admin"/>' : ""}
                     </div>
                     `;
                 }
@@ -342,10 +350,13 @@ function displayMembers(data) {
                 // display members in modal
                 addedList.innerHTML += `
                 <div class="list-member" id="added-${member.user_id}">
+                    <div class="col">
+                        <img src="/images/profile.png" alt="profileimg" style="width: 35px"/>
+                    </div>
                     <div class="member-details">
                         <span class="added-name">${member.user_name}</span>
                         <span class="added-email">${member.email}</span>
-                        <span class="added-role">${member.role}</span>
+                        <span class="added-role">`+member.role.charAt(0).toUpperCase()+member.role.slice(1)+`</span>
                     </div>
                     <div class="is_admin">
                         ${member.is_admin ? '<span class="admin-tag-modal">Admin</span>' : ""}
@@ -369,9 +380,9 @@ function displayMembers(data) {
     }
 
     // display count (minus 1 to exclude header)
-    document.querySelector("#parent-count").innerHTML = document.querySelector("#parent").children.length - 1 + " parents";
-    document.querySelector("#teacher-count").innerHTML = document.querySelector("#teacher").children.length - 1 + " teachers";
-    document.querySelector("#student-count").innerHTML = document.querySelector("#student").children.length - 1 + " students";
+    document.querySelector("#parent-count").innerHTML = "(" + (document.querySelector("#parent-list").children.length) + ")";
+    document.querySelector("#teacher-count").innerHTML = "(" + (document.querySelector("#teacher-list").children.length) + ")";
+    document.querySelector("#student-count").innerHTML = "(" + (document.querySelector("#student-list").children.length) + ")";
 }
 
 
@@ -387,11 +398,23 @@ function displaySearchResult(data) {
     else {
         data.forEach(result => {
             content += `
-                <div class="result" id="${result._id}">
-                    <span class="member-name">${result.first_name} ${result.last_name}</span>
-                    <span class="email">${result.email}</span>
-                    <span class="email">${result.role}</span>
+                <div class="result row m-auto" id="${result._id}">
+                    <div class="col-1 m-auto">
+                        <img src="/images/profile.png" alt="profileimg" style="width: 35px"/>
+                    </div>
+                    <div class="col m-auto mx-2">
+                        <div class="row">
+                            <span class="member-name">${result.first_name} ${result.last_name}</span>
+                        </div>
+                        <div class="row">
+                            <span class="email">${result.email}</span>
+                        </div>
+                        <div class="row">
+                            <span class="email">${result.role}</span>
+                        </div>
+                    </div>   
                 </div>
+                
             `;
             // <span class="role">${result.role}</span>
         });
@@ -400,7 +423,7 @@ function displaySearchResult(data) {
     searchList.innerHTML = content;
 }
 
-function displayAdded(id, name, email, role) {
+function displayAdded(id, pic, name, email, role) {
     var addedList = document.querySelector("#added-list");
     var children = Array.from(addedList.children); //convert children to array
 
@@ -412,7 +435,10 @@ function displayAdded(id, name, email, role) {
     // add to members list if user is not already in it
     if (!userExists) {
         addedList.innerHTML += `
-        <div class="list-member" id="added-${id}">
+        <div class="list-member d-flex row" id="added-${id}">
+            <div class="col">
+                <img src="${pic}" alt="profileimg" style="width: 35px"/>
+            </div>
             <div class="member-details">
                 <span class="added-name">${name}</span>
                 <span class="added-email">${email}</span>
@@ -479,4 +505,40 @@ function decodeToken() {
 
 
     return decodedData;
+}
+
+function expandDropdown(value) {
+    var selectedRole;
+    var dropdownArrow;
+
+    if (value == 1) {
+        selectedRole = document.getElementById("owner-list");
+        dropdownArrow = document.getElementById("owner").firstChild.nextSibling.firstChild.nextSibling;
+    }
+    else if (value == 2) {
+        selectedRole = document.getElementById("teacher-list");
+        dropdownArrow = document.getElementById("teacher").firstChild.nextSibling.firstChild.nextSibling;
+    }
+    else if (value == 3) {
+        selectedRole = document.getElementById("parent-list");
+        dropdownArrow = document.getElementById("parent").firstChild.nextSibling.firstChild.nextSibling;
+    }
+    else if (value == 4) {
+        selectedRole = document.getElementById("student-list");   
+        dropdownArrow = document.getElementById("student").firstChild.nextSibling.firstChild.nextSibling;
+    }
+    else {
+
+    }
+
+    dropdownArrow.className = "fas fa-angle-down fa-lg";
+
+    if (selectedRole.style.display == "none") {
+        selectedRole.style.display = "block"
+        dropdownArrow.className = "fas fa-angle-down fa-lg";
+    }
+    else {
+        selectedRole.style.display = "none"
+        dropdownArrow.className = "fas fa-angle-right fa-lg";
+    }
 }

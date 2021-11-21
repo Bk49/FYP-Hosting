@@ -41,23 +41,25 @@
     max-width: 996px;
     margin: 0 auto;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .add-btn {
     /* position: absolute; */
     margin-right: 12px;
     padding: 6px 20px;
-    border-radius: 12px;
-    background-color: #f3f3f3;
     font-weight: 700;
     font-size: 14px;
+    background-color: #B1DBFF;
+    border-radius: 7px;
+    font-family: Poppins;
+    color: #2A2A72;
 }
 
 .add-btn:hover {
-    color: #fff;
-    background-color: #ef798a;
-    box-shadow: 4px 5px 16px #ef798a55;
+    color: #B1DBFF;
+    background-color: #2A2A72;
+    /* box-shadow: 4px 5px 16px #2A2A72; */
 }
 
 .add-btn:focus {
@@ -86,7 +88,7 @@
     background-repeat: no-repeat;
     border: 1px solid rgba(0,0,0,.07);
     border-radius: 10px;
-    margin: 8px var(--margin);
+    margin: 15px var(--margin);
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
@@ -95,9 +97,10 @@
 }
 
 .group:hover {
-    background-color: #98c5ff;
-    border-color: #98c5ff;
-    box-shadow: 3px 8px 10px 4px #98c5ff52;
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
 
 .group-body {
@@ -110,6 +113,7 @@
     font-size: 20px;
     font-weight: 500;
     font-family: Feather;
+    color: #3F5C94;
 }
 
 .group_img {
@@ -155,8 +159,10 @@
 }
 
 #exampleModalLabel {
-    font-weight: 700;
     margin: 12px 0;
+    font-family: Coolvetica;
+    font-weight: 400;
+    font-size: 30px;
 }
 
 .close {
@@ -168,10 +174,11 @@
 .form-control, .form-select {
     padding: 0.6rem .75rem;
     font-size: 14px;
-    font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
-    border: 1.4px solid #f3f3f3;
-    border-radius: 15px;
-    background-color: #f3f3f3;
+    font-family: Poppins;
+    background: #E1F1FF;
+    border: 1px solid #A7BFE8;
+    box-sizing: border-box;
+    border-radius: 7px;
     transition: 0.2s ease;
 }
 
@@ -184,8 +191,9 @@
 .col-form-label {
     padding: 4px 0;
     font-size: 13px;
-    font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
-    font-weight: 600;
+    font-family: Poppins;
+    font-weight: 700;
+    color: #3F5C94;
 }
 
 
@@ -194,10 +202,10 @@
 }
 
 #addGroup {
-    border: 1.4px solid #ef798a;
-    color: #ef798a;
-    font-weight: 600;
-    border-radius: 15px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px -2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    background-color: #FFC83C;
+    color: white;
 }
 
 #addGroup:hover {
@@ -214,7 +222,6 @@
     margin-bottom: 10px;
     color: #ef798a;
 }
-
 
 /* POPOVER CONTENT */
 .popover_wrapper {
@@ -243,6 +250,7 @@
 
 #search-list{
     color: #003844;
+    background-color:#E9E7FA;
 }
 
 #search-list {
@@ -261,15 +269,13 @@
 
 .result {
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    padding: 8px 14px;
+    padding: 8px 5px;
     border-bottom: 1px solid #f5efcb;
     transition: 0.2s ease;
 }
 
 .result:hover {
-    background-color: #f5efcb;
+    background-color: rgb(179, 175, 212);
 }
 
 .name {
@@ -284,33 +290,37 @@
 
 /* ADDED MEMBERS LIST */
 #added-list {
+    background-color: #E9E7FA;
+    border-radius: 7px;
     color: #003844;
-    margin-top: 5px;
+    margin-top: 20px;
 }
 
 .added-member {
-    display: flex;
+    /* display: flex; */
     /* flex-direction: column; */
-    padding: 4px 12px;
+    padding: 10px 12px;
     font-size: 12px;
-    border-radius: 15px;
+    border-radius: 7px;
     transition: 0.2s ease-in-out;
+    margin: auto;
 }
 
 .added-member:hover {
-    background-color: #f5efcb;
+    background-color: rgb(179, 175, 212);
 }
 
 .member-details {
-    display: flex;
-    flex-direction: column;
+    /* display: flex;
+    flex-direction: column; */
     width: 95%;
+    margin: auto;
 }
 
 .remove-member {
-    color: #ffcb45;
+    color: #3F5C94;
     width: 5%;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     align-items: center;
     transition: color 0.2s;
@@ -322,7 +332,13 @@
 }
 
 .added-name {
-    font-weight: 500;
+    font-weight: 700;
+    font-family: Feather;
+}
+
+.added-email {
+    font-weight: 400;
+    font-family: Poppins;
 }
 
 @media (max-width: 576px) {

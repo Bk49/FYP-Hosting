@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSLEOnline | Group Announcment</title>
+    <title>PSLEOnline | Group Announcement</title>
 
     <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -44,7 +44,8 @@
                 <div class="modal-body">
                     <div class="d-flex flex-column align-items-center">
                         <i id="warning-icon" class="fas fa-exclamation-triangle"></i>
-                        <h5 class="pb-1 text-center">Sorry, but PSLEOnline Announcment page can only be used in one tab</h5>
+                        <h5 class="pb-1 text-center">Sorry, but PSLEOnline Announcment page can only be used in one tab
+                        </h5>
                         <small class="text-center">Click <strong>use here</strong> to use in this window</small>
                     </div>
                     <div class="d-flex justify-content-center pt-3">
@@ -57,7 +58,8 @@
     </div>
 
     <!-- Warn user before deleting post MODAL -->
-    <div class="modal fade" id="alertDeletePostModal" tabindex="-1" aria-labelledby="alertDeletePostModal" aria-hidden="true">
+    <div class="modal fade" id="alertDeletePostModal" tabindex="-1" aria-labelledby="alertDeletePostModal"
+        aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
@@ -68,7 +70,8 @@
                     </div>
                     <div class="d-flex justify-content-center pt-3">
                         <button type="button" class="btn" id="closeModal" data-bs-dismiss="modal">Close</button>
-                        <button id="deletePost" type="button" class="btn" data-bs-dismiss="modal" data-delete-id="">Delete</button>
+                        <button id="deletePost" type="button" class="btn" data-bs-dismiss="modal"
+                            data-delete-id="">Delete</button>
                     </div>
                 </div>
             </div>
@@ -79,21 +82,21 @@
         <div class="sidebar col-1 col-sm-4 col-md-3 col-xl-2 px-0"></div>
         <div class="rightbar col-11 col-sm-8 col-md-9 col-xl-10 p-0 content">
             <!-- GROUP NAVBAR -->
-            <header class="header">
-                <a href="/group.html" id="back"><i class="fas fa-chevron-left"></i></a>
-                <h5 class="title">My Group</h5><!--Please replace wif actual grp name-->
-            </header>
-            <ul id="navigation">
+            <div class="header p-0">
+                
+                <!--Please replace wif actual grp name-->
+            </div>
+            <ul id="navigation" class="px-0 ps-2">
 
             </ul>
-            
+
             <div id="announcement-list">
                 <!-- ALL Groups goes here -->
                 <div id="noresult">
                     <div class="d-flex flex-column">
                         <i class="fas fa-bullhorn text-center"
                             style="font-size: 100px;color:#ef798a;text-shadow: 5px 5px 0px #98c5ff, -5px -5px 0px #ffcb45"></i>
-                        <span class="h5 pt-4 text-center" style="color:#003844">No Announcments</span>
+                        <span class="h5 pt-4 text-center" style="color:#003844;">No Announcements</span>
                     </div>
                 </div>
             </div>
@@ -102,14 +105,14 @@
                 <a href="" class="btn btn-light">Try Again</a>
             </div>
             <div class="edit-post-wrapper" data-edit-mode="false">
-                
+
             </div>
             <div class="input-wrapper">
-                <textarea type="text" class="form-control" id="input-msg" placeholder="Message here, Shift + Enter to go to new line"></textarea>
-                <button type="button" class="btn" id="input-submit"><i class="far fa-paper-plane"></i></button>
+                <textarea type="text" class="form-control" id="input-msg"
+                    placeholder="Message here, Shift + Enter to go to new line"></textarea>
+                <a href="#"><img src='images/send.png' style="width: 25px; margin-left: 20px;" id='input-submit' alt="sentBtn"></a>
             </div>
         </div>
-    </div>
     </div>
 
 </body>

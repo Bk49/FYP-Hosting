@@ -41,6 +41,8 @@ $(document).ready(function () {
         initWebSocket();
         getGroupById();
     })
+    $(".header").load("topbar.html", function () {
+    });
 });
 
 
@@ -232,8 +234,10 @@ function deleteAnnouncement(postId) {
 
 /* DISPLAY DATA */
 function displayGroup(data) {
-    document.querySelector(".title").textContent = data.group_name;
-    
+
+    // document.querySelector(".title").textContent = data.group_name;
+    // document.getElementById("groupName").innerHTML = data.group_name;
+
     if (data.posts && data.posts.length >= 1) {
         displayAllMessage(data.posts);
     }
@@ -261,9 +265,9 @@ function displayAllMessage(messages) {
             (msg.made_by == userId) ? attribute = "own" : attribute = "others";
             listDisplay += `
                 <div class="text-row ${attribute}" data-post-id="${msg._id}">
-                    <div class="text">
+                    <div class="text" style="border-radius:${attribute == "own" ? "12px 12px 0px 12px" : "12px 12px 12px 0px"}">
                         <div class="sender_name"> 
-                            ${attribute == "own" ? "" : msg.sender_name}
+                            ${attribute == "own" ? "Me" : msg.sender_name}
                         </div>
                         <div class="post-content">${msg.content}</div>
                         <div class="text-time">
@@ -286,6 +290,7 @@ function displayAllMessage(messages) {
         announcementList.innerHTML = listDisplay;
     }
     announcementList.scrollTo(0, announcementList.scrollHeight);
+
 }
 
 function displayMessage(msg, sender_name = "") {
@@ -302,7 +307,7 @@ function displayMessage(msg, sender_name = "") {
         <div class="text-row ${attribute}" data-post-id="${msg._id}">
             <div class="text">
                 <div class="sender_name"> 
-                    ${attribute == "own" ? "" : sender_name}
+                    ${attribute == "own" ? "Me" : sender_name}
                 </div>
                 <div class="post-content">${msg.content}</div>
                 <div class="text-time">
