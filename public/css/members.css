@@ -16,6 +16,8 @@ body {
 
 #added-list {
     scroll-behavior: smooth;
+    background: #E9E7FA;
+    border-radius: 7px;
 }
 
 ::-webkit-scrollbar {
@@ -78,23 +80,27 @@ body {
     padding: 6px 0;
     border-bottom: 1.4px solid #eee;
     display: flex;
-    justify-content: space-between;
     font-weight: 700;
+    align-items: center;
+    cursor: pointer;
 }
 
 #student-count, #parent-count, #teacher-count {
-    font-size: 13px;
     overflow: visible;
     word-wrap: none;
+    margin-left: 5px;
+    font-family: Feather;
+    font-weight: bold;
 }
 
 .member {
     padding: 6px 8px;
-    margin-bottom: 2px;
+    margin: 10px 0px;
     transition: 0.2s ease;
     display: flex;
     align-items: center;
     border-radius: 15px;
+    justify-content: space-between;
 }
 
 .member:hover {
@@ -116,6 +122,13 @@ body {
     border: 1px solid #ef798a;
     background-color: #ef798a;
     color: #fff;
+}
+
+.member-role {
+    font-family: Feather;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-left: 8px;
 }
 
 .btn-wrapper {
@@ -151,11 +164,16 @@ body {
     }
 }
 
+#owner-list, #teacher-list, #parent-list, #student-list {
+}
 
 /* MANAGE GROUP MODAL */
 
 #exampleModalLabel {
     margin-bottom: 16px;
+    font-family: Coolvetica;
+    font-weight: 400;
+    font-size: 30px;
 }
 
 .modal-body {
@@ -181,10 +199,11 @@ body {
 .form-control, .form-select {
     padding: 0.6rem .75rem;
     font-size: 14px;
-    font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
-    border: 1.4px solid #f3f3f3;
-    border-radius: 15px;
-    background-color: #f3f3f3;
+    font-family: Poppins;
+    background: #E1F1FF;
+    border: 1px solid #A7BFE8;
+    box-sizing: border-box;
+    border-radius: 7px;
     transition: 0.2s ease;
 }
 
@@ -202,8 +221,9 @@ body {
 .col-form-label {
     padding: 4px 0;
     font-size: 13px;
-    font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
-    font-weight: 600;
+    font-family: Poppins;
+    font-weight: 700;
+    color: #3F5C94;
 }
 
 .edit-name-wrapper {
@@ -269,6 +289,7 @@ body {
 #search-list {
     color: #003844;
     border-radius: 15px;
+    background-color:#E9E7FA;
 }
 
 .result:first-child {
@@ -282,20 +303,19 @@ body {
 
 .result {
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    padding: 8px 14px;
+    padding: 8px 5px;
     border-bottom: 1px solid #f5efcb;
     transition: 0.2s ease;
 }
 
 .result:hover {
-    background-color: #f5efcb;
+    background-color: rgb(179, 175, 212);
 }
 
 .member-name {
     /* font-weight: 500; */
     font-size: 14px;
+    font-family: Poppins;
 }
 
 .email {
@@ -304,14 +324,12 @@ body {
 }
 
 /* ADDED MEMBERS LIST */
-#exampleModalLabel {
-    font-weight: 700;
-}
+
 #added-list {
     color: #003844;
     margin-top: 5px;
     max-height: 170px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 .list-member {
@@ -319,12 +337,12 @@ body {
     align-items: center;
     padding: 6px 10px;
     font-size: 12px;
-    border-radius: 15px;
+    border-radius: 7px;
     transition: 0.2s ease-in-out;
 }
 
 .list-member:hover {
-    background-color: #f5efcb;
+    background-color: rgb(179, 175, 212);
 }
 
 .list-member:hover .edit-member {
@@ -336,6 +354,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 95%;
+    margin-left: 10px;
 }
 
 .list-member:hover .admin-tag-modal {
@@ -379,7 +398,13 @@ body {
 }
 
 .added-name {
-    font-weight: 500;
+    font-weight: 700;
+    font-family: Feather;
+}
+
+.added-email, .added-role {
+    font-weight: 400;
+    font-family: Poppins;
 }
 
 #updateGroup {
@@ -395,10 +420,10 @@ body {
 }
 
 .btn-delete {
-    border: 1.4px solid #ef798a;
-    color: #ef798a;
-    font-weight: 600;
-    border-radius: 15px;
+    background: #FFC83C;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px -2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    color: white;
 }
 
 .btn-delete:hover {

@@ -8,6 +8,8 @@ $(document).ready(function () {
     getGroupById();
     getGroupMembers();
     getGroupBenchmark();
+    $(".header").load("topbar.html", function () {
+    });
 })
 
 $(document).on("click", ".member", function () {

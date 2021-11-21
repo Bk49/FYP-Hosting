@@ -10,5 +10,5 @@ $(document).ready(function(){
             }
             navElement.href += "?groupId="+groupId;
         });
-    });
+    });    
 });

@@ -4,9 +4,12 @@ var groupId = urlSearchParams.get("groupId");
 
 /* WINDOWS EVENT LISTENER */
 $(document).ready(function () {
+    $(".header").load("topbar.html", function () {
+    });
     getAssignmentByGrp();
     getLevelSelect();
     displayEducatorUI();
+    
 });
 
 // display topic according to selected level

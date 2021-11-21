@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSLEOnline | Leaderboard</title>
+    <title>PSLEOnline | Assignments</title>
 
     <!--Bootstrap-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -29,40 +29,30 @@
     <script src="./javascript/auth.js"></script>
     <script src="./javascript/sidebar.js"></script>
     <script src="./javascript/groupnav.js"></script>
-    <script src="./javascript/group_leaderboard.js"></script>
+    <script src="./javascript/group_assignment.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="./css/groupnav.css">
-    <link rel="stylesheet" href="./css/leaderboard.css">
+    <link rel="stylesheet" href="./css/assignment.css">
 </head>
 
 <body class="container-fluid">
+
     <div class="row flex-nowrap">
         <div class="sidebar col-auto col-sm-4 col-md-3 col-xl-2 px-0"></div>
         <div class="rightbar col p-0 content">
-            <!-- GROUP NAVBAR -->
-            <header class="header">
-         
+            <header class="header p-0">
+                <a href="/group.html" id="back"><i class="fas fa-chevron-left"></i></a>
+                <h5 class="title">My Group</h5>
+                <!--Please replace wif actual grp name-->
             </header>
             <ul id="navigation" class="px-0 ps-2">
 
             </ul>
 
-            <!-- LEADERBOARD -->
-            <div id="top-3">
-
-            </div>
-            <div id="leaderboard">
-                <!-- leaderboard will load here with javascript -->
-            </div>
-            <div id="noresult" style="min-height: 40vh;">
-                <i class="fas fa-trophy text-center"
-                    style="font-size: 100px;color:#ef798a;text-shadow: 5px 5px 0px #98c5ff, -5px -5px 0px #ffcb45"></i>
-                <span class="h5 pt-4 text-center" style="color:#003844">No Content. Do a quiz to join the
-                    ranks!</span>
-            </div>
         </div>
     </div>
+
 </body>
 
 </html>

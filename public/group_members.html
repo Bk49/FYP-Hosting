@@ -45,32 +45,48 @@
                 <a href="/group.html" id="back"><i class="fas fa-chevron-left"></i></a>
                 <h5 class="title">My Group</h5>
             </header>
-            <ul id="navigation" class="nav-pills">
+            <ul id="navigation" class="nav-pills px-0 ps-2">
             </ul>
 
             <div id="member-list">
                 <!-- ALL Members goes here -->
                 <div id="owner">
-                    <div class="list-header">
+                    <div class="list-header" onclick=expandDropdown(1)>
+                        <i class="fas fa-angle-right fa-lg"></i>
                         <h5 class="member-role">Owner</h5>
                     </div>
-                </div>
-                <div id="parent">
-                    <div class="list-header">
-                        <h5 class="member-role">Parent</h5>
-                        <span id="parent-count"></span>
+                    <div id="owner-list" style="display: none;">
+
                     </div>
                 </div>
                 <div id="teacher">
-                    <div class="list-header">
+                    <div class="list-header" onclick=expandDropdown(2)>
+                        <i class="fas fa-angle-right fa-lg"></i>
                         <h5 class="member-role">Teachers</h5>
                         <span id="teacher-count"></span>
                     </div>
+                    <div id="teacher-list" style="display: none;">
+
+                    </div>
+                </div>
+                <div id="parent">
+                    <div class="list-header" onclick=expandDropdown(3)>
+                        <i class="fas fa-angle-right fa-lg"></i>
+                        <h5 class="member-role">Parents</h5>
+                        <span id="parent-count"></span>
+                    </div>
+                    <div id="parent-list" style="display: none;">
+
+                    </div>
                 </div>
                 <div id="student">
-                    <div class="list-header">
+                    <div class="list-header" onclick=expandDropdown(4)>
+                        <i class="fas fa-angle-right fa-lg"></i>
                         <h5 class="member-role">Students</h5>
                         <span id="student-count"></span>
+                    </div>
+                    <div id="student-list" style="display: none;">
+
                     </div>
                 </div>
             </div>
@@ -85,11 +101,11 @@
 
     <!-- EDIT GROUP MODAL -->
     <div class="modal fade" id="addGroupModal" tabindex="-1" aria-labelledby="addGroupModalLabel" aria-hidden="true">
-        <div class="modal-dialog manage-group-modal">
+        <div class="modal-dialog manage-group-modal modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <h5 class="modal-title text-center" id="exampleModalLabel">Manage Group</h5>
+                    <h5 class="modal-title m-0" id="exampleModalLabel">Manage Group</h5>
                     <form>
                         <div class="mb-2">
                             <label for="group_name" class="col-form-label modal-label">Group Name</label>

@@ -24,14 +24,23 @@ $(document).on("keyup", "#add-members", function() {
 // add user to member list
 $(document).on("click", ".result", function() {
     const id = this.id;
-    const name = this.children[0].innerHTML;
-    const email = this.children[1].innerHTML;
-    displayAdded(id, name, email);
+    const pic = this.children[0].children[0].src
+    const name = this.children[1].children[0].children[0].innerHTML;
+    const email = this.children[1].children[1].children[0].innerHTML;
+
+    console.log(id);
+    console.log(pic);
+
+    console.log(name);
+
+    console.log(email);
+
+    displayAdded(id, pic, name, email);
 });
 
 // remove member from list 
 $(document).on("click", ".remove-member", function() {
-    this.parentElement.remove();
+    this.parentElement.parentElement.parentElement.remove();
 });
 
 $(document).on("click", "#addGroup", function() {
@@ -169,16 +178,25 @@ function displaySearchResult(data) {
 
     if(data.length < 1 ) {
         content += `
-            <div class="text-center p-2"><small>No result</small></div>
+            <div class="text-center p-2" style="font-family: Poppins"><small>No result</small></div>
         `;
     }
     else {
         data.forEach(result => {
             content += `
-                <div class="result" id="${result._id}">
-                    <span class="name">${result.first_name} ${result.last_name}</span>
-                    <span class="email">${result.email}</span>
-                    
+
+                <div class="result row m-auto" id="${result._id}">
+                    <div class="col-1 m-auto">
+                        <img src="/images/profile.png" alt="profileimg" style="width: 35px"/>
+                    </div>
+                    <div class="col m-auto mx-2">
+                        <div class="row">
+                            <span class="name">${result.first_name} ${result.last_name}</span>
+                        </div>
+                        <div class="row">
+                            <span class="email">${result.email}</span>
+                        </div>
+                    </div> 
                 </div>
             `;
             // <span class="role">${result.role}</span>
@@ -188,7 +206,7 @@ function displaySearchResult(data) {
     searchList.innerHTML = content;
 }
 
-function displayAdded(id, name, email) {
+function displayAdded(id, pic, name, email) {
     var addedList = document.querySelector("#added-list");
     var children = Array.from(addedList.children); //convert children to array
 
@@ -200,13 +218,24 @@ function displayAdded(id, name, email) {
     // add to members list if user is not already in it
     if(!userExists) {
         addedList.innerHTML += `
-            <div class="added-member" id="added-${id}">
-                <div class="member-details">
-                    <span class="added-name">${name}</span>
-                    <span class="added-email">${email}</span>
+            <div class="added-member row" id="added-${id}">
+                <div class="col-1 m-auto">
+                    <img src="${pic}" alt="profileimg" style="width: 35px"/>
                 </div>
-                <div class="remove-member">
-                    <span class="fas fa-times"></span>
+                <div class="col m-auto mx-2">
+                    <div class="row">
+                        <div class="member-details">
+                            <span class="added-name">${name}</span>
+                            <span class="added-email">${email}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-end align-items-center">
+                    <div class="row">
+                        <div class="remove-member">
+                            <span class="fas fa-times fa-lg"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
