@@ -6,6 +6,7 @@ groupId = urlSearchParams.get("groupId");
 $(document).ready(function(){
     console.log("testing123")
 
+    $("#sidebar div:nth-child(5)").children().addClass("active-tab");
     $("#heading").html($(".active").children(".row").children(".col").children(".sectionName").html());
 
     if (!groupId) window.location.href = "group.html";
