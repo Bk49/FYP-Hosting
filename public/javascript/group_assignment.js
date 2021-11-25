@@ -200,7 +200,7 @@ async function displayEducatorUI() {
 }
 
 function displayGroupName(group_name) {
-    document.querySelector(".title").innerHTML = group_name;
+    // document.querySelector(".title").innerHTML = group_name;
 }
 
 function displayAssignments(assignments) {
