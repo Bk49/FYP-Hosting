@@ -324,7 +324,7 @@ color: #000000;
     margin:auto;
     margin-top: 25px;  
     margin-bottom: 10px;
-    width: 90%;
+    width: 95%;
 }
 
 .notificationimg1 {
@@ -332,7 +332,6 @@ color: #000000;
     max-height: 35px;
     justify-content: center;
     align-self: center;
-    margin-left: 10px;
    margin-bottom: 5px;
    margin-top: 10px;
 }
@@ -368,7 +367,7 @@ color: #000000;
     font-style: normal;
     font-weight: normal;
     font-size: 15px;
-    line-height: 18px;
+    line-height: 0.5cm;
     color: #003844;
 }
 
@@ -405,6 +404,13 @@ color: #000000;
     white-space: nowrap;
     overflow: auto;
     color: #fff; 
+}
+
+.small-notification-side-button {
+    background: #6696CA;
+    box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 0px 15px 15px 0px;
+    
 }
 
 .attempt-daily-quiz-card {
