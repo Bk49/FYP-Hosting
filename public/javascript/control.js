@@ -1,9 +1,9 @@
 
 /* EVENT LISTENERS & API CALLS */
-// onload get all levels
+// onload get all primary levels
 $(document).ready(function () {
     $(".header").load("topbar.html", function () {
-        document.getElementById("name").innerHTML = getName();
+        // document.getElementById("name").innerHTML = getName();
     });
 
     $.ajax({
@@ -28,6 +28,33 @@ $(document).ready(function () {
 
 })
 
+// onload get all secondary levels
+// $(document).ready(function () {
+//     $(".header").load("topbar.html", function () {
+//         document.getElementById("name").innerHTML = getName();
+//     });
+
+//     $.ajax({
+//         url: '/level',
+//         dataType: 'JSON',
+//         success: function (data, textStatus, xhr) {
+//             if (data.length >= 1) {
+//                 let notes = [];
+//                 for (let i = 0; i < data.length; i++) {
+//                     notes.push({
+//                         "id": data[i]._id,
+//                         "display": "Secondary " + data[i].level
+//                     })
+//                 }
+//                 displayLevel(notes, "level");
+//             }
+//         },
+//         error: function (xhr, textStatus, errorThrown) {
+//             console.log(errorThrown);
+//         }
+//     });
+
+// })
 
 // on change percentage difficulty update ui of total qns
 $(document).on("keyup change", ".percentage_difficulty", function () {
@@ -46,6 +73,7 @@ $(document).on("click", ".level", function () {
         dataType: 'JSON',
         success: function (data, textStatus, xhr) {
             console.log(data);
+
             displayTopic(data, "topic");
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -54,9 +82,9 @@ $(document).on("click", ".level", function () {
     });
 })
 
-$(document).on("click", ".skill", function () {
+$(document).on("click", ".editSkill", function () {
     let id = this.id; // get id of skill being clicked
-
+    console.log("few");
     // get skill details by id
     $.ajax({
         url: `/skill/${id}`,
@@ -257,7 +285,8 @@ $(document).on("click", ".addTopicBtn", function () {
 $(document).on("click", ".editTopicBtn", function () {
     let topic = $('#inputTopic').val();
     let id = this.id;
-
+    console.log(id);
+    console.log(topic)
     checkAuth(() => $.ajax({
         url: `/topic/${id}`,
         type: 'PUT',
@@ -271,9 +300,9 @@ $(document).on("click", ".editTopicBtn", function () {
             $(`#${data.level_id}`).trigger('click');
         },
         error: function (xhr, textStatus, errorThrown) {
+            console.log(errorThrown)
             $('#inputTopicErr').html(JSON.parse(xhr.responseText).error);
             $('#inputTopic').focus();
-
             const res = xhr.responseJSON;
 
             if (res.code == "UNAUTHENTICATED_USER") {
@@ -496,7 +525,7 @@ $(document).on("click", ".deleteSkillBtn", function () {
     $.confirm({
         icon: 'fas fa-exclamation-triangle',
         title: 'Are you sure?',
-        content: 'This will permanently delete this level and the action cannot be undone.',
+        content: 'This will permanently delete this skill and the action cannot be undone.',
         type: 'red',
         buttons: {
             ok: {
@@ -578,9 +607,9 @@ $(document).on("click", ".addTopic", function () {
 })
 
 $(document).on("click", ".editTopic", function () {
-    let topic = $(this).children("p").text();
-    let id = $(this).parent().attr("id");
-
+    let topic = $(this).prev("p").text();
+    let id = $(this).parent().parent().parent().attr("id");
+    console.log(id);
     $('#inputTopic').val(topic);
     $('#topicModal').modal('show');
     $('#topicModalTitle').html('Edit Topic');
@@ -590,6 +619,20 @@ $(document).on("click", ".editTopic", function () {
     $('.deleteTopicBtn').remove();
     $('.editTopicBtn').before(`<button type="button" class="btn deleteTopicBtn">Delete</button>`);
     $('.deleteTopicBtn').attr('id', id);
+})
+
+$(document).on("click", ".topicName", function () {
+    var dropdownContent = this.nextElementSibling.nextElementSibling;
+    var dropdownIcon = this.children[0].children[0];
+   
+    if (dropdownContent.style.display == "none") {
+        dropdownContent.style.display = "block";
+        dropdownIcon.className = "fas fa-angle-down fa-lg"
+    }
+    else {
+        dropdownContent.style.display = 'none'
+        dropdownIcon.className = "fas fa-angle-right fa-lg"
+    }
 })
 
 //SKILLS
@@ -609,82 +652,221 @@ $(document).on("click", ".addSkill", function () {
     $('.deleteSkillBtn').remove();
 })
 
+$(document).on("click", ".expandDifficulty", function () {
+    console.log("Testing");
+
+    var dropdownContent = this.parentElement.parentElement.nextElementSibling;
+
+    if (dropdownContent.style.display == "" || dropdownContent.style.display == "none") {
+        dropdownContent.style.display = "block";
+        this.className = "fas fa-minus expandDifficulty"
+
+    }
+    else {
+        dropdownContent.style.display = "none";
+        this.className = "fas fa-plus expandDifficulty"
+    }
+})
+
 // DISPLAY FUNCTIONS
 function displayLevel(data, name) {
     let container = document.getElementById(name + "Container");
     let content = '';
+    let primaryLevelContainer = document.getElementById("primaryLevelContainer");
+    let secondaryLevelContainer = document.getElementById("secondaryLevelContainer");
+    let emptyContainer = document.getElementById("emptyContainer");
 
     container.innerHTML = '';
 
-    for (let i = 0; i < data.length; i++) {
-        content = `
-        <div class="${name}" id="${data[i].id}">
-            <div class="text-center level-container">
-                <span>${data[i].display}</span>
-                <i class="icon fas fa-pen"></i>
-            </div>
-        </div>        
-        `
-        container.innerHTML += content;
+    if (data.length == 0) {
+        
     }
-    container.innerHTML += `
-        <div class="addLevel" data-bs-toggle="modal" data-bs-target="#levelModal">
-            Add Level
-        </div>
-    `;
+    else {
+        emptyContainer.style.display = 'none'
+        primaryLevelContainer.style.display = 'block'
+        secondaryLevelContainer.style.display = 'block'
+        for (let i = 0; i < data.length; i++) {
+            content = `
+            <div class="${name}" id="${data[i].id}">
+                <div class="level-container">
+                    <span>${data[i].display}</span>
+                </div>
+            </div>        
+            `
+            container.innerHTML += content;
+        }
+        container.innerHTML += `
+            
+        `;
+    }
+    
 }
 
+function testing() {
+    document.getElementById("levelContainer").style.display = "none"
+}
 function displayTopic(data, name) {
     const { _id, level, topics } = data;
 
+    document.getElementById("primaryLevelContainer").style.display = 'none';
+    document.getElementById("secondaryLevelContainer").style.display = 'none';
+    document.getElementById("topicContainer").style.display = 'block';
     document.getElementById("levelTag").innerHTML = "Primary " + level;
     document.getElementById("levelContainer").style.display = "none";
-    document.getElementById("back").style.display = "block";
+    // document.getElementById("back").style.display = "block";
 
     let container = document.getElementById(name + "Container");
     let content = "";
 
     container.innerHTML = "";
     container.innerHTML +=
-        `<button class="btn addTopic" 
+        `<button class="btn addTopic d-flex align-items-center" 
         id="${data._id}" 
         data-bs-toggle="modal" 
         data-bs-target="#topicModal" 
-        onclick="resetSkillForm()">Add Topic</button>`
+        onclick="resetSkillForm()"><i class="fas fa-plus"></i><p class="m-0 mx-auto">Add Topic</p></button>`
     for (var i = 0; i < topics.length; i++) {
         content = `
-            <div class="topicWrapper">
-                <div class="${name}" 
+            <div class="topicWrapper row">
+                <div class="${name} p-0 col" 
                     id="${topics[i]._id}" 
                     data-toggle="collapse" 
                     aria-expanded="false" 
                     data-target="#collapse-${i}"
                     aria-controls="collapse-${i}">
-                    <div class="text-center editTopic">
-                        <p>${topics[i].topic_name}</p>
+                    <div class="row topicName">
+                        <div class="col">
+                            <i class="fas fa-angle-right fa-lg"></i>
+                            <p class="d-inline">${topics[i].topic_name}</p>
+                            <i class="fas fa-pen editTopic"></i>
+                        </div>
+                       
+                        
                     </div>
                     <div 
                         id="collapse-${i}" 
                         class="collapse">
-                </div>`;
+                    </div>`;
+
+        content += `
+        <div class="skillsContent mt-3" style="display: none; border-radius: 7px">
+            <div class="row mx-auto skillHeading">
+                <div class="col-1 invisible" style="width: fit-content">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="col-4">
+                    <p class="ps-0">Skill Name</p>
+                </div>
+                <div class="col">
+                    <p class="ps-0">Skill Code</p>
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <p class="ps-0">No. of Question</p>
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <p class="ps-0">Duration (min)</p>
+                </div>
+                <div class="col-1 invisible" style="width: fit-content">
+                    <i class="fas fa-pen"></i>
+                </div>
+            </div>
+        `
 
         topics[i].skills.forEach(element => {
             content += `
-                <div 
-                    class="skill" 
-                    id="${element._id}"
-                    data-bs-toggle="modal" 
-                    data-bs-target="#skillModal">
-                ${element.skill_name}
+                <div class="row mx-auto skill">
+                    <div class="col-1 d-flex justify-content-center align-items-center" style="width: fit-content">
+                        <i class="fas fa-plus expandDifficulty"></i>
+                    </div>
+                    <div class="col-4 d-flex">
+                        <p class="ps-0">${element.skill_name}</p>
+                    </div>
+                    <div class="col d-flex">
+                        <p class="ps-0">${element.skill_code}</p>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <p class="ps-0">${element.num_of_qn}</p>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <p class="ps-0">${element.duration}</p>
+                    </div>
+                    <div class="col-1 d-flex justify-content-center align-items-center" style="width: fit-content">
+                        <i class="fas fa-pen editSkill" data-bs-toggle="modal" 
+                        data-bs-target="#skillModal" id="${element._id}"></i>
+                    </div>
                 </div>
-                
+                <div class="row mx-auto my-3 difficultyRow">
+                    <div class="col difficultyTable">
+                        <div class="row difficultyHeading">
+                            <div class="col">
+                                Difficulty
+                            </div>
+                            <div class="col">
+                                Min. Range
+                            </div>
+                            <div class="col">
+                                Max.Range
+                            </div>
+                            <div class="col">
+                                Weightage
+                            </div>
+                        </div>
+                        <div class="row difficultyData">
+                            <div class="col">
+                                Easy
+                            </div>
+                            <div class="col">
+                                ${element.easy_values.min}
+                            </div>
+                            <div class="col">
+                                ${element.easy_values.max}
+                            </div>
+                            <div class="col">
+                                ${element.percent_difficulty.substr(0, 2)}
+                            </div>
+                        </div>
+                        <div class="row difficultyData">
+                            <div class="col">
+                                Medium
+                            </div>
+                            <div class="col">
+                                ${element.medium_values.min}
+                            </div>
+                            <div class="col">
+                                ${element.medium_values.max}
+                            </div>
+                            <div class="col">
+                                ${element.percent_difficulty.substr(3, 2)}
+                            </div>
+                        </div>
+                        <div class="row difficultyData">
+                            <div class="col">
+                                Hard
+                            </div>
+                            <div class="col">
+                                ${element.difficult_values.min}
+                            </div>
+                            <div class="col">
+                            ${element.difficult_values.max}
+                            </div>
+                            <div class="col">
+                                ${element.percent_difficulty.substr(6, 2)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 `
         });
         content +=
-            `<div class="addSkill" id="${topics[i]._id}" data-bs-toggle="modal" data-bs-target="#skillModal">
-            <i class="fas fa-plus-circle"></i> Add Skills
-        </div>
-        </div></div>`;
+            `
+            <div class="row mx-auto">
+                <div class="addSkill" id="${topics[i]._id}" data-bs-toggle="modal" data-bs-target="#skillModal">
+                    <i class="fas fa-plus-circle"></i> Add Skills
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>`;
         container.innerHTML += content;
     }
 }
@@ -729,7 +911,7 @@ function displaySkillDetail(data) {
     $('#skillModalLabel').html('Edit Skill');
     $('.addSkillBtn').addClass('updateSkillBtn').removeClass('addSkillBtn');
     $('.deleteSkillBtn').remove();
-    $('.updateSkillBtn').before(` <button type="button" class="btn me-1 deleteSkillBtn">Delete</button>`);
+    $('.updateSkillBtn').before(` <button type="button" class="btn me-1 deleteSkillBtn d-flex align-items-center"><i class="fas fa-minus"></i><p class="m-0 mx-auto">Delete Skill</p></button>`);
 
     // Update the modal's content
     id.value = data.skillId;
@@ -773,9 +955,9 @@ function calculateQn() {
         let difficult_num = (percentage_difficult / 100) * num_of_qn;
         let total = easy_num + medium_num + difficult_num;
 
-        document.querySelector("#easy_num").textContent = "Easy Questions: " + easy_num;
-        document.querySelector("#medium_num").textContent = "Medium Questions: " + medium_num;
-        document.querySelector("#difficult_num").textContent = "Difficult Questions: " + difficult_num;
+        // document.querySelector("#easy_num").textContent = "Easy Questions: " + easy_num;
+        // document.querySelector("#medium_num").textContent = "Medium Questions: " + medium_num;
+        // document.querySelector("#difficult_num").textContent = "Difficult Questions: " + difficult_num;
         document.querySelector("#total_num").textContent = "Total Questions: " + total;
 
         num_of_qn = document.querySelector("#num_of_qn");
@@ -804,9 +986,9 @@ function validateNumOfQn() {
 
 function resetSkillForm() {
     document.querySelector("#skill_code").value = "none";
-    document.querySelector("#easy_num").textContent = "";
-    document.querySelector("#medium_num").textContent = "";
-    document.querySelector("#difficult_num").textContent = "";
+    // document.querySelector("#easy_num").textContent = "";
+    // document.querySelector("#medium_num").textContent = "";
+    // document.querySelector("#difficult_num").textContent = "";
     document.querySelector("#total_num").textContent = "";
     createSlider("easy", 0, 0);
     createSlider("medium", 0, 0);
