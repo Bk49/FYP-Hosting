@@ -207,7 +207,7 @@ function createFilter(data) {
 
 /* Display Data */
 function displayGroup(data) {
-    document.querySelector(".title").textContent = data.group_name;
+    // document.querySelector(".title").textContent = data.group_name;
 }
 
 function displayMembers(data) {
