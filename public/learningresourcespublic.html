@@ -39,8 +39,9 @@
 
 </head>
 
-<div class="lrtitle">
+<div class="lrtitle" style="padding-top: 10em;">
     <h2> Learning Resources </h2>
+    <h3><u>Primary School Levels</u></h3>
 </div>
 
 <body data-spy="scroll" data-target=".fixed-top">
@@ -89,67 +90,109 @@
 
     <div class="lresources">
         <div class="container p-5">
-            <!-- <input class="form-control form-control-sm mb-3 " id="myInput" type="text" placeholder="Search.." aria-label="Search"> -->
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Download</th>
-                        </tr>
-                    </thead>
-                    <tbody id="myTable">
-                        <tr>
-                            <th scope="row-cols-auto">1</th>
-                            <td>2020 Anglo-Chinese School Preliminary Mathematics</td>
-                            <td>Paper 1</td>
-                            <td><a class="btn btn-info btn-sm" role="button"
-                                    href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf"
-                                    download="P6_Maths_SA2_2020_ACS_Exam_Papers">
-                                    Download <i class="fa fa-download"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row-col-auto">2</th>
-                            <td>2020 Henry Park Primary School Preliminary Mathematics</td>
-                            <td>Paper 1</td>
-                            <td><a class="btn btn-info btn-sm" role="button"
-                                    href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf"
-                                    download="P6_Maths_SA2_2020_ACS_Exam_Papers">
-                                    Download <i class="fa fa-download"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row-col-auto">3</th>
-                            <td>2020 Rosyth Primary School Preliminary Mathematics</td>
-                            <td>Paper 1</td>
-                            <td><a class="btn btn-info btn-sm" role="button"
-                                    href="pdfs/P6_Maths_SA2_2020_Rosyth_Exam_Papers.pdf"
-                                    download="P6_Maths_SA2_2020_ACS_Exam_Papers">
-                                    Download <i class="fa fa-download"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row-col-auto">4</th>
-                            <td>2020 Nan Yang Primary School Preliminary Mathematics</td>
-                            <td>Paper 1</td>
-                            <td><a class="btn btn-info btn-sm" role="button"
-                                    href="pdfs/P6_Maths_SA2_2020_Nanyang_Exam_Papers.pdf"
-                                    download="P6_Maths_SA2_2020_ACS_Exam_Papers">
-                                    Download <i class="fa fa-download"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row-col-auto">5</th>
-                            <td>2020 Tao Nan Primary School Preliminary Mathematics</td>
-                            <td>Paper 1</td>
-                            <td><a class="btn btn-info btn-sm" role="button"
-                                    href="pdfs/P6_Maths_SA2_2020_Tao_Nan_Exam_Papers.pdf"
-                                    download="P6_Maths_SA2_2020_ACS_Exam_Papers">
-                                    Download <i class="fa fa-download"></i></a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="d-flex justify-content-center"><a href="signup.html" target="_blank">Sign up
-                        to get access to all past year practise papers of different schools!</a></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 justify-content-center" src="images/anglo_chinese_school.png" style="background-color: #FFFFFF; object-fit: cover; width: auto; height: auto;" alt="Anglo-Chinese School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 justify-content-center" src="images/Henry_Park_Primary_School_Logo.png" style="background-color: #FFFFFF; object-fit: cover; width: auto; height: auto;" alt="Henry Park Primary School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pr-2 justify-content-center" src="images/rosyth_primary_school.png" style="background-color: #FFFFFF; object-fit: cover; width: auto; height: auto;" alt="Rosyth Primary School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Rosyth_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Rosyth_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 d-flex justify-content-center" src="images/Nan_yang_primary_school.png" style="background-color: #FFFFFF; object-fit: cover; width: auto; height: auto;" alt="Nan Yang Primary School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 d-flex justify-content-end" src="images/Tao_Nan_Primary_School.png" style="background-color: #FFFFFF; object-fit: cover; width: auto; height: auto;" alt="Tao Nan Primary School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 d-flex justify-content-end" src="images/Nan Hua Primary.png" style="background-color: #FFFFFF; object-fit: cover; width: auto; height: auto;" alt="Nan Hua Primary School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lrtitle pt-5">
+                <h3><u>Secondary School Levels</u></h3>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 justify-content-center" src="images/Dunman_High_School.png" style="background-color: #FFFFFF; overflow: 'hidden'; width: auto; height: 100%;" alt="Dunman High School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 justify-content-center" src="images/Hwa Chong Institution.png" style="background-color: #FFFFFF; width: auto; height: 100%;" alt="Hwa Chong Institution">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pr-2 justify-content-center" src="images/Raffles_Institution.png" style="background-color: #FFFFFF; width: auto; height: 100%;" alt="Raffles Institution">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Rosyth_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Rosyth_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 d-flex justify-content-center" src="images/Anderson Secondary School.png" style="background-color: #FFFFFF; width: auto; height: 100%;" alt="Anderson Secondary School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_ACS_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 d-flex justify-content-end" src="images/Singapore Chinese Girls School.png" style="background-color: #FFFFFF; width: auto; height: 100%;" alt="Singapore Chinese Girls School">
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn m-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
+
+                <div class="col-md-4 pt-5">
+                    <div class="card" id="downloadCard">
+                        <img class="card-img-top m-2 pd-2 d-flex justify-content-end" src="images/Chong Cheng High Secondary.jpg" style="background-color: #FFFFFF; width: auto; height: 100%;" alt="Chong Cheng High Secondary School">
+                            <a class="btn mt-2 mb-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 1 <i class="fa fa-download"></i></a></td></li>
+                            <a class="btn mt-2 mb-2" id="downloadBtn" role="button" href="pdfs/P6_Maths_SA2_2020_Henry_Park_Exam_Papers.pdf" download="P6_Maths_SA2_2020_ACS_Exam_Papers">Paper 2 <i class="fa fa-download"></i></a></td></li>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

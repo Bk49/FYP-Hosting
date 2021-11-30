@@ -50,39 +50,58 @@ window.onpopstate = function (e) {
     }
 };
 
-$(document).on("click", ".card", function () {
+$(document).on("click", ".dropDownOptions", function () {
     let path;
     let id = this.id;
     let array = ['level', 'topic', 'skill'];
-
+    console.log("pressed!!!");
+    console.log(id);
     for (let i = 0; i < array.length; i++) {
-        let check = $(".card").hasClass(`${array[i]}`);
-        if (check == true) {
+        // let check = $(".dropDownOptions").hasClass(`${array[i]}`);
+        // if (check == true) {
             path = array[i];
             break;
-        }
+        // }
     }
-
+    console.log(path);
     if (path != null || path != undefined) {
-        if (path != 'skill') {
-            let state = {
-                path: path,
-                id: id,
-            }
-            history.pushState(state, null, `?${path}=${id}`);
-            getQuizAjax(path, id);
-        }
-        else {
+        // if (path != 'skill') {
+        //     let state = {
+        //         path: path,
+        //         id: id,
+        //     }
+        //     history.pushState(state, null, `?${path}=${id}`);
+        //     getQuizAjax(path, id);
+        // }
+        // else {
             path = "trial";
             if (window.location.toString().includes("quiz")) {
                 path = "quiz";
             }
             window.open(`${path}.html?skill=${id}`);
-        }
+        //}
     }
     else {
         alert("ERROR!");
     }
+
+    // if (path != null || path != undefined) {
+    //     if (path != 'skill') {
+    //         $("body").html()
+    //     }
+    // }
+    // else {
+    //     alert("ERROR!");
+    // }
+
+})
+
+$(document).on("click", "#dropdownMenuLink", function() {
+    $(".levelNo").width($("#dropdownMenuLink").innerWidth());
+})
+
+$(document).on("click", "#secondaryDropDown", function() {
+    $(".secondaryLvlNo").width($("#secondaryDropDown").innerWidth());
 })
 
 $(document).on("click", ".click", function () {
@@ -91,7 +110,6 @@ $(document).on("click", ".click", function () {
     if (id == "beginBtn") { //Start quiz
         questionArray = [];
         funcs[quizData.topic_name].generateQuestion(quizData);
-
         displayQuestion();
     }
     else {
@@ -129,21 +147,51 @@ $(document).on("click", ".click", function () {
             //Marking quiz
             let result = funcs[quizData.topic_name].markQuiz(quizData, questionArray);
             let user = JSON.parse(localStorage.getItem("userInfo"));
-            let status = (result[1].total >= 50) ? 'pass' : 'fail';
+            let quizMessage;
+            let status;
+            if (result[1].total >= 90) {
+                quizMessage = 'Congratulations!';
+                status = 'Now try more quizzes to boost your ranking on the leaderboard!';
+            }
+            else if (result[1].total >= 60) {
+                quizMessage = 'Good Work!'
+                status = 'Review your mistakes below and try again! Aim for perfection.';
+            }
+            else {
+                quizMessage = 'You can do better!'
+                status = 'Review your mistakes below and try again.';
+            }
+            // let status = (result[1].total >= 50) ? 'pass' : 'fail';
             //Displaying results
             $('#skillName').remove();
+            $('#skillLevel').remove();
+            $('.cancelBtn').remove();
             $('#support').before(
-                `<h2 class="text-center mt-4 mb-2">Congratulations!</h2>
+                `
+                <h2 class="text-center mt-4 mb-2" id="quizMessage">${quizMessage}</h2>
                 <div class="row justify-content-center align-items-center text-center">
-                    
                     <div class="col-12 px-3">
-                        <p>You ${status} the ${quizData.skill_name} quiz!</p>
-                        <h6><u>${Math.round(result[1].total)} / 100 </u></h6>
-                    </div>
-                    
-                    <a class="my-3" href="overview.html"><button class="btn btn-outline-primary">Return back</button></a>
+                        <h6 id="scoreMessage">Your score is <b>${Math.round(result[1].total)}</b>!</h6>
+                        <br>
+                        <h5 class="text-center" id="statusMessage">${status}</h5>
+                    </div>                    
                 </div>
-                <div class="text-center"> Take a look at your progress:</div>`
+                <div class="container">
+                    <div class="row justify-content ">
+                        <div class="col-4 d-flex justify-content-end">
+                            <a class="my-3" href="overview.html"><button class="btn btn-lg text-light ml-4" id="returnBtn">Return</button></a>
+                        </div>
+                        <div class="col-4 d-flex justify-content-center">
+                            <a class="my-3" href="https://www.instagram.com/"><button class="btn btn-lg text-light" id="instagram"><i class="fab fa-instagram"></i> Share Instagram</button></a><br>
+                        </div>
+                        <div class="col-4 d-flex ">
+                            <a class="my-3" href="https://www.instagram.com/"><button class="btn btn-lg text-light" id="facebook"><i class="fab fa-facebook-square"></i> Share Facebook</button></a><br>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="text-center" id="progressText"> Take a look at your progress:</div>
+                `
             );
             // <i class="col-2 fas fa-glass-cheers fa-4x"></i>
 
@@ -278,7 +326,8 @@ function submitQuiz(newQuiz) {
             let container = document.getElementById("support");
 
             container.className = "row m-0 m-auto justify-content-center";
-            $(container).after('<h4 class="my-5 text-center">Review Quiz</h4>');
+            $(container).after('<h4 class="my-5 text-center" id="reviewQuiz">Review Quiz</h4>');
+
             
             if(newQuiz.score.total >= 80) {
                 // add animation
@@ -377,6 +426,7 @@ function after(path, data) {
     let head = '';
     let notes = [];
     let end = '_name';
+    let topicsArray = [];
 
     if (path != "skill") {
         if (path == 'level') {
@@ -394,34 +444,45 @@ function after(path, data) {
         }
 
         for (let i = 0; i < data.length; i++) {
-            notes.push({
-                "id": data[i]._id,
-                "display": head + data[i][vname + end]
-            })
+                notes.push({
+                    "id": data[i]._id,
+                    "display": head + data[i][vname + end],
+                    "topic": data[i].topics,
+                    // "skill": data[i].topics[0]
+                }) 
+            
+            
         }
+console.log(notes.length)
 
-        document.getElementById("subtitle").innerHTML = vname.charAt(0).toUpperCase() + vname.slice(1);
+        console.log(topicsArray);
         displayCard(notes, vname);
     }
     else {
+        head = 'Primary ';
         $("body").html(
             `<div class="row justify-content-center m-2">
                 <div  class="d-flex justify-content-center">
                    <img src="images/Psleonline_logo_transparent.png" alt="Logo" style="width: 35%">
                 </div>
-                <div class="col-12 col-sm-10 border rounded" id="content">
+                <div class="col-12 col-sm-10 " id="content">
                     <div class="row flex-nowrap noBar justify-content-center">
-                        <div class="d-flex flex-column justify-content-center align-items-center py-5 px-3 p-sm-5">       
-                            <h4 class="text-center">${data.skill_name}</h4>
-                            <div class="border p-sm-5 p-3 mt-2" style="border-radius:15px;">
+                        <div class="d-flex flex-column justify-content-center align-items-center py-5 px-3 p-sm-5" ">       
+                            <h4 class="text-center" id="levelTxt">${head} ${data.level}</h4>
+                            <h1 class="text-center" id="skillTxt">${data.skill_name}</h4>
+                            <h5 class="text-center" id="durationTxt"><i class="fas fa-clock"></i> Time Limit: ${data.duration} Minutes</h4><br/>
+                            <div class="col-6 border p-sm-5 p-3 mt-2" style="border-radius:15px;" id="instructionsBox">
                                 <div class="pl-5">
-                                    <p class="h5 text-center mb-5">Instructions</p>
-                                    <p class="m-1">The quiz has a time limit of <span id="time">${data.duration}</span> minutes.</p>
-                                    <p>The test will save and submit automatically when the time expires.</p>
+                                    <p class="h5 text-center mb-5" id="instructionsHeader">Instructions</p>
+                                    <p class="text-center" id="instructionsTxt">Test will be saved and submit automatically when timer is up</p>
+                                    <p class="m-1 text-center" id="instructionsTxt">You are required to finish the test in one sitting</p>
+                                    <br/><br/>
+                                    <p class="text-center" id="instructionsTxt">There are a total of 10 questions in the quiz</p>
+                                    <p class="text-center" id="instructionsTxt">Answer all of the questions</p>
                                 </div>
-                                <div class="text-end mt-5">
-                                    <button class="btn btn-outline-primary click" id="beginBtn">Begin Quiz</button>
-                                </div>
+                            </div>
+                            <div class="text-end mt-5">
+                                <button class="btn btn-lg btn-primary click" id="beginBtn">Begin Quiz</button>
                             </div>
                         </div>
                     </div>
@@ -433,9 +494,11 @@ function after(path, data) {
 // Display Data
 function displayQuestion() {
     let container = document.getElementById("content");
-
+    let head = 'Primary'
     container.innerHTML =
-        `<div class="h5 text-center my-3" id="skillName">${quizData.skill_name}</div>
+        `
+        <div class="h5 text-center my-3" id="skillLevel">${head} ${quizData.level}</div>
+        <div class="h4 text-center my-3" id="skillName">${quizData.skill_name}</div>
             <div class="container row m-auto">
                 <div class="col-10 container m-auto justify-content-center" id="support">
                     <div class="row align-items-center">
@@ -446,12 +509,13 @@ function displayQuestion() {
                             <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="timebar"></div>
                         </div>
                     </div>
-                    <p class="text-center">Remaining Time <span id='time' class='text-center'> ${quizData.duration}:00</span></p>
+                    <p class="text-center" style="font-family: Roboto">Remaining Time <span id='time' class='text-center'> ${quizData.duration}:00</span></p>
                 </div>
-            </div>`;
+            </div>
+       `;
 
     let content = funcs[quizData.topic_name].arrangeQuestion(quizData, questionArray);
-    container.innerHTML += content + '<div class=" justify-content-center d-flex text-center mb-3"><button class="btn-light btn returnBtn me-2">Cancel</button><button class="btn-outline-primary btn click submitBtn">Submit</button></div>';
+    container.innerHTML += content + '</div><br><br><div class=" justify-content-center d-flex text-center mb-3"><button class="btn btn btn-lg cancelBtn me-2">Cancel</button><button class="btn btn btn-lg click submitBtn">Submit</button></div>';
     $(".reviewClass").css("display", "none");
 
     //Starting timer
@@ -461,16 +525,37 @@ function displayQuestion() {
 function displayCard(data, name) {
     let container = document.getElementById("container");
     container.innerHTML = '';
-
     //Checking if quiz is available
+    console.log(data.length)
     if (data.length > 0) {
         for (let i = 0; i < data.length; i++) {
             let content =
-                `<div class="card ${name} col-5 m-2 text-center" style="cursor: pointer" id="${data[i].id}">
-                    <div class="card-body stretch-link d-flex justify-content-center align-items-center">
-                        <p class="m-0">${data[i].display}</p>
-                    </div>
-                </div>`;
+                `
+                <div class="row p-0">
+                    <a class="btn btn-block dropdown mt-2" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
+                        ${data[i].display}<i class="fas fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu ${name} levelNo" aria-labelledby="dropdownMenuLink" style="width:${$("#opdownMenuLink").width()}">`
+                var topics = "";
+                console.log(data[i].topic.length);
+                if (data[i].topic.length <= 0) {
+                    topics += 
+                    `
+                    <li><a class="dropdown-item dropDownOptions" href="">No Topics Available</a></li>
+                    `
+                }
+                else {
+                    for (x = 0; x < data[i].topic.length; x++) {
+                        for (y = 0; y < data[i].topic[x].skills.length; y++) {
+                        topics += 
+                        `
+                        <li><a class="dropdown-item dropDownOptions" id = ${data[i].topic[x].skills[y]._id} href="">${data[i].topic[x].skills[y].skill_name}</a></li>
+                        `
+                        }
+                    }
+                }
+                content += topics;
+                content += "</ul></div></div>";
             container.innerHTML += content;
         }
     }
@@ -664,12 +749,10 @@ const fraction = {
     },
     arrangeQuestion: () => {
         let amount = 3;
-        let content = "";
-
+        let content = `<div class="col-12 scrollbar border rounded" id="scrollQuestions" style="border-radius: 7px;">`;
         if (quizData.skill_code == 'FRAC_SIMPLIFY') amount = 2;
-
         for (let i = 0; i < questionArray.length; i++) {
-            content += `<div class="row col-9 justify-content-center align-items-center text-center m-auto mb-5"><div class="small col-md-2">Question ${i + 1}</div>`;
+            content += `<div class="row col-9 justify-content-center align-items-center text-center m-auto mb-5" style="font-family: Poppins"><div class="small col-md-2">Q${i + 1}</div>`;
 
             for (let l = 0; l < amount; l++) {
                 let name = 'col-12';
@@ -693,8 +776,8 @@ const fraction = {
                         wholeInput = `<div class="${name}"><input class="text-center" size="1" id='input${i}'></div>`;
                     }
                     if ('ansA' in questionArray[i]) {
-                        holderA = `<input class="text-center" size = "1" id='inputA${i}'>`;
-                        holderB = `<input class="text-center" size = "1" id='inputB${i}'>`;
+                        holderA = `<input class="text-center" style="font-family: Roboto" size = "1" id='inputA${i}'>`;
+                        holderB = `<input class="text-center" style="font-family: Roboto" size = "1" id='inputB${i}'>`;
                     }
                     else {
                         holderA = null, holderB = null;
@@ -740,7 +823,7 @@ const fraction = {
         const numOfDifficult = numOfQ * (percentDifficulty[2] / 100);
 
         for (let i = 0; i < numOfQ; i++) {
-            let review = '<i class="fas fa-check"></i>';
+            let review = '<i class="fas fa-check" style="color: #42FE00"></i>';
             let difficulty = 'difficult';
             let isCorrect = false;
             let studentAns = {};
@@ -770,7 +853,7 @@ const fraction = {
                 isCorrect = true;
             }
             else {
-                review = '<i class="fas fa-times"></i>  Ans: ';
+                review = '<i class="fas fa-times" style="color: #FF0505"></i>  Ans: ';
 
                 if ('ans' in questionArray[i]) review += `${questionArray[i].ans}`;
                 if ('ansA' in questionArray[i]) review += `<sup>${questionArray[i].ansA}</sup>&frasl;<sub>${questionArray[i].ansB}</sub>`;
