@@ -88,7 +88,7 @@
 }
 
 .assignment:hover {
-    background-color: #4aa39f;
+    background-color: #9997f8;
     color: #fefae0;
     /* box-shadow: 5px 5px 1px 0px #e9e9e9ec; */
     /* box-shadow: 5px 5px 1px 0px #00284433; */
@@ -131,7 +131,7 @@
     font-family: Poppins;
     font-style: normal;
     font-weight: normal;
-    line-height: 36px;
+    line-height: 20px;
     background: #EBF0FF;
 /* identical to box height */
 
@@ -149,13 +149,13 @@
     font-family: Poppins;
     font-style: normal;
     font-weight: normal;
-    line-height: 33px;
+    line-height: 20px;
     text-align: center;
+    
+ 
+
 /* identical to box height */
-
-
-color: #1C3148;
-
+    color: #1C3148;
 }
 
 #edit-btn {
@@ -400,6 +400,7 @@ color: #000000;
     text-align: center;
     font-size: 12px;
     justify-content: center;
+    min-width: 150px;
 }
 
 .uncomplete {
@@ -435,6 +436,7 @@ color: #000000;
     font-size: 12px;
     justify-content: center;
     padding: 1px 50px;
+    min-width: 65px;
 }
 
 
@@ -487,9 +489,11 @@ color: #000000;
 }
 
 .completed:hover {
-    color: #000;
-    background-color: #fff;
-    box-shadow: 2px 2px 7px rgba(34, 34, 34, 0.04);
+    background-color: #9997f8;
+    color: #fefae0;
+    /* box-shadow: 5px 5px 1px 0px #e9e9e9ec; */
+    /* box-shadow: 5px 5px 1px 0px #00284433; */
+    box-shadow: 4px 8px 10px 3px #00284422;
 }
 
 .rotate {
