@@ -16,3 +16,12 @@
     font-family: Coolvetica;
     src: url(fonts/coolvetica/coolvetica_rg.ttf);
 }
+
+.no-notification {
+    text-align: center;
+}
+
+.no-notification > span {
+    font-family: Poppins , 'Courier New', Courier, monospace;
+    display: inline-block;
+}
