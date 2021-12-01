@@ -14,6 +14,10 @@ const { validate } = require("../validation/quizValidation");
 // error handler modules
 const { MongoError } = require("mongodb");
 const { Error } = require("mongoose");
+const notificationModel = require("../model/notificationModel");
+const { assignmentModel } = require("../model/assignmentModel");
+const { groupModel } = require("../model/groupModel");
+const _ = require("lodash");
 
 /**
  * GET /quiz - get all quizzes
@@ -204,8 +208,44 @@ router.get("/:quizId", validate("quizId"), async (req, res) => {
 router.post("/", validate("createQuiz"), async (req, res) => {
     try {
         console.time("POST quiz");
+        // Get leaderboard first so that later on can check if top 3 places has any difference (only require if there is a group)
+        const { assignment_id } = req.body;
+        let oldLeaderboard;
+        if (assignment_id) {
+            const { group_id } = await assignmentModel.getAsgById(
+                assignment_id
+            );
+            oldLeaderboard = [
+                await groupModel.viewGroupLeaderboardTop(group_id, 1),
+                await groupModel.viewGroupLeaderboardTop(group_id, 2),
+                await groupModel.viewGroupLeaderboardTop(group_id, 3),
+            ];
+        }
         const result = await quizModel.createQuiz(req.body);
 
+        // This notifications part cannot merge with group one because the quiz must be inserted before the createAssignmentMarkingNotification can check if all students completed the quiz
+        const { asgId } = result;
+        // If there is assignment, check if need to create notifications for assignment
+        if (asgId) {
+            await notificationModel.createAssignmentMarkingNotification(
+                asgId,
+                true
+            ); // Specify true to mention that it is checking for all students complete before deadline
+
+            // When there is a new quiz being added, check if changes to leaderboard to push notifications if needed
+            const newLeaderboard = [
+                await groupModel.viewGroupLeaderboardTop(group_id, 1),
+                await groupModel.viewGroupLeaderboardTop(group_id, 2),
+                await groupModel.viewGroupLeaderboardTop(group_id, 3),
+            ];
+
+            // If leaderboard changes, push notifications
+            if (!_.isEqual(newLeaderboard, oldLeaderboard)) {
+                await notificationModel.createLeaderboardChangesNotification(
+                    asgId
+                );
+            }
+        }
         res.status(201).send({ new_id: result._id });
     } catch (err) {
         if (err instanceof Error || err instanceof MongoError)
@@ -293,7 +333,7 @@ router.post("/leaderboard", validate("scope"), async (req, res) => {
         console.time("POST leaderboard");
         if (scope == "" || scope == undefined) {
             const result = await quizModel.getGlobalLeaderboard(
-                JSON.parse(user), 
+                JSON.parse(user),
                 sortType,
                 filterType
             );

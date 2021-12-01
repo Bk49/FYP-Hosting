@@ -1,49 +1,41 @@
 const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
+const { Assignment, assignmentModel } = require("./assignmentModel");
 const { Schema } = mongoose;
+const { Group, groupModel } = require("./groupModel.js");
 
 // creating user notification schema
 const NotificationSchema = new Schema({
-    to: {
-        type: [{
-            user_id: {
-                type: ObjectId,
-                required: "To required"
-            },
-            unseen: {
-                type: Boolean,
-                default: false
-            },
-            unread: {
-                type: Boolean,
-                default: true
-            },
-        }]
+    owner: {
+        type: ObjectId,
+    },
+    unread: {
+        type: Boolean,
+        default: true,
     },
     assignment_id: {
-        type: ObjectId
+        type: ObjectId,
     },
     skill_id: {
-        type: ObjectId
+        type: ObjectId,
     },
-    quiz_id: {
-        type: ObjectId
+    group_id: {
+        type: ObjectId,
     },
-    subject: {
-        type: String,
-        required: "Subject required"
+    teacher_id: {
+        type: ObjectId,
     },
     content: {
         type: String,
-        required: "Content is required"
+        required: "Content is required",
     },
     created_at: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
 
-const Notification = mongoose.model("Notification", NotificationSchema)
+const Notification = mongoose.model("Notification", NotificationSchema);
 
 const notificationModel = {
     NotificationSchema,
@@ -57,319 +49,247 @@ const notificationModel = {
                 const result = await Notification.aggregate([
                     {
                         $match: {
-                            "to.user_id": ObjectId(user_id)
-                        }
+                            owner: ObjectId(user_id),
+                        },
                     },
-                    {
-                        $unwind: "$to"
-                    },
-                    {
-                        $match: {
-                            $and: [
-                                {"to.user_id": ObjectId(user_id)},
-                                {"to.unseen": false}
-                            ] 
-                        }
-                    },
-                    {
-                        $lookup: {
-                            from: "assignments",
-                            localField: "assignment_id",
-                            foreignField: "_id",
-                            as: "asg_assignment"
-                        }
-                    },
-                    {
-                        $addFields: {
-                            assignment_title: {
-                                $first: {
-                                    $map: {
-                                        input: "$asg_assignment",
-                                        as: "asg",
-                                        in: "$$asg.title"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        $lookup: {
-                            from: "quizzes",
-                            localField: "quiz_id",
-                            foreignField: "_id",
-                            as: "quiz"
-                        }
-                    },
-                    {
-                        $addFields: {
-                            quiz_assignment_id: {
-                                $first: {
-                                    $map: {
-                                        input: "$quiz",
-                                        as: "quiz",
-                                        in: "$$quiz.assignment_id"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        $lookup: {
-                            from: "assignments",
-                            localField: "quiz_assignment_id",
-                            foreignField: "_id",
-                            as: "quiz_assignment"
-                        }
-                    },
-                    {
-                        $addFields: {
-                            quiz_assignment_title: {
-                                $first: {
-                                    $map: {
-                                        input: "$quiz_assignment",
-                                        as: "quiz_asg",
-                                        in: "$$quiz_asg.title"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    {
-                        $project: {
-                            // user: 1,
-                            asg_assignment: 0,
-                            quiz: 0,
-                            quiz_assignment: 0
-                        }
-                    }
-                ])
+                ]);
                 if (!result) throw "NOT_FOUND";
 
                 console.log("SUCCESS! Result", result);
                 resolve(result);
             } catch (err) {
-                console.error("ERROR! Could not get notifications by userid:", err);
+                console.error(
+                    "ERROR! Could not get notifications by userid:",
+                    err
+                );
                 reject(err);
             }
-        })
+        });
     },
 
-    // get notification details by notification id 
-    // if with assignment redirect to assignment page 
-    // if with quiz id, show student progress 
-    getNotificationById: (notificationId, user_id) => {
+    // Triggers when there is a new assignment being assigned
+    createNewAssignmentNotification: (assignment_id, content) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const result = await Notification.aggregate([
+                const [group] = await Assignment.aggregate([
                     {
-                        $match: {
-                            _id: ObjectId(notificationId)
-                        }
+                        $match: { _id: ObjectId(assignment_id) },
                     },
                     {
-                        $unwind: "$to"
+                        $project: { group_id: 1, _id: 0 },
                     },
+                ]);
+
+                const groupMembers = await Group.aggregate([
                     {
-                        $match: {
-                            "to.user_id": ObjectId(user_id)
-                        }
-                    },
-                    // for NewAssignment noti
-                    {
-                        $lookup: {
-                            from: "assignments",
-                            localField: "assignment_id",
-                            foreignField: "_id",
-                            as: "asg_assignment"
-                        }
-                    },
-                    {
-                        $addFields: {
-                            assignment_title: {
-                                $first: {
-                                    $map: {
-                                        input: "$asg_assignment",
-                                        as: "asg",
-                                        in: "$$asg.title"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    // for AssignmentCompleted noti
-                    {
-                        $lookup: {
-                            from: "quizzes",
-                            localField: "quiz_id",
-                            foreignField: "_id",
-                            as: "quiz"
-                        }
-                    },
-                    {
-                        $addFields: {
-                            quiz_assignment_id: {
-                                $first: {
-                                    $map: {
-                                        input: "$quiz",
-                                        as: "quiz",
-                                        in: "$$quiz.assignment_id"
-                                    }
-                                }
-                            }
-                        }
+                        $match: { _id: group.group_id },
                     },
                     {
                         $project: {
-                            asg_assignment: 0,
-                            quiz: 0
-                        }
-                    }
-                ])
-                if (!result) throw "NOT_FOUND";
+                            _id: 0,
+                            group_name: 0,
+                            owner: 0,
+                            posts: 0,
+                        },
+                    },
+                    {
+                        $unwind: "$members",
+                    },
+                    {
+                        $replaceRoot: {
+                            newRoot: "$members",
+                        },
+                    },
+                    {
+                        $project: {
+                            user_id: 1,
+                        },
+                    },
+                ]);
 
-                // update unseen to true 
-                const query = {"to.user_id": ObjectId(user_id)};
-                const update = {
-                    $set: {"to.$.unseen": true}
-                };
-                const updateDoc = await Notification.updateMany(query, update)
-                console.log(updateDoc);
+                const assignment = await Assignment.aggregate([
+                    {
+                        $match: { _id: ObjectId(assignment_id) },
+                    },
+                ]);
 
-                console.log("Result: ", result);
-                resolve(result);
-            } catch (err) {
-                console.error("Error! Could not get notification by id: ", err);
-                reject(err);
-            }
-        })
-    },
+                const newNotis = [];
+                for (let member of groupMembers) {
+                    newNotis.push(
+                        new Notification({
+                            owner: member.user_id,
+                            assignment_id: ObjectId(assignment_id),
+                            skill_id: ObjectId(assignment.skill_id),
+                            teacher_id: ObjectId(assignment.assigned_by),
+                            content: content,
+                        })
+                    );
+                }
+                console.log(newNotis);
 
-    // create notification (student)
-    // student receive notification when educator assign work
-    createNotiByAsgId: (to, assignment_id, skill_id, subject, content) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const newNoti = new Notification({ to, assignment_id, skill_id, subject, content })
-                const result = await newNoti.save();
-
-                if (!result) throw "UNEXPECTED_ERROR";
-
-                console.log("SUCESS! Result", result);
-                resolve(result);
-            } catch (err) {
-                console.error("ERROR! Could not create notification by asgId", err);
-                reject(err);
-            }
-        })
-    },
-
-    // create notification (educator)
-    // educator receive noti when student completed their work
-    createNotiByQuizId: (to, quiz_id, subject, content) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const newNoti = new Notification({ to, quiz_id, subject, content })
-                const result = await newNoti.save();
+                const result = await Notification.collection.insertMany(
+                    newNotis
+                );
 
                 if (!result) throw "UNEXPECTED_ERROR";
 
                 console.log("SUCESS! Result", result);
                 resolve(result);
             } catch (err) {
-                console.error("ERROR! Could not create notification by quizId", err);
+                console.error(
+                    "ERROR! Could not create notification by asgId",
+                    err
+                );
                 reject(err);
             }
-        })
+        });
+    },
+
+    // Creates and push notifications for assignment deadline if it is not yet completed
+    createAssignmentReminderNotification: (assignment_id, content) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const userIds = (
+                    await assignmentModel.getAsgProgressbyAsgId(assignment_id)
+                ).map(({ user_id }) => user_id);
+
+                const assignment = assignmentModel.getAsgById(assignment_id)
+
+                const newNotis = [];
+                for (let userId of userIds) {
+                    newNotis.push(
+                        new Notification({
+                            owner: userId,
+                            teacher_id: ObjectId(assignment.assigned_by),
+                            assignment_id: ObjectId(assignment.assignment_id),
+                            skill_id: ObjectId(assignment.skill_id),
+                            content: content,
+                        })
+                    );
+                }
+                const result = await Notification.collection.insertMany(
+                    newNotis
+                );
+
+                if (!result) throw "UNEXPECTED_ERROR";
+
+                console.log("SUCESS! Result", result);
+                resolve(result);
+            } catch (err) {
+                console.error(
+                    "ERROR! Could not create notification by asgId",
+                    err
+                );
+                reject(err);
+            }
+        });
+    },
+
+    // Create assignment notification when assignment has expired or when all students have completed
+    createAssignmentMarkingNotification: (assignment_id, early) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Find students who haven't complete their assignment
+                const userIds = (
+                    await assignmentModel.getAsgProgressbyAsgId(assignment_id)
+                ).map(({ user_id }) => user_id);
+
+                // Get the teacher that assigns the assignment
+                const { assigned_by, group_id } =
+                    await assignmentModel.getAsgById(assignment_id);
+
+                let result, content;
+
+                if (userIds.length > 0 && !early) {
+                    // This checks for if there is student who has not complete it after deadline
+                    content =
+                        "Your assigned homework has expired, check out the students’ performance here!";
+                } else if (userIds.length <= 0 && early) {
+                    // This check for if all student completed before deadline
+                    content =
+                        "All students have completed your homework, check their performance here!";
+                }
+
+                if (content) {
+                    result = await Notification.collection.insertOne({
+                        owner: assigned_by,
+                        assignment_id: assignment_id,
+                        group_id: group_id,
+                        content: content,
+                    });
+                }
+                return resolve(result);
+            } catch (err) {
+                console.error(
+                    "ERROR! Could not create notification by asgId",
+                    err
+                );
+                reject(err);
+            }
+        });
+    },
+
+    createLeaderboardChangesNotification: (assignment_id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // Find students in the group of the assignment
+                const userIds = (
+                    await assignmentModel.getGroupMembersbyAsgId(assignment_id)
+                ).map(({ user_id }) => user_id);
+
+                const { group_name, _id } =
+                    await assignmentModel.getGroupByAsgId(assignment_id);
+
+                const newNotis = [];
+                for (let userId of userIds) {
+                    newNotis.push(
+                        new Notification({
+                            owner: userId,
+                            group_id: ObjectId(_id),
+                            content: `There have been changes in the leaderboard in your group, ${group_name}, check out the new leaderboard here!`,
+                        })
+                    );
+                }
+                const result = await Notification.collection.insertMany(
+                    newNotis
+                );
+                return resolve(result);
+            } catch (err) {
+                console.error(
+                    "ERROR! Could not create notification by asgId",
+                    err
+                );
+                reject(err);
+            }
+        });
     },
 
     // dismiss noti for user by id
-    dismissNotificationById: (user_id, notificationId) => {
+    dismissNotificationById: (notificationId) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const noti = await Notification.findOne({ "_id": ObjectId(notificationId) });
-                if (!noti) throw "NOT_FOUND"
+                const noti = await Notification.findOne({
+                    _id: ObjectId(notificationId),
+                });
+                if (!noti) throw "NOT_FOUND";
 
-                const to = noti.to.find(element => element.user_id == user_id);
-                console.log(to)
-                const isUnseen = to.unseen;
-                console.log(isUnseen)
-                if (isUnseen == true) throw "UNEXPECTED_ERROR"
+                const readStatus = noti.unread;
 
-                to.unseen = !to.unseen;
+                if (readStatus) throw "UNEXPECTED_ERROR";
+
+                noti.unread = !readStatus;
                 const result = noti.save();
 
                 console.log("Result: ", result);
                 resolve(result);
             } catch (err) {
-                console.error(`ERROR! Could not delete noti with id ${notificationId}: ${err}`);
+                console.error(
+                    `ERROR! Could not delete noti with id ${notificationId}: ${err}`
+                );
                 reject(err);
             }
-        })
+        });
     },
-
-    // dismiss all by userid 
-    dismissAllNotificationByUser: (user_id) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const query = {"to.user_id": ObjectId(user_id)};
-                const update = {
-                    $set: {"to.$.unseen": true}
-                };
-                const result = await Notification.updateMany(query, update)
-
-                console.log("Result: ", result);
-                resolve(result);
-            } catch (err) {
-                console.error("ERROR! Could not dismiss all notifications by userid:", err);
-                reject(err);
-            }
-        })
-    },
-    
-    /**
-     * 
-     * Email Notification  
-     */
-    // outstanding quizzes + summary(performance + how many student did a particular quiz)??
-    sendStudentWeeklyNotification: (user_id, subject, content) => {
-        return new Promise(async (resolve, reject) => {
-            // constructing subject
-            let subject = "Weekly Update on Progress"
-
-            // constructing content
-            let content = ""
-            try {
-                const newNoti = new Notification(owner, subject, content);
-                const result = await newFields.save();
-
-                if (!result) throw "UNEXPECTED_ERROR";
-
-                console.log("SUCCESS! Result", result);
-                resolve(result);
-            } catch (err) {
-                console.error("ERROR! Could not send student weekly progress");
-                reject(err);
-            }
-        })
-    },
-    // quizzes that student completed + quizzes undone + their result?
-    sendEducatortWeeklyNotification: () => { },
-
-    // related user will recieve an email when a assignment expired
-    sendDeadlineNotification: (assignment_id, user_id, subject) => {
-        return new Promise(async (resolve, reject) => {
-            try{
-                const result = await Notification.aggregate([
-                    
-                ])
-                console.log(result)
-            }catch (err) {
-                console.error(`ERROR! Could not send expired asg ${groupId}: ${err}`);
-                reject(err);
-            }
-        })
-    },
-
-}
+};
 
 module.exports = notificationModel;
