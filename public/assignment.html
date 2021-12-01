@@ -39,7 +39,30 @@
         <div class="sidebar col-auto col-sm-4 col-md-3 col-xl-2 px-0"></div>
         <div class="rightbar col p-0 content">
             <div class="header"></div>
-            <h3 class="title-assignment">Assignments</h3>
+            <h3 class="title-assignment">My Assignments</h3>
+
+            <div class="overdue-list-wrapper">
+                <div class="tag-container2">
+                    <i class="fas fa-chevron-right arrow2"></i>
+                    &nbsp;<span>Overdue Assignments</span>
+                    <small>(<span class="overdue-number">0</span>)</small>
+                </div>
+                <div id="overdue-list">
+                    <!-- Completed assignments go here -->
+                </div>
+            </div>
+            
+            <div class="pending-list-wrapper">
+                <div class="tag-container1">
+                    <i class="fas fa-chevron-right arrow1"></i>
+                    &nbsp;<span>Pending Assignments</span>
+                    <small>(<span class="pending-number">0</span>)</small>
+                </div>
+                <div id="pending-list">
+                    <!-- Completed assignments go here -->
+                </div>
+            </div>
+
             <div class="completed-list-wrapper">
                 <div class="tag-container">
                     <i class="fas fa-chevron-right arrow"></i>
@@ -50,6 +73,9 @@
                     <!-- Completed assignments go here -->
                 </div>
             </div>
+
+         
+
             <div id="assignment-list">
                 <div id="noresult">
                     <i class="far fa-laugh-beam text-center"

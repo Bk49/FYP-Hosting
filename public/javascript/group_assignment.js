@@ -9,7 +9,7 @@ $(document).ready(function () {
     getAssignmentByGrp();
     getLevelSelect();
     displayEducatorUI();
-    
+
 });
 
 // display topic according to selected level
@@ -43,6 +43,37 @@ $(document).on("click", ".tag-container", function () {
 })
 
 $(document).on("click", ".assignment", function () {
+
+    var toggleContent = this.firstElementChild.lastElementChild;
+    var toggleIcon = this.firstElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
+
+    if (toggleContent.style.display == "none" || toggleContent.style.display == "") {
+        toggleIcon.className = "fas fa-angle-down fa-lg my-auto w-auto expandIcon";
+        toggleContent.style.display = "block";
+    }
+    else {
+        toggleIcon.className = "fas fa-angle-right fa-lg my-auto w-auto expandIcon";
+        toggleContent.style.display = "none";
+    }
+})
+
+$(document).on("click", ".tag-container1", function () {
+    let toggle = document.querySelector("#pending-list");
+    if (toggle.childElementCount >= 1) {
+        toggle.classList.toggle("visible");
+        document.querySelector(".arrow1").classList.toggle("rotate");
+    }
+})
+
+$(document).on("click", ".tag-container2", function () {
+    let toggle = document.querySelector("#overdue-list");
+    if (toggle.childElementCount >= 1) {
+        toggle.classList.toggle("visible");
+        document.querySelector(".arrow2").classList.toggle("rotate");
+    }
+})
+
+$(document).on("click", ".assignment", function () {
     let role = decodeToken().issuedRole;
     if (role == "student") {
         if (this.classList.contains("completed")) {
@@ -53,7 +84,7 @@ $(document).on("click", ".assignment", function () {
         }
     }
     else if (role == "teacher" || role == "parent" || role == "admin") {
-        this.nextElementSibling.classList.toggle("visible");
+        // this.nextElementSibling.classList.toggle("visible");
     }
 });
 
@@ -200,126 +231,196 @@ async function displayEducatorUI() {
 }
 
 function displayGroupName(group_name) {
-    document.querySelector(".title").innerHTML = group_name;
+    // document.querySelector(".title").innerHTML = group_name;
 }
 
 function displayAssignments(assignments) {
     let assignmentList = document.querySelector("#assignment-list");
     let completedList = document.querySelector("#completed-list");
-
+    let pendingList = document.querySelector("#pending-list");
+    let overdueList = document.querySelector("#overdue-list");
+    let pendingWrapper = document.querySelector(".pending-list-wrapper");
     let content = "";
-    let completedAssignment = null;
-    assignments.forEach(assignment => {
-        // student view
-        if (assignment.completed_quiz == false) {
-            content += `
-                <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
-                    <div class="assignment-details">
-                        <span class="assignment-title">${assignment.title}</span>
-                        <small class="assign-by">Assigned By: ${assignment.assigned_by_name}</small>
-                        <span class="assign-skill">${assignment.skill_name}</span>
-                    </div>
-                    <small class="deadline">${displayDate(assignment.deadline)}</small>
-                </div>
-            `;
-        }
-        else if (assignment.completed_quiz) {
-            completedAssignment = `
-            <div class="assignment completed" id="${assignment.skill_id}" data-assignment="${assignment._id}" data-quiz-id="${assignment.completed_quiz}">
-                <div class="assignment-details">
-                    <span class="assignment-title">${assignment.title}</span>
-                    <small class="assign-by">Assigned By: ${assignment.assigned_by_name}</small>
-                    <span class="assign-skill">${assignment.skill_name}</span>
-                </div>
-                <small class="deadline">${displayDate(assignment.deadline)}</small>
-            </div>
-            `;
-        }
-        else if (assignment.member_assignment) { //for educator: displays status of each member in the group
-            let fullyCompleted = true;
-            let statusContent = "";
-            statusContent += `
-                <div class="status-header">
-                    <div>Student</div>
-                    <div>Status</div>
-                    <div>Score</div>
-                    <div>Time Taken</div>
-                </div>
-            `;
-            for (let i = 0; i < assignment.member_assignment.length; i++) {
-                let status = assignment.member_assignment[i];
-                statusContent += `
-                    <div class="member-assign-status ${status.isCompleted ? "link" : ""}">
-                        <div class="member-name">${status.name}</div>
-                        
-                        ${status.isCompleted == undefined || status.isCompleted == null ?
-                        '<div class="status"><span class="assignment-status uncomplete"><i class="fas fa-times-circle"></i> Not Started</span></div>' : ""}
-
-                        ${status.isCompleted == false ?
-                        '<div class="status"><span class="assignment-status ongoing"><i class="fas fa-minus-circle"></i> In Progress<span></div>' : ""}
-
-                        ${status.isCompleted == true ?
-                        `<div class="status"><span class="assignment-status complete" data-quiz-id="${status._id}"><i class="fas fa-check-circle"></i> Completed</span></div>` : ""}
-
-                        <div class="score">
-                            ${status.isCompleted == true ?
-                        status.score.total.toFixed(1) + "%" :
-                        ""
-                    }
-                        </div>
-
-                        <div class="time_taken">
-                            ${status.isCompleted == true ?
-                        status.time_taken + "s" :
-                        ""
-                    }
-                        </div>
-                    </div>
-                `
-                //display only is members have not fullyCompleted
-                fullyCompleted = fullyCompleted
-                    && (assignment.member_assignment[i].isCompleted ?
-                        assignment.member_assignment[i].isCompleted
-                        : false);
-
-            }
-            if (!fullyCompleted) {
-                content += `
+    let completedAssignment = "";
+    let pendingAssignment = "";
+    let overdueAssignment = "";
+    console.log(assignments)
+    if (assignments == undefined) {
+        
+    } else {
+        assignments.forEach(assignment => {
+            console.log(assignment)
+            var assignmentDeadline = new Date(assignment.deadline);
+            var currentDateTime = new Date();
+            // student view
+            if (assignment.completed_quiz == false) {
+                // content += `
+                //     <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
+                //         <div class="assignment-details">
+                //             <span class="assignment-title">${assignment.title}</span>
+                //             <small class="assign-by">Assigned By: ${assignment.assigned_by_name}</small>
+                //             <span class="assign-skill">${assignment.skill_name}</span>
+                //         </div>
+                //         <small class="deadline">${displayDate(assignment.deadline)}</small>
+                //     </div>
+                // `;
+    
+                if (currentDateTime > assignmentDeadline == false) {
+                    pendingAssignment += `
                     <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
-                        <div class="assignment-details">
-                            <span class="assignment-title">${assignment.title}</span>
-                            <small class="assign-by">Assigned By: ${assignment.assigned_by_name}</small>
+                        <div class="assignment-details row ps-2">
+                            <span class="assignment-title p-0">${assignment.title}</span>
+                            <small class="assign-by p-0">Assigned By: ${assignment.assigned_by_name}</small>
                             <span class="assign-skill">${assignment.skill_name}</span>
                         </div>
-                        <small class="deadline">${displayDate(assignment.deadline)}</small>
-                    </div>
-                    <div class="toggleContent">
-                        ${statusContent}
+                        <small class="deadline">
+                            <span>${displayDate(assignment.deadline)}</span>
+                           <span class='pending'>Pending</span> 
+                        </small>
                     </div>
                 `;
+                }
+                else {
+    
+                    //Overdue
+                    overdueAssignment += `
+                    <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
+                        <div class="assignment-details row ps-2">
+                            <span class="assignment-title p-0">${assignment.title}</span>
+                            <small class="assign-by p-0">Assigned By: ${assignment.assigned_by_name}</small>
+                            <span class="assign-skill">${assignment.skill_name}</span>
+                        </div>
+                        <small class="deadline">
+                            <span>${displayDate(assignment.deadline)}</span>
+                            ${isOverdue(assignment.deadline) ? "<span class='overdue'>Overdue</span>" : ""}
+                        </small>
+                    </div>
+                    `
+                }
             }
-            else {
-                completedAssignment = `
+            else if (assignment.completed_quiz) {
+                completedAssignment += `
                 <div class="assignment completed" id="${assignment.skill_id}" data-assignment="${assignment._id}" data-quiz-id="${assignment.completed_quiz}">
-                    <div class="assignment-details">
-                        <span class="assignment-title">${assignment.title}</span>
-                        <small class="assign-by">Assigned By: ${assignment.assigned_by_name}</small>
+                    <div class="assignment-details row ps-2">
+                        <span class="assignment-title p-0">${assignment.title}</span>
+                        <small class="assign-by p-0">Assigned By: ${assignment.assigned_by_name}</small>
                         <span class="assign-skill">${assignment.skill_name}</span>
                     </div>
-                    <small class="deadline">${displayDate(assignment.deadline)}</small>
-                </div>
-                <div class="toggleContent">
-                    ${statusContent}
+                    <small class="deadline">
+                    <span>${displayDate(assignment.deadline)}</span>
+                    <span class='complete'>Completed</span>
+                    </small>
                 </div>
                 `;
             }
-        }
-    });
+            else if (assignment.member_assignment) { //for educator: displays status of each member in the group
+                $(".pending-list-wrapper").css('display', 'none');
+                $(".overdue-list-wrapper").css('display', 'none');
+                $("#completed-assignment-span").text("Assignments")
+                let fullyCompleted = true;
+                let statusContent = "";
+                statusContent += `
+                    <div class="status-header m-0">
+                        <div>Student</div>
+                        <div>Status</div>
+                        <div>Score</div>
+                        <div>Time Taken</div>
+                    </div>
+                `;
+                for (let i = 0; i < assignment.member_assignment.length; i++) {
+                    let status = assignment.member_assignment[i];
+                    statusContent += `
+                        <div class="member-assign-status m-0 ${status.isCompleted ? "link" : ""}">
+                            <div class="member-name">${status.name}</div>
+                            
+                            ${status.isCompleted == undefined || status.isCompleted == null ?
+                            '<div class="status"><span class="assignment-status uncomplete"><i class="fas fa-times-circle"></i> Not Started</span></div>' : ""}
+    
+                            ${status.isCompleted == false ?
+                            '<div class="status"><span class="assignment-status ongoing"><i class="fas fa-minus-circle"></i> In Progress<span></div>' : ""}
+    
+                            ${status.isCompleted == true ?
+                            `<div class="status"><span class="assignment-status complete" data-quiz-id="${status._id}"><i class="fas fa-check-circle"></i> Completed</span></div>` : ""}
+    
+                            <div class="score">
+                                ${status.isCompleted == true ?
+                            status.score.total.toFixed(1) + "%" :
+                            ""
+                        }
+                            </div>
+    
+                            <div class="time_taken">
+                                ${status.isCompleted == true ?
+                            status.time_taken + "s" :
+                            ""
+                        }
+                            </div>
+                        </div>
+                    `
+                    //display only is members have not fullyCompleted
+                    fullyCompleted = fullyCompleted
+                        && (assignment.member_assignment[i].isCompleted ?
+                            assignment.member_assignment[i].isCompleted
+                            : false);
+    
+                }
+               
+                          
+                    completedAssignment += `
+                    <div class="assignment completed row" id="${assignment.skill_id}" data-assignment="${assignment._id}" data-quiz-id="${assignment.completed_quiz}">
+                        <div class="col">
+                            <div class="assignment-details">
+                                <div class="col">
+                                    <div class="row">
+                                        <i class="fas fa-angle-right fa-lg my-auto w-auto expandIcon"></i>
+                                        <span class="assignment-title w-auto">${assignment.title}</span>
+                                    </div>
+                                    <div class="row">
+                                        <small class="assign-by">Assigned By: ${assignment.assigned_by_name}</small>
+                                    </div>
+                                    <div class="row mx-auto">
+                                        <span class="assign-skill">${assignment.skill_name}</span>
+                                    </div>
+                                </div>
+                                <div class="col d-flex justify-content-end">
+                                    <small class="deadline">${displayDate(assignment.deadline)}</small>
+                                </div>
+                            </div>
+                            <div class="toggleContent row">
+                                ${statusContent}
+                            </div>
+                        </div>    
+                    </div>              
+                    `;
+                
+            }
+        });
+    }
+    // let completedAssignment = null;
+   
     if (content != "") assignmentList.innerHTML = content;
     if (completedAssignment && completedAssignment != "") {
         completedList.innerHTML = completedAssignment;
         document.querySelector(".completed-number").textContent = completedList.querySelectorAll(".assignment").length;
     }
+    if (pendingAssignment != "") {
+        pendingList.innerHTML = pendingAssignment;
+        document.querySelector(".pending-number").textContent = pendingList.childElementCount;
+    }
+    if (overdueAssignment != "") {
+        overdueList.innerHTML = overdueAssignment;
+        document.querySelector(".overdue-number").textContent = overdueList.childElementCount;
+    }
+    if(completedAssignment != "" || pendingAssignment != "" || overdueAssignment != "") {
+        assignmentList.innerHTML = "";
+    }
+    else {
+        document.getElementsByClassName("completed-list-wrapper")[0].style.display="none";
+        document.getElementsByClassName("pending-list-wrapper")[0].style.display="none";
+        document.getElementsByClassName("overdue-list-wrapper")[0].style.display="none";
+        console.log("testing")
+    }
+
 }
 
 function populateLevelSelect(levels) {
@@ -388,19 +489,19 @@ function validateAssignment(data, callback) {
         err += "Please Enter a name for the assignment<br>";
     }
     if (data.level_id == "") {
-        errInput == "" ?errInput = "#level-select" : "";
+        errInput == "" ? errInput = "#level-select" : "";
         err += "Please select the grade/level of the assignment<br>";
     }
     if (data.topic_id == "") {
-        errInput == ""? errInput = "#topic-select" : "";
+        errInput == "" ? errInput = "#topic-select" : "";
         err += "Please select the topic of the assignment<br>";
     }
     if (data.skill_id == "") {
-        errInput == ""? errInput = "#skill-select" : "";
+        errInput == "" ? errInput = "#skill-select" : "";
         err += "Please select the sub-topic/skill of the assignment<br>";
     }
     if (data.deadline == "" || !validDeadline(data.deadline)) {
-        errInput == ""? errInput = "#skill-select" : "";
+        errInput == "" ? errInput = "#skill-select" : "";
         err += "Please enter a deadline that is today or after today<br>";
     }
 
@@ -426,4 +527,12 @@ function validDeadline(d) {
         return true;
     else
         return true;
+}
+
+function isOverdue(dt) {
+    let date = new Date(dt);
+    let today = new Date(Date.now());
+
+    let result = (date < today);
+    return result;
 }

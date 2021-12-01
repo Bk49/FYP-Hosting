@@ -1,8 +1,7 @@
-
 /* WINDOWS EVENT LISTENER */
 $(document).ready(function () {
     $(".header").load("topbar.html", function(){
-        document.getElementById("name").innerHTML = getName();
+        // document.getElementById("name").innerHTML = getName();
     });
     getAssignmentByUser();
 });
@@ -41,17 +40,76 @@ $(document).on("click", ".tag-container", function() {
     }
 })
 
+$(document).on("click", ".tag-container1", function() {
+    let toggle = document.querySelector("#pending-list");
+    if(toggle.childElementCount >= 1) {
+        toggle.classList.toggle("visible");
+        document.querySelector(".arrow1").classList.toggle("rotate");
+    }
+})
+
+$(document).on("click", ".tag-container2", function() {
+    let toggle = document.querySelector("#overdue-list");
+    if(toggle.childElementCount >= 1) {
+        toggle.classList.toggle("visible");
+        document.querySelector(".arrow2").classList.toggle("rotate");
+    }
+})
 
 /* DISPLAY FUNCTIONS */
 function displayAssignments(assignments) {
     let assignmentList = document.querySelector("#assignment-list");
     let completedList = document.querySelector("#completed-list");
+    let pendingList = document.querySelector("#pending-list");
+    let overdueList = document.querySelector("#overdue-list");
 
     let content = "";
     let completedAssignment = "";
+    let pendingAssignment = "";
+    let overdueAssignment = "";
+
     assignments.forEach(assignment => {
+
+        var assignmentDeadline = new Date(assignment.deadline);
+        var currentDateTime = new Date();
+
+        //Not completed
         if(assignment.completed_quiz == false) {
-            content += `
+            //Pending
+            if (currentDateTime > assignmentDeadline == false) {
+                pendingAssignment += `
+                <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
+                    <div class="assignment-details">
+                        <span class="assignment-title">${assignment.title}</span>
+                        <small class="assign-by">Assigned By: ${assignment.assigned_by_name} (${assignment.group_name})</small>
+                        <span class="assign-skill">${assignment.skill_name}</span>
+                    </div>
+                    <small class="deadline">
+                        <span>${displayDate(assignment.deadline)}</span>
+                       <span class='pending'>Pending</span> 
+                    </small>
+                </div>
+            `;
+            }
+            else {
+
+            
+            // content += `
+            //     <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
+            //         <div class="assignment-details">
+            //             <span class="assignment-title">${assignment.title}</span>
+            //             <small class="assign-by">Assigned By: ${assignment.assigned_by_name} (${assignment.group_name})</small>
+            //             <span class="assign-skill">${assignment.skill_name}</span>
+            //         </div>
+            //         <small class="deadline">
+            //             <span>${displayDate(assignment.deadline)}</span>
+            //             ${isOverdue(assignment.deadline)? "<span class='overdue'>Overdue</span>" : ""}
+            //         </small>
+            //     </div>
+            // `;
+
+            //Overdue
+            overdueAssignment += `
                 <div class="assignment" id="${assignment.skill_id}" data-assignment="${assignment._id}">
                     <div class="assignment-details">
                         <span class="assignment-title">${assignment.title}</span>
@@ -63,25 +121,45 @@ function displayAssignments(assignments) {
                         ${isOverdue(assignment.deadline)? "<span class='overdue'>Overdue</span>" : ""}
                     </small>
                 </div>
-            `;
+                `
+            }
         }
+
+        //Completed
         else if(assignment.completed_quiz) {
-            completedAssignment = `
+            completedAssignment += `
             <div class="assignment completed" id="${assignment.skill_id}" data-assignment="${assignment._id}" data-quiz-id="${assignment.completed_quiz}">
                 <div class="assignment-details">
                     <span class="assignment-title">${assignment.title}</span>
                     <small class="assign-by">Assigned By: ${assignment.assigned_by_name} (${assignment.group_name})</small>
                     <span class="assign-skill">${assignment.skill_name}</span>
                 </div>
-                <small class="deadline">${displayDate(assignment.deadline)}</small>
+                <small class="deadline">
+                        <span>${displayDate(assignment.deadline)}</span>
+                       <span class='complete'>Completed</span> 
+                    </small>
             </div>
             `;
         }
     });
-    if(content != "") assignmentList.innerHTML = content;
     if(completedAssignment != "") {
         completedList.innerHTML = completedAssignment;
         document.querySelector(".completed-number").textContent = completedList.childElementCount;
+    }
+    if(pendingAssignment != "") {
+        pendingList.innerHTML = pendingAssignment;
+        document.querySelector(".pending-number").textContent = pendingList.childElementCount;
+    }
+    if(overdueAssignment != "") {
+        overdueList.innerHTML = overdueAssignment;
+        document.querySelector(".overdue-number").textContent = overdueList.childElementCount;
+    }
+    if(completedAssignment != "" || pendingAssignment != "" || overdueAssignment != "") {
+        assignmentList.innerHTML = "";
+    } else {
+        document.getElementsByClassName("completed-list-wrapper")[0].style.display="none";
+        document.getElementsByClassName("pending-list-wrapper")[0].style.display="none";
+        document.getElementsByClassName("overdue-list-wrapper")[0].style.display="none";
     }
 }
 
