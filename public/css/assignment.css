@@ -372,6 +372,7 @@ color: #1C3148;
 .pending {
     background-color: #EBF0FF; 
     color: #63A6E4;
+
     text-align: center;
     font-size: 12px;
     justify-content: center;

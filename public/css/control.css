@@ -16,13 +16,14 @@
 .title {
     text-align: center;
     margin: 0.3em 0 0.2em;
-    font-weight: 700;
-    color: #003844;
+    font-weight: normal;
+    color: #000000;
+    font-family: Coolvetica;
 }
 
 .rightbar {
     position: relative;
-    background-image: url("../images/bg5.png");
+    /*background-image: url("../images/bg5.png");*/
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -43,52 +44,273 @@
     color: #ffcb45;
 }
 
-#syllabusContainer, #topicContainer {
+#syllabusContainer {
     display: flex;
-    /* flex: 1; */
+    flex: 1;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 35px;
+    /*flex-wrap: wrap;*/
+    margin-bottom: 35px;
+}
+
+#topicContainer {
     justify-content: space-evenly;
     align-content: flex-start;
     width: 100%;
-    flex-wrap: wrap;
+    margin-left: 20px;
+    margin-right: 20px;
+    /*flex-wrap: wrap;*/
+    display: none;
 }
 
-#levelContainer {
-    display: flex;
-    justify-content: space-evenly;
+#primaryLevelContainer{
     align-content: center;
-    width: 100%;
+    /* margin-left: 200px; */
+    border-radius: 15px;
+    background: linear-gradient(143.63deg, #7F7FD5 21.2%, #86A8E7 49.7%, #91EAE4 78.8%);
+    width: 330px;
+    display: none;
+}
+
+#emptyContainer {
+    width: 330px;
+}
+
+.levelName{
+    font-size: 22px;
+    text-align: center;
+    margin: 20px 0px;
+    font-family: Feather;
+    color: white;
+
+}
+
+#secondaryLevelContainer{
+    align-content: center;
+    /* margin-right: 200px; */
+    border-radius: 15px;
+    background: linear-gradient(148.08deg, #3494E6 19.19%, #EC6EAD 80.81%);
+    width: 330px;
+    height: fit-content;
+    display: none;
+}
+
+/* #secondaryLevelContainer > p{
+    font-size: 22px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: Feather;
+} */
+
+#levelContainer{
+    align-content: center;
     flex-wrap: wrap;
-    min-height: 20vh;
+    background-color: #C9B3CE;
+    border-radius: 0px 0px 15px 15px;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+#levelContainer button{
+    width: 286px;
+    font-size: 18px;
+    padding: 7px;
+    background: #BC66CA;
+    border-radius: 7px;
+    color: white; /* White text */
+    display: block; /* Make the buttons appear below each other */
+    border: none;
+    margin-top: 10px;
+    font-family: Feather;
+    text-align: start;
+}
+
+#levelContainer button:hover{
+    background-color: #842294;
+    color: #FFFFFF
+}
+
+#levelContainer2{
+    align-content: center;
+    flex-wrap: wrap;
+    background-color: #E1F1FF;
+    border-radius: 0px 0px 15px 15px;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+#levelContainer2 button{
+    width: 286px;
+    font-size: 18px;
+    padding: 7px;
+    background: #3DB3FF;
+    border-radius: 7px;
+    color: white; /* White text */
+    display: block; /* Make the buttons appear below each other */
+    border: none;
+    margin-top: 10px;
+    font-family: Feather;
+    text-align: start;
+}
+
+#levelContainer2 button:hover{
+    background-color: #0D6DAA;
+    color: #FFFFFF
+}
+
+#levelContainerBackground > p{
+    font-size: 14px;
+    padding: 5px;
+    text-align: center;
+    background-color: #654EA3;
+    border-radius: 15px 15px 0px 0px;
+    font-family: Poppins;
+    color: #FFFFFF;
+    margin-left: 10px;
+}
+
+#levelContainerBackground2 > p{
+    font-size: 14px;
+    padding: 5px;
+    text-align: center;
+    background-color: #81C6ED;
+    border-radius: 15px 15px 0px 0px;
+    font-family: Poppins;
+    color: #FFFFFF;
+    margin-left: 10px;
+}
+
+#levelContainerBackground{
+    align-content: center;
+    margin-top: 12px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+}
+
+#levelContainerBackground2{
+    align-content: center;
+    margin-top: 12px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+}
+
+#mainContainer {
+    border: 1px;
+    width: 100px;
+}
+
+/* .primaryLevelButtons{
+    width: 320px;
+    height: 56px;
+    background: #BC66CA;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25), inset 0px -2px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    border-style: none;
+    margin-left: 4.5px;
+    margin-bottom: 10px;
+} */
+
+.primaryLevelButtons:hover{
+    background-color: #842294;
+    color: #FFFFFF
+}
+
+#primaryimg{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 15px;
+    width: 328px;
 }
 
 .level, .topicWrapper {
-    border-radius: 15px;
-    cursor: pointer;
-    width: 40%;
-    margin: 8px 0;
-    padding: 14px;
+    margin: 6px 0;
+    padding: 10px;
     transition: 0.2s ease-in-out;
     background-color: #fff;
     color: #000;
-    border: 1px solid #dedede;
-    box-shadow: 3px 10px 10px #ffe19511;
+}
+
+.skillHeading {
+    background-color:#6696CA;
+    border-radius: 7px 7px 0px 0px;
+    color: white;
+    min-width: 800px;
+    /* position: hidden; */
+}
+
+.skill {
+    min-width: 800px;
+
+}
+
+.skillHeading > div > p {
+    font-family: Poppins;
+}
+
+.skill > div > p, .skill > div > i {
+    color: #3F5C94;
+}
+
+.skill > div > p {
+    font-family: Poppins;
+    font-weight: 400;
+}
+
+.difficultyTable {
+    background-color: #B1DBFF;
+    margin: 0 20px;
+    border-radius: 7px;
+    width: auto;
+    overflow: auto;
+}
+
+.difficultyRow {
+    display: none;
+}
+
+.difficultyHeading {
+    background-color: #2A2A72;
+    color: white;
+    border-radius: 7px 7px 0px 0px;
+    min-width: 800px;
+    font-family: poppins;
+}
+
+.difficultyData {
+    min-width: 800px;
+    font-family: poppins;
+}
+
+.topicName {
+    cursor: pointer;
+}
+
+.expandDifficulty {
+    cursor: pointer;
 }
 
 .level {
+    cursor: pointer;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 314px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-family: Feather;
     border-color: transparent;
-    color: #003844;
-    background-color: #ffcb45;
+    color: #FFFFFF;
+    background-color: #BC66CA;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    border-radius: 7px;
 }
 
 .level:hover {
-    background-color: #003844;
+    background-color: #460D50;
     color: #fefae0;
-    box-shadow: 3px 3px 10px 1px #00384477;
+    box-shadow: 3px 3px 10px 1px #460D50;
 }
 
 .icon {
@@ -113,30 +335,29 @@
 }
 
 .addLevel, .addTopic {
-    background-color: #ffcb45;
-    border-radius: 25px;
-    position: fixed;
-    right: 0;
-    top: 82vh;
+    background-color: #6696CA;
+    border-radius: 7px;
+    /* position: fixed; */
     margin: 28px;
+    width: 15%;
     padding: 6px 18px;
     font-size: 18px;
     font-weight: 700;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fefae0;
+    color: #FFFFFF;
     cursor: pointer;
-    box-shadow: 3px 10px 20px #ffcb4577;
-    transition: 0.2s ease;
-    z-index: 5;
+    box-shadow: 1px 3px 3px skyblue;
+    margin: 0 auto;
+    /* transition: 0.2s ease; */
+    /* z-index: 5; */
 }
 
 .addLevel:hover, .addTopic:hover {
-    transform: translateY(-7px);
-    background-color: #ffcb45;
+    background-color: #175EAB;
     color: #fff;
-    font-size: 19px;
+    /* font-size: 19px; */
 }
 
 .addTopic:focus {
@@ -157,38 +378,51 @@
     padding: 14px;
     font-weight: 700;
     font-size: 18px;
+    font-family: Feather;
 }
 
 .editTopic {
-    border-radius: 15px 15px 0 0;
-    background-color: #fefae0;
     color: #003844;
-    transition: 0.2s ease;
 }
 
-.editTopic:hover {
-    background-color: #ffcb45;
-    color: #fefae0;
-}
 
 .level-container {
     width: 100%;
     position: relative;
 }
 
-.skill, .addSkill {
-    padding: 9px;
-    border-top: 1px solid #ddd;
+.addSkill {
+    cursor: pointer;
     text-align: center;
-    color: #ffcb45;
+    color: #ffffff;
     transition: 0.2s ease-in-out;
+    background-color: #6696CA;
+    border-radius: 7px;
+    height: 40px;
+    width: 15%;
+    margin-top: 10px;
+    justify-content: center;
 }
 
-.skill:hover, .addSkill:hover {
-    background-color: #fefae0;
-    color: #ffcb45;
+.addSkill:hover {
+    background-color: #175EAB;
+    color: white;
 }
 
+.skill:hover{
+    background-color: rgb(205, 208, 255);
+}
+
+.skillsContent {
+    background-color: #E1F1FF;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.editSkill {
+    cursor: pointer;
+}
 
 /* NEW LEVEL FORM */
 .close {
@@ -208,6 +442,7 @@
 
 .modal-header {
     border: none !important;
+    font-family: Coolvetica;
 }
 
 .modal-footer {
@@ -219,7 +454,7 @@
 .form-control, .form-select {
     padding: 0.4rem .75rem;
     font-size: 14px;
-    font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
+    font-family: poppins;
     border: 1.3px solid #f3f3f3;
     border-radius: 15px;
     background-color: #f3f3f3;
@@ -234,7 +469,7 @@
 
 .input-group-text {
     font-size: 14px;
-    font-family: "Poppins", "Roboto", "Segoe UI", Arial, sans-serif;
+    font-family: Poppins;
     color: #003844;
     background-color: #f3f3f3;
     border-color: #f3f3f3;
@@ -245,7 +480,7 @@
 .col-form-label {
     padding: 4px 0;
     font-size: 14px;
-    font-family: "Poppins", "Roboto", "Segoe UI", sans-serif;
+    font-family: Poppins;
     font-weight: 600;
 }
 
@@ -263,6 +498,7 @@
 
 .modal-body {
     padding: 0.2em 1em;
+    font-family: Coolvetica;
 }
 
 .modal-header {
@@ -279,17 +515,26 @@
 }
 
 /* button styles */
-.deleteSkillBtn, .deleteTopicBtn,
+.deleteSkillBtn,
 .deleteLevelBtn {
-    border: 1.3px solid #ef798a;
-    color: #ef798a;
+    background-color: #FA5858;
+    color: white;
     font-weight: 600;
-    border-radius: 15px;
+    border-radius: 7px;
+    width: 20%;
+}
+
+.deleteTopicBtn{
+    background-color: #FA5858;
+    color: white;
+    font-weight: 600;
+    border-radius: 7px;
+    width: 30%;
 }
 
 .deleteSkillBtn:hover, .deleteTopicBtn:hover,
 .deleteLevelBtn:hover {
-    background-color: #ef798a;
+    background-color: #B00C0C;
     color: #fff;
     box-shadow: 4px 5px 16px #ef798a55;
 }
@@ -299,22 +544,32 @@
     box-shadow: 0px 0px 0px 4px #ef798b8b !important;
 }
 
-.updateSkillBtn, .addTopicBtn, 
-.addLevelBtn, .addSkillBtn, .editTopicBtn,
+.updateSkillBtn,
+.addLevelBtn, .addSkillBtn,
 .editLevelBtn {
-    border: 1.3px solid #ffcb45;
+    background-color: #6696CA;
     font-weight: 600;
-    border-radius: 15px;
-    background-color: #fffbf2;
-    color: #ffcb45;
+    border-radius: 7px;
+    color: #FFFFFF;
+    width: 20%;
+    margin-right: 10px;
+}
+
+.editTopicBtn, .addTopicBtn{
+    background-color: #6696CA;
+    font-weight: 600;
+    border-radius: 7px;
+    color: #FFFFFF;
+    width: 30%;
+    margin-right: 10px;
 }
 
 .updateSkillBtn:hover, .addTopicBtn:hover, 
 .addLevelBtn:hover, .addSkillBtn:hover, .editTopicBtn:hover,
 .editLevelBtn:hover {
-    background-color: #ffcb45;
+    background-color: #0F5AAB;
     color: #fff;
-    box-shadow: 4px 5px 16px #ffcb4555;
+    box-shadow: 4px 5px 16px #8DB9E9;
 }
 
 .updateSkillBtn:focus, .addTopicBtn:focus, 
@@ -331,4 +586,60 @@ label .fas:hover {
     .level, .topicWrapper, .levelForm {
         width: 95%;
     }
+
 }
+
+@media (max-width: 896px) {
+    #secondaryLevelContainer {
+        margin-top: 50px;
+    }
+}
+
+@media (max-width: 1285px) {
+    #topicContainer > button > p {
+        font-size: smaller;
+    }
+    #topicContainer > button > i {
+        display: none;
+    }
+    .addSkill > i{
+        display: none;
+    }
+    .addSkill > p{
+        font-size: smaller;
+    }
+}
+
+@media (max-width: 1052px) {
+    #topicContainer > button > i {
+        display: block;
+    }
+    #topicContainer > button > p {
+        display: none;
+    }
+    .addSkill > i{
+        display: block;
+    }
+    .addSkill > p{
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .addSkillBtn > i {
+        display: none;
+    }
+}
+
+@media (max-width: 440px) {
+    .addSkillBtn > i {
+        display: block;
+        margin: 0 auto;
+    }
+    .addSkillBtn > p {
+        display: none;
+    }
+}
+
+}
+
