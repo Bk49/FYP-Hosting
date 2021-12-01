@@ -89,6 +89,7 @@ $(document).on("click", "#rm-admin", function () {
 // delete group
 $(document).on("click", "#delGroup", function () {
     deleteGroup(groupId);
+    console.log(groupId)
 });
 
 

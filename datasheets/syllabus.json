@@ -1,140 +1,183 @@
 [
     {
         "_id": "611c81012b391f2770603e87",
+        "education": "Primary",
         "level": 1,
         "topics": [
             {
                 "_id": "611c81012b391f2770603e9b",
                 "topic_name": "Fractions",
-                "skills": [
-                    
-                ]
+                "skills": []
             }
         ]
     },
     {
         "_id": "611c81012b391f2770603e88",
+        "education": "Primary",
         "level": 2,
         "topics": [
             {
                 "_id": "611c81012b391f2770603e9b",
                 "topic_name": "Fractions",
-                "skills": [
-                    
-                ]
+                "skills": []
             }
         ]
     },
     {
         "_id": "611c81012b391f2770603e89",
+        "education": "Primary",
         "level": 3,
         "topics": [
             {
                 "_id": "611c81012b391f2770603e9b",
                 "topic_name": "Fractions",
-                "skills": [
-                    
-                ]
+                "skills": []
             }
         ]
     },
     {
         "_id": "611c81012b391f2770603e90",
+        "education": "Primary",
         "level": 4,
         "topics": [
             {
                 "_id": "611c81012b391f2770603e9b",
                 "topic_name": "Fractions",
+                "skills": []
+            }
+        ]
+    },
+    {
+        "_id": "611c81012b391f2770603e99",
+        "education": "Primary",
+        "level": 5,
+        "topics": [
+            {
+                "_id": "611c81012b391f2770603e9a",
+                "topic_name": "Fractions",
                 "skills": [
-                    
+                    {
+                        "_id": "611c81012b391f2770603e9b",
+                        "skill_code": "FRAC_SIMPLIFY",
+                        "skill_name": "Simplifying Fractions",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 30
+                        }
+                    },
+                    {
+                        "_id": "611c81012b391f2770603e9c",
+                        "skill_code": "FRAC_ADD",
+                        "skill_name": "Addition of Fractions",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 30
+                        }
+                    },
+                    {
+                        "_id": "611c81012b391f2770603e9d",
+                        "skill_code": "FRAC_MULTIPLY",
+                        "skill_name": "Multiplication of Fractions",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 30
+                        }
+                    }
                 ]
             }
         ]
     },
     {
-    "_id": "611c81012b391f2770603e99",
-    "level": 5,
-    "topics": [
-        {
-            "_id": "611c81012b391f2770603e9a",
-            "topic_name": "Fractions",
-            "skills": [
-                {
-                    "_id": "611c81012b391f2770603e9b",
-                    "skill_code": "FRAC_SIMPLIFY",
-                    "skill_name": "Simplifying Fractions",
-                    "num_of_qn": 10,
-                    "percent_difficulty": "30-50-20",
-                    "duration": 20,
-                    "easy_values": {
-                        "min": 1,
-                        "max": 10
-                    },
-                    "medium_values": {
-                        "min": 10,
-                        "max": 20
-                    },
-                    "difficult_values": {
-                        "min": 20,
-                        "max": 30
-                    }
-                },
-                {
-                    "_id": "611c81012b391f2770603e9c",
-                    "skill_code": "FRAC_ADD",
-                    "skill_name": "Addition of Fractions",
-                    "num_of_qn": 10,
-                    "percent_difficulty": "30-50-20",
-                    "duration": 20,
-                    "easy_values": {
-                        "min": 1,
-                        "max": 10
-                    },
-                    "medium_values": {
-                        "min": 10,
-                        "max": 20
-                    },
-                    "difficult_values": {
-                        "min": 20,
-                        "max": 30
-                    }
-                },
-                {
-                    "_id": "611c81012b391f2770603e9d",
-                    "skill_code": "FRAC_MULTIPLY",
-                    "skill_name": "Multiplication of Fractions",
-                    "num_of_qn": 10,
-                    "percent_difficulty": "30-50-20",
-                    "duration": 20,
-                    "easy_values": {
-                        "min": 1,
-                        "max": 10
-                    },
-                    "medium_values": {
-                        "min": 10,
-                        "max": 20
-                    },
-                    "difficult_values": {
-                        "min": 20,
-                        "max": 30
-                    }
-                }
-            ]
-        }
-    ]
-},
-
-{
-    "_id": "611c81012b391f2770603e91",
-    "level": 6,
-    "topics": [
-        {
-            "_id": "611c81012b391f2770603e9c",
-            "topic_name": "Fractions",
-            "skills": [
-                
-            ]
-        }
-    ]
-}
+        "_id": "611c81012b391f2770603e91",
+        "education": "Primary",
+        "level": 6,
+        "topics": [
+            {
+                "_id": "611c81012b391f2770603e9c",
+                "topic_name": "Fractions",
+                "skills": []
+            }
+        ]
+    },
+    {
+        "_id": "611c81012b391f2771603e91",
+        "education": "Secondary",
+        "level": 1,
+        "topics": [
+            {
+                "_id": "611c81012b393f2770603e9c",
+                "topic_name": "Fractions",
+                "skills": []
+            }
+        ]
+    },
+    {
+        "_id": "611c81012b391f2754603e91",
+        "education": "Secondary",
+        "level": 2,
+        "topics": [
+            {
+                "_id": "611c81015b391f2770673e9c",
+                "topic_name": "Fractions",
+                "skills": []
+            }
+        ]
+    },
+    {
+        "_id": "611c81012b391f2772643e91",
+        "education": "Secondary",
+        "level": 3,
+        "topics": [
+            {
+                "_id": "611c81012b391f2774603e9c",
+                "topic_name": "Fractions",
+                "skills": []
+            }
+        ]
+    },
+    {
+        "_id": "611c81012b391f1774602e94",
+        "education": "Secondary",
+        "level": 4,
+        "topics": [
+            {
+                "_id": "611c81012b391f2771603e9c",
+                "topic_name": "Fractions",
+                "skills": []
+            }
+        ]
+    }
 ]

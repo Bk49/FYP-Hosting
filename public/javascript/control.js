@@ -10,12 +10,20 @@ $(document).ready(function () {
         url: '/level',
         dataType: 'JSON',
         success: function (data, textStatus, xhr) {
+            console.log(data);
             if (data.length >= 1) {
                 let notes = [];
                 for (let i = 0; i < data.length; i++) {
+                    if (data[i].education == "Primary") {
+                        data[i].level = "Primary " + data[i].level;
+                    }
+                    else {
+                        data[i].level = "Secondary " + data[i].level;
+                    }
                     notes.push({
                         "id": data[i]._id,
-                        "display": "Primary " + data[i].level
+                        "display": data[i].level,
+                        "education": data[i].education
                     })
                 }
                 displayLevel(notes, "level");
@@ -521,7 +529,7 @@ $(document).on("click", ".updateSkillBtn", function () {
 $(document).on("click", ".deleteSkillBtn", function () {
     let id = document.querySelector('#skill_id').value;
     $('#skillModal').modal('hide');
-
+    console.log(id);
     $.confirm({
         icon: 'fas fa-exclamation-triangle',
         title: 'Are you sure?',
@@ -670,13 +678,15 @@ $(document).on("click", ".expandDifficulty", function () {
 
 // DISPLAY FUNCTIONS
 function displayLevel(data, name) {
-    let container = document.getElementById(name + "Container");
+    console.log(name);
+    let primaryContainer = document.getElementById("levelContainer");
+    let secondaryContainer = document.getElementById("levelContainer2");
     let content = '';
     let primaryLevelContainer = document.getElementById("primaryLevelContainer");
     let secondaryLevelContainer = document.getElementById("secondaryLevelContainer");
     let emptyContainer = document.getElementById("emptyContainer");
 
-    container.innerHTML = '';
+    // container.innerHTML = '';
 
     if (data.length == 0) {
 
@@ -685,19 +695,33 @@ function displayLevel(data, name) {
         emptyContainer.style.display = 'none'
         primaryLevelContainer.style.display = 'block'
         secondaryLevelContainer.style.display = 'block'
+        console.log(data);
         for (let i = 0; i < data.length; i++) {
-            content = `
-            <div class="${name}" id="${data[i].id}">
-                <div class="level-container">
-                    <span>${data[i].display}</span>
-                </div>
-            </div>        
-            `
-            container.innerHTML += content;
-        }
-        container.innerHTML += `
+            if (data[i].education == "Primary") {
+                content = `
+                <div class="${name}" id="${data[i].id}">
+                    <div class="level-container">
+                        <span>${data[i].display}</span>
+                    </div>
+                </div>        
+                `
+                primaryContainer.innerHTML += content;
+            }
+            else {
+                content = `
+                <div class="${name}" id="${data[i].id}">
+                    <div class="level-container">
+                        <span>${data[i].display}</span>
+                    </div>
+                </div>        
+                `
+                secondaryContainer.innerHTML += content;
+            }
             
-        `;
+        }
+        // container.innerHTML += `
+            
+        // `;
     }
 
 }

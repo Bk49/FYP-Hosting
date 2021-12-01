@@ -108,7 +108,10 @@ router.delete("/:skillId",
     isAuth,
     isAdmin,
     async (req, res) => {
+        console.log("delete1");
         const { skillId } = req.params;
+        console.log("delete2");
+        console.log(skillId);
         try {
             console.time("DELETE skill by id");
             const result = await levelModel.deleteSkillById(skillId);

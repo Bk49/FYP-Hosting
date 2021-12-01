@@ -140,7 +140,7 @@
     padding-bottom: 10px;
 }
 
-#levelContainer2 button{
+#levelContainer2 > div{
     width: 286px;
     font-size: 18px;
     padding: 7px;
@@ -154,7 +154,7 @@
     text-align: start;
 }
 
-#levelContainer2 button:hover{
+#levelContainer2 > div:hover{
     background-color: #0D6DAA;
     color: #FFFFFF
 }
@@ -640,6 +640,3 @@ label .fas:hover {
         display: none;
     }
 }
-
-}
-

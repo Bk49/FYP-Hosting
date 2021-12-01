@@ -26,7 +26,6 @@ router.get("/",
         try {
             console.time("GET all levels");
             const result = await levelModel.getAllLevels();
-
             res.status(200).json(result);
         } catch (err) {
             if (err instanceof Error || err instanceof MongoError)
