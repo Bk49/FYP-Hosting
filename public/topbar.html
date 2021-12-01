@@ -1,25 +1,53 @@
 <script src="./javascript/notification.js"></script>
-<link href="css/topbar.css" rel="stylesheet">
+<script src="./javascript/topbar.js"></script>
+<link href="css/topbar.css" rel="stylesheet" />
 
-<div style="background-color: #B1DBFF" class="container-fluid p-0 py-2 row m-0">
+<div style="background-color: #b1dbff" class="container-fluid p-0 py-2 row m-0">
     <div class="col">
-        <b style="font-family: Feather;">PSLE ONLINE</b>
+        <b style="font-family: Feather">PSLE ONLINE</b>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
-        <a href="#" class="me-3" onclick="return false"><img src="images/bell.png" style="width: 25px; height: auto;" class="img-fluid" id="bellBtn" onclick="displayNotification()" alt="notification" /></a>
-        <a href="profile.html" style="width: 25px; height: auto;"><img src="images/profile.png" class="img-fluid" alt="profile" /></a>
+        <a href="#" class="me-3" onclick="return false"
+            ><img
+                src="images/bell.png"
+                style="width: 25px; height: auto"
+                class="img-fluid"
+                id="bellBtn"
+                onclick="displayNotification()"
+                alt="notification"
+        /></a>
+        <a href="profile.html" style="width: 25px; height: auto"
+            ><img src="images/profile.png" class="img-fluid" alt="profile"
+        /></a>
         <button class="mx-3" id="logoutBtn">Logout</button>
     </div>
 </div>
-<div id="notificationBox" class="position-absolute end-0 me-2 mt-2" style="background-color: #F1FAFF; box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25); border-radius: 5px; z-index:100; width: 500px; display: none;">
+<div
+    id="notificationBox"
+    class="position-absolute end-0 me-2 mt-2"
+    style="
+        background-color: #f1faff;
+        box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        z-index: 100;
+        width: 500px;
+        display: none;
+    "
+>
     <div class="row container-fluid m-0 p-0 my-2">
         <div class="col p-0 ms-3">
-            <b style="font-family: Feather;">Notification</b>
+            <b style="font-family: Feather">Notification</b>
         </div>
         <div class="col d-flex align-items-center justify-content-end p-0 me-3">
-            <a href="#" onclick="return false"><i class="fas fa-times fa-lg link-dark" onclick="displayNotification()"></i></a>
+            <a href="#" onclick="return false"
+                ><i
+                    class="fas fa-times fa-lg link-dark"
+                    onclick="displayNotification()"
+                ></i
+            ></a>
         </div>
     </div>
+    <!--
     <div class="row container-fluid my-1 p-0 py-2 m-0" style="background-color: #D4EBFF">
         <div class="col-2 p-1 ps-3">
             <img src="images/class3b.png" class="img-fluid" style="width:50px;" />
@@ -42,4 +70,4 @@
             <p style="font-size:12px; font-family: Coolvetica">1h</p>
         </div>
     </div>
-</div>
+--></div>
