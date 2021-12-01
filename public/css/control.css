@@ -394,17 +394,22 @@
 .addSkill {
     cursor: pointer;
     text-align: center;
-    color: #ffcb45;
+    color: #ffffff;
     transition: 0.2s ease-in-out;
-    min-width: 800px;
+    background-color: #6696CA;
+    border-radius: 7px;
+    height: 40px;
+    width: 15%;
+    margin-top: 10px;
+    justify-content: center;
 }
 
-.addSkill {
-    padding: 9px;
-    border-radius: 0px 0px 7px 7px;
+.addSkill:hover {
+    background-color: #175EAB;
+    color: white;
 }
 
-.skill:hover, .addSkill:hover {
+.skill:hover{
     background-color: rgb(205, 208, 255);
 }
 
@@ -589,20 +594,32 @@ label .fas:hover {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1285px) {
     #topicContainer > button > p {
         font-size: smaller;
     }
     #topicContainer > button > i {
         display: none;
     }
+    .addSkill > i{
+        display: none;
+    }
+    .addSkill > p{
+        font-size: smaller;
+    }
 }
 
-@media (max-width: 1016px) {
+@media (max-width: 1052px) {
     #topicContainer > button > i {
         display: block;
     }
     #topicContainer > button > p {
+        display: none;
+    }
+    .addSkill > i{
+        display: block;
+    }
+    .addSkill > p{
         display: none;
     }
 }

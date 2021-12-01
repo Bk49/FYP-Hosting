@@ -624,7 +624,7 @@ $(document).on("click", ".editTopic", function () {
 $(document).on("click", ".topicName", function () {
     var dropdownContent = this.nextElementSibling.nextElementSibling;
     var dropdownIcon = this.children[0].children[0];
-   
+
     if (dropdownContent.style.display == "none") {
         dropdownContent.style.display = "block";
         dropdownIcon.className = "fas fa-angle-down fa-lg"
@@ -679,7 +679,7 @@ function displayLevel(data, name) {
     container.innerHTML = '';
 
     if (data.length == 0) {
-        
+
     }
     else {
         emptyContainer.style.display = 'none'
@@ -699,7 +699,7 @@ function displayLevel(data, name) {
             
         `;
     }
-    
+
 }
 
 function testing() {
@@ -859,11 +859,11 @@ function displayTopic(data, name) {
         });
         content +=
             `
-            <div class="row mx-auto">
-                <div class="addSkill" id="${topics[i]._id}" data-bs-toggle="modal" data-bs-target="#skillModal">
-                    <i class="fas fa-plus-circle"></i> Add Skills
-                </div>
-            </div>
+            <button class="btn addSkill d-flex align-items-center mx-auto" 
+            id="${topics[i]._id}" 
+            data-bs-toggle="modal" 
+            data-bs-target="#skillModal" 
+            onclick="resetSkillForm()"><i class="fas fa-plus-circle"></i><p class="m-0 mx-auto">Add Skill</p></button>
             </div>
             </div>
             </div>`;
