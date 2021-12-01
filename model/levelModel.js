@@ -4,6 +4,9 @@ const { ObjectId } = mongoose.Types;
 const { TopicSchema } = require("./topicModel");
 
 const LevelSchema = new Schema({
+    education: {
+        type: String,
+    },
     level: {
         type: Number,
         required: "Academic level required"
@@ -122,7 +125,7 @@ const levelModel = {
 
                 const defaultSyllabus = require('../datasheets/syllabus.json');
                 console.log("testing123")
-                console.log(defaultSyllabus.length);
+                console.log(defaultSyllabus);
                 for (var i = 0; i < defaultSyllabus.length; i++) {
                     defaultSyllabus[i]._id = ObjectId(defaultSyllabus[i]._id);
                     defaultSyllabus[i].topics.forEach(topic => {
@@ -343,7 +346,8 @@ const levelModel = {
         return new Promise(async (resolve, reject) => {
             try {
                 const level = await Level.findOne({ "topics.skills._id": skillId });
-
+                console.log("lvlvalue");
+                console.log(level);
                 if (!level) throw "NOT_FOUND";
 
                 // find index of the skill in the array that matches the id
