@@ -586,6 +586,7 @@ label .fas:hover {
     .level, .topicWrapper, .levelForm {
         width: 95%;
     }
+
 }
 
 @media (max-width: 896px) {
@@ -639,3 +640,6 @@ label .fas:hover {
         display: none;
     }
 }
+
+}
+
