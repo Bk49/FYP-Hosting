@@ -5,26 +5,63 @@ body {
   margin: 1em;
   background-image:linear-gradient(#fffbeb, #fff6ff);
   background-attachment: fixed;
-
 }
 
+body.modal-open {
+  position: fixed;
+}
 
+.frm{
+  justify-content: center;
+  align-content: center;
+}
 
+.profile-upload{
+  justify-content: center;
+  align-content: center;
+}
+
+.title{
+  text-align: center;
+  font-family: Coolvetica;
+  font-size: 30px;
+}
+
+/* 
   .w3-sidebar {
     width: 150px;
     z-index: 1;
     overflow: auto;
     border-radius: 25px;
-    position: absolute;               /* 2 */
+    position: absolute;               
    top: 10%; 
    left: 3%; 
+} */
+
+#account-email, .btn {
+  /* min-height: 8px; */
+  /* border-radius: 0px; */
+  /* padding: 10px; */
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  background-color: white;
 }
 
-.form-control, .btn {
-  min-height: 8px;
-  border-radius: 0px;
-  padding: 10px;
-  width: 100%;
+#account-gender{
+  text-align: center;
+  margin-top: 10px;
+}
+
+#account-fn, #account-ln{
+  display: inline;
+  margin-bottom: 0;
+}
+
+#editName {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .form-select{
@@ -32,6 +69,11 @@ body {
   border-radius: 0px;
   padding: 10px;
   width: 100%;
+  border-radius: 15px;
+  display: block;
+  margin-top: 10px;
+  background-color: #E1F1FF;
+  border-color: #6696CA;
 }
 
 .form-check{
@@ -39,6 +81,7 @@ body {
   min-height: 8px;
 
 }
+
 .form-check .form-check-input {
   float: left;
   margin-left: -1.5em;
@@ -49,6 +92,15 @@ body {
   margin-top: 100px;
 }
 
+#errorFeedback {
+  font-family: Poppins;
+  font-size: 15px;
+  color: red;
+}
+
+#errorForm {
+  display: none;
+}
 
 .unum--account {
   position: absolute;
@@ -75,7 +127,6 @@ button {
   
  
 }
-
 
 .account--name .arrow--down {
   border-left: 6px solid transparent;
@@ -229,11 +280,11 @@ button {
   background-color: #f5f5f5;
 }
 
-
+/* 
 :focus {
   outline: 2px dotted #000;
   outline-offset: .05em;
-}
+} */
 
 button .icon {
   height: 20px;
@@ -364,12 +415,24 @@ input, select, textarea {
   appearance: none;
 }
 
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+}
+#editNameModal {
+  overflow: hidden;
+}
+
 .frm .label{
-  display: block;width:100%;
+  display: block;
   margin-bottom: 0.25em;
-  font-size: 10px;text-align:left;
-  font-weight: 900;padding:0;color:#111;
-  letter-spacing: 1px;border:none;
+  font-size: 10px;
+  text-align:left;
+  font-weight: 900;
+  padding:0;
+  color:#111;
+  letter-spacing: 1px;
+  border:none;
 }
 
 .input, .select, .textarea {
@@ -428,26 +491,18 @@ input, select, textarea {
 
 
 .icon{
- width:75px;
-  height:75px; 
-  
+
   margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  
-  
 }
 
 
 .camera4{
   display:block;
-  width:70%;
-  height:50%;
+  width:25%;
+  height:17%;
   position:absolute;
-  top:30%;
-  left:15%;
+  top: 42%;
+  left: 38%;
   background-color:#000;
   border-radius:5px;
 }
@@ -463,6 +518,8 @@ input, select, textarea {
   background-color:#000;
   border-radius:15px;
 }
+
+
 .camera4:before{
   content:"";
   display:block;
@@ -475,22 +532,39 @@ input, select, textarea {
   border-radius:10px;
 }
 
-
+#err{
+  text-align: center;
+}
 
 #profile-upload{
-    background-image:url('');
-    background-size:cover;
-    background-position: center;
-    height: 230px; width: 230px;
-    border: 1px solid #bbb;
-    position:relative;top:20px;
+  background-image:url('');
+  background-size:cover;
+  background-position: center;
+  height: 200px; 
+  width: 200px;
+  border: 1px solid #bbb;
+  position:relative;
   border-radius:50%;
   overflow:hidden;
-  
-  
-  float:left;margin-right:30px;margin-bottom:0px;
-  
+  /* float:left; */
+  /* margin: 0 auto; */
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
+
+.form-check-input{
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+
+.form-check-label{
+  align-items: center;
+  justify-content: center;
+  font-family: Coolvetica;
+}
+
 #profile-upload:hover input.upload{
   display:block;
 }
@@ -501,6 +575,39 @@ input, select, textarea {
   opacity:1;
  }
 .hvr-profile-img{opacity:.3;}
+
+#notificationsContent{
+  margin-top: 12px;
+}
+
+#notiTitle{
+  margin-top: 50px;
+}
+
+#otherTitle{
+  margin-top: 35px;
+}
+
+.expBar{
+  color: white;
+  background-color: #B1DBFF;
+  border-radius: 90px;
+}
+
+.exp{
+  color: white;
+  background-color: #3DB3FF;
+  border-radius: 90px;
+  height: 10px;
+  width: 30%;
+}
+
+.expContainer > p{
+  text-align: center;
+  font-size: 12px;
+  line-height: 18px;
+  margin: 0 auto;
+}
 
 #profile-upload input.upload {
     z-index:1;
@@ -518,18 +625,32 @@ input, select, textarea {
     display:none;
 }
 
+#logoutBtn{
+  background-color: #FCC168;
+}
+
+#logoutBtn:hover{
+  background-color: #CE800C;
+}
+/* Delete button */
+#deleteButton{
+  background-color: #FB7D7D;
+}
+
+#deleteButton:hover{
+  background-color: #E22929;
+}
 
 .btn-primary{
-  
-  border-radius: 5px;
-  
-  margin-top: 10px;
-  margin-bottom: 50px;
-
- 
+  font-family: feather;
+  border: none;
+  border-radius: 8px;
+  background-color: #83CFFF;
+  margin-top: 25px;
+  font-size: 14px;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.20), inset 0px -1px 1px rgba(0, 0, 0, 0.20);
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-.frm{
-  padding-left: 300px;
-}
-

@@ -3,17 +3,26 @@ let userInfo = JSON.parse(localStorage.getItem('userInfo'));
 $(document).ready(function(){
     getSchool();
     
-    $("#account-fn").val(userInfo.first_name);
-    $("#account-ln").val(userInfo.last_name);
+    $("#account-fn").html(userInfo.first_name);
+    $("#account-ln").html(userInfo.last_name);
     $("#account-email").val(userInfo.email);
     $("input:radio[name=inlineRadioOptions][value=" + userInfo.gender + "]").attr('checked',true);
     $("#account-role").val(userInfo.role);
     $("#levelOption").val(userInfo.grade);
 
     if(userInfo.role != "student"){
-        $("#schoolOption").attr('disabled', 'disabled');
-        $("#levelOption").attr('disabled', 'disabled');
+        document.getElementById("schoolOption").style.display = "none";
+        document.getElementById("levelOption").style.display = "none";
+        document.getElementById("account-role").style.display = "none";
+        // $("#schoolOption").attr('disabled', 'disabled');
+        // $("#levelOption").attr('disabled', 'disabled');
     }
+    else{
+        document.getElementById("account-role").style.display = "none";
+    }
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+      })
 })
 
 $(document).on("change","#account-role", function(){
@@ -28,9 +37,37 @@ $(document).on("change","#account-role", function(){
         $("#levelOption").removeAttr('disabled');
     }
 })
+
+$(document).on("click", "#editBtn", function() {
+    let fn = $("#account-fn");
+    let ln = $("#account-ln");
+    let newFn = $("#accountFn").val();
+    let newLn = $("#accountLn").val();
+
+    if (newFn == "" || newLn == "") {
+        $("#errorForm").css("display", "block")
+    }
+    else {
+
+        $("#errorForm").css("display", "none")
+        $("#editNameModal").modal('toggle');
+
+        fn.text(newFn);
+        ln.text(newLn);
+    }
+});
+
+$(document).on("click", "#editName", function() {
+    let fn = $("#account-fn").text();
+    let ln = $("#account-ln").text();
+
+    $("#accountFn").val(fn);
+    $("#accountLn").val(ln);
+});
+
 $(document).on("click", "#updateBtn", function(){
-    let first_name = $("#account-fn").val();
-    let last_name = $("#account-ln").val();
+    let first_name = $("#account-fn").text();
+    let last_name = $("#account-ln").text();
     let gender = $('input:radio:checked').val();
     let role = $("#account-role").val();
 
@@ -38,7 +75,7 @@ $(document).on("click", "#updateBtn", function(){
         "first_name": first_name,
         "last_name": last_name,
         "gender": gender,
-        "role": role
+        // "role": role
     }
 
     if(role == 'student'){
@@ -47,6 +84,41 @@ $(document).on("click", "#updateBtn", function(){
     }
 
     updateAccount(data);
+})
+
+$(document).on("click", "#logoutBtn", function () {
+    $.ajax({
+        url: '/user/logout',
+        method: 'POST',
+        dataType: 'JSON',
+        success: function (data, textStatus, xhr) {
+            //Clearing token and userinfo
+            localStorage.clear();
+            //Redirect to login
+            location.href = 'login.html';
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert("YOU HAVE BEEN PROHIBITED TO LEAVE!");
+        }
+    });
+})
+
+$(document).on("click", "#deleteBtn", function () {
+    var userid = JSON.parse(localStorage.getItem("userInfo"))._id;
+    $.ajax({
+        url: '/user/'+userid,
+        method: 'DELETE',
+        dataType: 'JSON',
+        success: function (data, textStatus, xhr) {
+            //Clearing token and userinfo
+            localStorage.clear();
+            //Redirect to login
+            location.href = 'login.html';
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            alert("YOU HAVE BEEN PROHIBITED TO DELETE YOUR ACCOUNT!");
+        }
+    });
 })
 
 function getSchool() {
@@ -102,9 +174,9 @@ function updateAccount(data){
                     case 'Last':
                         key = "account-ln";
                         break;
-                    case 'Role':
-                        key = "account-role";
-                        break;
+                    // case 'Role':
+                    //     key = "account-role";
+                    //     break;
                     case 'Gender':
                         key = "account-gender";
                         break;

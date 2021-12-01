@@ -121,20 +121,26 @@ const levelModel = {
                 console.log("SUCESS! Result", result);
 
                 const defaultSyllabus = require('../datasheets/syllabus.json');
-                defaultSyllabus._id = ObjectId(defaultSyllabus._id);
-                defaultSyllabus.topics.forEach(topic => {
-                    topic._id = ObjectId(topic._id);
-                    topic.skills.forEach(skill => {
-                        skill._id = ObjectId(skill._id);
+                console.log("testing123")
+                console.log(defaultSyllabus.length);
+                for (var i = 0; i < defaultSyllabus.length; i++) {
+                    defaultSyllabus[i]._id = ObjectId(defaultSyllabus[i]._id);
+                    defaultSyllabus[i].topics.forEach(topic => {
+                        topic._id = ObjectId(topic._id);
+                        topic.skills.forEach(skill => {
+                            skill._id = ObjectId(skill._id);
+                        });
                     });
-                });
-                const newLevels = new Level(defaultSyllabus);
-                const result2 = await newLevels.save();
+                    const newLevels = new Level(defaultSyllabus[i]);
+                    const result2 = await newLevels.save();
+                    if (!result2) throw "UNEXPECTED_ERROR";
 
-                if (!result2) throw "UNEXPECTED_ERROR";
+                    console.log("SUCCESS! Result", result2);
+                    resolve(result2);
+                }
+                
 
-                console.log("SUCCESS! Result", result2);
-                resolve(result2);
+                
             } catch (err) {
                 console.error(`ERROR! Could not reset levels to its default: ${err}`);
                 reject(err);
