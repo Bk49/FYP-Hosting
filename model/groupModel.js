@@ -879,17 +879,10 @@ const groupModel = {
     },
     // get leaderboard
     viewGroupLeaderboard: (groupId, sort) => {
-        let sortObj = {
-            // average_score: -1, //descending
-            // num_of_quiz: -1, // descending
-            // average_time_taken: 1, // ascending
-        };
+        let sortObj = {};
         let groupObj = {
             _id: "$done_by",
             group_name: { $first: "$group_name" },
-            // average_score: { $avg: "$score.total" },
-            // num_of_quiz: { $sum: 1 },
-            // average_time_taken: { $avg: "$time_taken" },
         };
 
         if (sort === 1) {
@@ -985,6 +978,120 @@ const groupModel = {
                             _id: 0,
                         },
                     },
+                ]);
+                console.log("SUCCESS! Result: ", result);
+                resolve(result[0]);
+            } catch (err) {
+                console.error(
+                    `ERROR! Could not view group leaderboard with id ${groupId}: ${err}`
+                );
+                reject(err);
+            }
+        });
+    },
+
+    // View leaderboard top 3 only
+    viewGroupLeaderboardTop: (groupId, sort) => {
+        let sortObj = {};
+        let groupObj = {
+            _id: "$done_by",
+            group_name: { $first: "$group_name" },
+        };
+
+        if (sort === 1) {
+            sortObj = { average_score: -1 };
+            groupObj = { ...groupObj, average_score: { $avg: "$score.total" } };
+        } else if (sort === 2) {
+            sortObj = { average_time_taken: 1 };
+            groupObj = {
+                ...groupObj,
+                average_time_taken: { $avg: "$time_taken" },
+            };
+        } else {
+            sortObj = { num_of_quiz: -1 };
+            groupObj = { ...groupObj, num_of_quiz: { $sum: 1 } };
+        }
+
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await Group.aggregate([
+                    {
+                        $match: { _id: ObjectId(groupId) },
+                    },
+                    {
+                        $unwind: "$members",
+                    },
+                    {
+                        $project: {
+                            user_id: "$members.user_id",
+                            group_name: 1,
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "quizzes",
+                            as: "quiz",
+                            localField: "user_id",
+                            foreignField: "done_by",
+                        },
+                    },
+                    {
+                        $unwind: "$quiz",
+                    },
+                    {
+                        $addFields: {
+                            "quiz.group_name": "$group_name",
+                        },
+                    },
+                    { $replaceRoot: { newRoot: "$quiz" } },
+                    {
+                        $group: groupObj,
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "_id",
+                            foreignField: "_id", //<field from the documents of the "from" collection>
+                            as: "user", //<output array field>
+                        },
+                    },
+                    {
+                        $addFields: {
+                            user: {
+                                $first: "$user",
+                            },
+                        },
+                    },
+                    {
+                        $addFields: {
+                            first_name: "$user.first_name",
+                            last_name: "$user.last_name",
+                            school: "$user.school",
+                            grade: "$user.grade",
+                        },
+                    },
+                    {
+                        $project: {
+                            user: 0,
+                        },
+                    },
+                    {
+                        $sort: sortObj,
+                    },
+                    {
+                        $group: {
+                            _id: "$group_name",
+                            leaderboard: { $push: "$$ROOT" },
+                        },
+                    },
+                    {
+                        $project: {
+                            group_name: "$_id",
+                            leaderboard: 1,
+                            _id: 0,
+                        },
+                    },
+                    { $limit: 3 },
                 ]);
                 console.log("SUCCESS! Result: ", result);
                 resolve(result[0]);
@@ -1191,4 +1298,4 @@ const groupModel = {
     },
 };
 
-module.exports = groupModel;
+module.exports = { groupModel, Group };

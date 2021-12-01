@@ -1,13 +1,12 @@
-var notificationOpen = false;
-var notificationBox = document.getElementById("notificationBox");
+let notificationOpen = false;
+const notificationBox = document.getElementById("notificationBox");
 
 function displayNotification() {
     if (notificationOpen == false) {
-        notificationBox.style.display="block"
+        notificationBox.style.display = "block";
         notificationOpen = true;
-    }
-    else {
-        notificationBox.style.display="none"
+    } else {
+        notificationBox.style.display = "none";
         notificationOpen = false;
     }
 }
