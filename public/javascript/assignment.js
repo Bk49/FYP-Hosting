@@ -156,6 +156,10 @@ function displayAssignments(assignments) {
     }
     if(completedAssignment != "" || pendingAssignment != "" || overdueAssignment != "") {
         assignmentList.innerHTML = "";
+    } else {
+        document.getElementsByClassName("completed-list-wrapper")[0].style.display="none";
+        document.getElementsByClassName("pending-list-wrapper")[0].style.display="none";
+        document.getElementsByClassName("overdue-list-wrapper")[0].style.display="none";
     }
 }
 
