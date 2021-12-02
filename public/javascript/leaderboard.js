@@ -3,6 +3,9 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 /* EVENT LISTENER */
 $(document).ready(function () {
     getLeaderboard("Primary", 1, 1);
+    $(".header").load("topbar.html", function () {
+        document.getElementById("name").innerHTML = getName();
+    });
 });
 
 // For changing of secondary and primary school lb
@@ -212,8 +215,7 @@ function displayLeaderboard(data, type) {
             </table>
         `);
 
-        // This is to render the user's placement in the leaderboard
-        html += ""; // To be added in once the group leaderboard API is recreated
+
     } else {
         document.getElementById("noresult").style.display = "flex";
     }
