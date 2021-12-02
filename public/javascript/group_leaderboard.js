@@ -4,9 +4,9 @@ var groupId = urlSearchParams.get("groupId");
 /* EVENT LISTENER */
 $(document).ready(function () {
     getLeaderboard(groupId);
-    // $(".header").load("topbar.html", function () {
-    //     document.getElementById("name").innerHTML = getName();
-    // });
+    $(".header").load("topbar.html", function () {
+        document.getElementById("name").innerHTML = getName();
+    });
 });
 
 /* API CALLS */

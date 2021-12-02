@@ -29,7 +29,7 @@
 
 /* Leaderboard header and change school button styles => Only applies to normal leaderboard */
 
-.header {
+.leaderboard-header {
     display: flex;
     justify-content: center;
     margin-top: 2%;
