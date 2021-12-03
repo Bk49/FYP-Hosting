@@ -4,7 +4,7 @@
 
 const express = require("express");
 const router = express.Router();
-
+const schedule = require('node-schedule')
 
 // model and functions
 const { assignmentModel } = require("../model/assignmentModel");
@@ -13,6 +13,7 @@ const notificationModel = require("../model/notificationModel");
 // error handler modules
 const { MongoError } = require("mongodb");
 const { Error } = require("mongoose");
+const { validationResult } = require("express-validator");
 
 /**
  * GET /assignment/group?groupId= &userId=
@@ -204,18 +205,17 @@ router.post(
                 console.time("POST notification by asgId");
                 // Create notification when there is a new homework
                 await notificationModel.createNewAssignmentNotification(
-                    _id,
+                    result,
                     "You have been assigned new homework! Start doing them here now!"
                 );
                 // Schedule notification for homework going to expire
-                const assignment = await assignmentModel.getAsgById(_id);
-                const deadline = new Date(assignment.deadline);
+                const deadline = new Date(result.deadline);
         
                 // Schedule notification to be sent to urge students to complete their almost due assignments
                 if (deadline - 259200000 >= 0)
                     schedule.scheduleJob(deadline - 259200000, async () => {
                         await notificationModel.createAssignmentReminderNotification(
-                            assignment,
+                            result,
                             "You have uncompleted homework! Your deadline is in 3 days left, start doing them here now!"
                         );
                     });
@@ -223,7 +223,7 @@ router.post(
                 if (deadline - 172800000 >= 0)
                     schedule.scheduleJob(deadline - 172800000, async () => {
                         await notificationModel.createAssignmentReminderNotification(
-                            assignment,
+                            result,
                             "You have uncompleted homework! Your deadline is in 2 days left, start doing them here now!"
                         );
                     });
@@ -231,13 +231,13 @@ router.post(
                 if (deadline - 86400000 >= 0)
                     schedule.scheduleJob(deadline - 86400000, async () => {
                         await notificationModel.createAssignmentReminderNotification(
-                            assignment,
+                            result,
                             "You have uncompleted homework! Your deadline is in 1 day left, start doing them here now!"
                         );
                     });
                 else {
                     await notificationModel.createAssignmentReminderNotification(
-                        assignment,
+                        result,
                         "You have uncompleted homework! Your deadline is in 1 day left, start doing them here now!"
                     );
                 }
@@ -245,7 +245,7 @@ router.post(
                 // Schedule for assignment requires marking if pass deadline
                 schedule.scheduleJob(deadline - 259200000, async () => {
                     await notificationModel.createAssignmentMarkingNotification(
-                        _id,
+                        result,
                         false
                     ); // Specify false to mention that it is checking for past deadline
                 });
@@ -253,12 +253,14 @@ router.post(
 
             res.status(200).send({ new_id: result._id });
         } catch (err) {
+            console.log(err)
             if (err instanceof Error || err instanceof MongoError)
                 res.status(500).send({
                     error: err.message,
                     code: "DATABASE_ERROR",
                 });
             else
+
                 res.status(500).send({
                     error: "Error adding assignment and its notifications by grp id",
                     code: "UNEXPECTED_ERROR",

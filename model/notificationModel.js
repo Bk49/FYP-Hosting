@@ -52,6 +52,11 @@ const notificationModel = {
                             owner: ObjectId(user_id),
                         },
                     },
+                    {
+                        $sort: {
+                            created_at: -1,
+                        },
+                    },
                 ]);
                 if (!result) throw "NOT_FOUND";
 
@@ -68,12 +73,12 @@ const notificationModel = {
     },
 
     // Triggers when there is a new assignment being assigned
-    createNewAssignmentNotification: (assignment_id, content) => {
+    createNewAssignmentNotification: (assignment, content) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const [group] = await Assignment.aggregate([
                     {
-                        $match: { _id: ObjectId(assignment_id) },
+                        $match: { _id: ObjectId(assignment._id) },
                     },
                     {
                         $project: { group_id: 1, _id: 0 },
@@ -107,25 +112,19 @@ const notificationModel = {
                     },
                 ]);
 
-                const assignment = await Assignment.aggregate([
-                    {
-                        $match: { _id: ObjectId(assignment_id) },
-                    },
-                ]);
-
                 const newNotis = [];
                 for (let member of groupMembers) {
+                    console.log("Assignment Id: " + assignment.skill_id);
                     newNotis.push(
                         new Notification({
                             owner: member.user_id,
-                            assignment_id: ObjectId(assignment_id),
+                            assignment_id: ObjectId(assignment._id),
                             skill_id: ObjectId(assignment.skill_id),
                             teacher_id: ObjectId(assignment.assigned_by),
                             content: content,
                         })
                     );
                 }
-                console.log(newNotis);
 
                 const result = await Notification.collection.insertMany(
                     newNotis
@@ -146,14 +145,12 @@ const notificationModel = {
     },
 
     // Creates and push notifications for assignment deadline if it is not yet completed
-    createAssignmentReminderNotification: (assignment_id, content) => {
+    createAssignmentReminderNotification: (assignment, content) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const userIds = (
-                    await assignmentModel.getAsgProgressbyAsgId(assignment_id)
+                    await assignmentModel.getAsgProgressbyAsgId(assignment._id)
                 ).map(({ user_id }) => user_id);
-
-                const assignment = assignmentModel.getAsgById(assignment_id)
 
                 const newNotis = [];
                 for (let userId of userIds) {
@@ -161,7 +158,7 @@ const notificationModel = {
                         new Notification({
                             owner: userId,
                             teacher_id: ObjectId(assignment.assigned_by),
-                            assignment_id: ObjectId(assignment.assignment_id),
+                            assignment_id: ObjectId(assignment._id),
                             skill_id: ObjectId(assignment.skill_id),
                             content: content,
                         })
@@ -186,17 +183,17 @@ const notificationModel = {
     },
 
     // Create assignment notification when assignment has expired or when all students have completed
-    createAssignmentMarkingNotification: (assignment_id, early) => {
+    createAssignmentMarkingNotification: (assignment, early) => {
         return new Promise(async (resolve, reject) => {
             try {
                 // Find students who haven't complete their assignment
                 const userIds = (
-                    await assignmentModel.getAsgProgressbyAsgId(assignment_id)
+                    await assignmentModel.getAsgProgressbyAsgId(assignment._id)
                 ).map(({ user_id }) => user_id);
 
-                // Get the teacher that assigns the assignment
-                const { assigned_by, group_id } =
-                    await assignmentModel.getAsgById(assignment_id);
+                // // Get the teacher that assigns the assignment
+                // const { assigned_by, group_id } =
+                //     await assignmentModel.getAsgById(assignment_id);
 
                 let result, content;
 
@@ -212,9 +209,9 @@ const notificationModel = {
 
                 if (content) {
                     result = await Notification.collection.insertOne({
-                        owner: assigned_by,
-                        assignment_id: assignment_id,
-                        group_id: group_id,
+                        owner: assignment.assigned_by,
+                        assignment_id: assignment._id,
+                        group_id: assignment.group_id,
                         content: content,
                     });
                 }

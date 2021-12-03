@@ -2,71 +2,44 @@
 <script src="./javascript/topbar.js"></script>
 <link href="css/topbar.css" rel="stylesheet" />
 
-<div style="background-color: #b1dbff" class="container-fluid p-0 py-2 row m-0">
+<!-- Top bar -->
+<div class="container-fluid p-0 py-2 row m-0 topbar-container">
     <div class="col">
-        <b style="font-family: Feather">PSLE ONLINE</b>
+        <b class="topbar-header-text">PSLE ONLINE</b>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
         <a href="#" class="me-3" onclick="return false"
             ><img
                 src="images/bell.png"
-                style="width: 25px; height: auto"
-                class="img-fluid"
+                class="img-fluid notification-icon"
                 id="bellBtn"
                 onclick="displayNotification()"
                 alt="notification"
         /></a>
-        <a href="profile.html" style="width: 25px; height: auto"
-            ><img src="images/profile.png" class="img-fluid" alt="profile"
+        <a href="profile.html"
+            ><img
+                src="images/profile.png"
+                class="img-fluid profile-icon"
+                alt="profile"
         /></a>
     </div>
 </div>
+<!-- Notifications -->
 <div
     id="notificationBox"
-    class="position-absolute end-0 me-2 mt-2"
-    style="
-        background-color: #f1faff;
-        box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
-        border-radius: 5px;
-        z-index: 100;
-        width: 500px;
-        display: none;
-    "
+    class="position-absolute end-0 me-2 mt-2 notification-overlay"
 >
-    <div class="row container-fluid m-0 p-0 my-2">
-        <div class="col p-0 ms-3">
-            <b style="font-family: Feather">Notification</b>
-        </div>
-        <div class="col d-flex align-items-center justify-content-end p-0 me-3">
-            <a href="#" onclick="return false"
+    <div>
+        <div class="notification-title">
+            <b class="notification-header-text">Notification</b>
+            <a class="close-button" href="#" onclick="return false"
                 ><i
                     class="fas fa-times fa-lg link-dark"
                     onclick="displayNotification()"
                 ></i
             ></a>
         </div>
+        <div class="notification-list" id="notificationList"></div>
+
     </div>
-    <!--
-    <div class="row container-fluid my-1 p-0 py-2 m-0" style="background-color: #D4EBFF">
-        <div class="col-2 p-1 ps-3">
-            <img src="images/class3b.png" class="img-fluid" style="width:50px;" />
-        </div>
-        <div class="col-8 my-auto">
-            <p style="font-size: 12px; font-family: Poppins;" class="my-auto">You have been assigned new homework! Start doing them here now!</p>
-        </div>
-        <div class="col d-flex justify-content-end">
-            <p style="font-size:12px; font-family: Coolvetica">10m</p>
-        </div>
-    </div>
-    <div class="row container-fluid my-1 p-0 py-2 m-0">
-        <div class="col-2 p-1 ps-3">
-            <img src="images/class3b.png" class="img-fluid" style="width:50px;" />
-        </div>
-        <div class="col-8 my-auto">
-            <p style="font-size: 12px; font-family: Poppins;" class="my-auto">There have been changes in the leaderboard in your group, "Class 3B Math", checkout the new leaderboard here!</p>
-        </div>
-        <div class="col d-flex justify-content-end">
-            <p style="font-size:12px; font-family: Coolvetica">1h</p>
-        </div>
-    </div>
---></div>
+</div>
