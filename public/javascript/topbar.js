@@ -2,13 +2,13 @@ $(document).ready(() => {
     getNotificationsByUserId();
 });
 
+const token = localStorage.getItem("token");
+const base64Url = token.split(".")[1]; // token you get
+const base64 = base64Url.replace("-", "+").replace("_", "/");
+const { sub, issuedRole } = JSON.parse(window.atob(base64));
+
 /* API CALLS */
 const getNotificationsByUserId = () => {
-    const token = localStorage.getItem("token");
-    const base64Url = token.split(".")[1]; // token you get
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    const { sub, issuedRole } = JSON.parse(window.atob(base64));
-
     $.ajax({
         url: `notification/user?userId=${sub}`,
         dataType: "JSON",
@@ -24,11 +24,101 @@ const getNotificationsByUserId = () => {
 /* DISPLAY DATA */
 const renderNotification = (data) => {
     if (data.length === 0) {
-        $("#notificationBox")
+        $("#notificationList")
             .append(`<div class="row container-fluid my-1 p-0 py-2 m-0 no-notification">
                             <span class="row container-fluid">No notifications!</span>
                         </div>`);
-    }else{
-        
+    } else {
+        if (issuedRole === "student") {
+            for (let notification of data) {
+                console.log(notification.skill_id)
+                const type =
+                    notification.content.slice(0, 5) === "There"
+                        ? "leaderboard"
+                        : notification.content.slice(9, 20) === "uncompleted"
+                        ? "recurring"
+                        : "new";
+                const timeDiff = getTimeDiff(new Date(notification.created_at));
+                console.log(timeDiff);
+                let href, imageUrl;
+                switch (type) {
+                    case "recurring":
+                    case "new":
+                        href = `quiz.html?skill=${notification.skill_id}&assignment=${notification.assignment_id}`;
+                        // Temporary image to represent pfp of TEACHER
+                        imageUrl = `./images/testing.jpg`;
+                        break;
+                    case "leaderboard":
+                        href = `group_leaderboard.html?groupId=${notification.group_id}`;
+                        // Temporary image to represent GROUP image
+                        imageUrl = `./images/sample_groupimg.png`;
+                        break;
+                }
+                console.log(notification);
+
+                // Append the html code
+                $("#notificationList").append(`
+                        <div onclick="location.href='${href}'" class="notification-container  ${
+                            notification.unread
+                                ? "notification-container-unread"
+                                : ""
+                        }"> 
+                            <div class="notification-image-container">
+                                <img src="${imageUrl}" class="notification-image" />
+                            </div>
+                            <div class="notification-right-items-container">
+                                <div class="notification-content-container">
+                                    <span class="notification-content">${
+                                        notification.content
+                                    }</span>
+                                </div>
+                                <div class="notification-time-container">
+                                    <span class="notification-time">${timeDiff}</span>
+                                </div>
+                            </div>
+                        </div>
+                        `);
+            }
+        } else {
+            for (let notification of data) {
+                $("#notificationList").append(`
+                <a class="notification-link" href="group_assignment.html?groupId=${
+                    notification.group_id
+                }">
+                    <div class="notification-container  ${
+                        notification.unread
+                            ? "notification-container-unread"
+                            : ""
+                    }"> 
+                        <div class="notification-image-container">
+                            <img src="${"./images/sample_groupimg.png"}" class="notification-image" />
+                        </div>
+                        <div class="notification-right-items-container">
+                            <div class="notification-content-container">
+                                <span class="notification-content">${
+                                    notification.content
+                                }</span>
+                            </div>
+                            <div class="notification-time-container">
+                                <span class="notification-time">${
+                                    new Date() - notification.created_at
+                                }</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>`);
+            }
+        }
     }
+};
+
+const getTimeDiff = (time) => {
+    const difference = new Date() - time;
+    if (difference / 604600000 > 1)
+        return Math.floor(difference / 604600000) + "w";
+    if (difference / 86400000 > 1)
+        return Math.floor(difference / 86400000) + "d";
+    if (difference / 3600000 > 1) return Math.floor(difference / 3600000) + "h";
+    if (difference / 60000 > 1) return Math.floor(difference / 60000) + "m";
+    return Math.floor(difference / 1000) + "s";
 };
