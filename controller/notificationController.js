@@ -7,53 +7,10 @@ const router = express.Router();
 
 // model and functions
 const notificationModel = require("../model/notificationModel");
-const { assignmentModel } = require("../model/assignmentModel");
 
 // error handler modules
 const { MongoError } = require("mongodb");
 const { Error } = require("mongoose");
-
-// Testing notifications
-router.post("/testing", async (req, res) => {
-    try {
-        console.time("TESTING noti by asgId");
-        const { asgId } = req.query;
-        await notificationModel.createAssignmentMarkingNotification(
-            asgId,
-            true
-        );
-        await notificationModel.createAssignmentMarkingNotification(
-            asgId,
-            false
-        );
-        await notificationModel.createAssignmentReminderNotification(
-            asgId,
-            "You have uncompleted homework! Your deadline is in 3 days left, start doing them here now!"
-        );
-        await notificationModel.createLeaderboardChangesNotification(
-            asgId
-        );
-        await notificationModel.createNewAssignmentNotification(
-            asgId,
-            "You have been assigned new homework! Start doing them here now!"
-        );
-        res.status(200).send({});
-    } catch (err) {
-        console.log(err);
-        if (err instanceof Error || err instanceof MongoError)
-            res.status(500).send({
-                error: err.message,
-                code: "DATABASE_ERROR",
-            });
-        else
-            res.status(500).send({
-                error: "Error testing notification by asg id",
-                code: "UNEXPECTED_ERROR",
-            });
-    } finally {
-        console.timeEnd("GET noti by userid");
-    }
-});
 
 /**
  * GET /notification/user?userId=
