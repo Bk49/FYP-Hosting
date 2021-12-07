@@ -3,25 +3,49 @@ var groupId = urlSearchParams.get("groupId");
 
 /* EVENT LISTENER */
 $(document).ready(function () {
-    getLeaderboard(groupId);
+    getLeaderboard(groupId, 1);
     $(".header").load("topbar.html", function () {
         document.getElementById("name").innerHTML = getName();
     });
 });
 
+// Handling dropdown-content display and hiding
+$(document).on("click", "#type-button", () => {
+    $("#filter-content").css("visibility", "hidden");
+    const obj = $("#type-content");
+    obj.css("visibility") === "hidden"
+        ? obj.css("visibility", "visible")
+        : obj.css("visibility", "hidden");
+});
+
+// For changing of dropdown: Type
+const onChangeType = (type = 1) => {
+    getLeaderboard(groupId, type);
+    $("#type-content").css("visibility", "hidden");
+
+    const icon = '<i class="fas fa-angle-down right"></i>';
+    $("#type-button").html(
+        type === 1
+            ? `Average Score ${icon}`
+            : type === 2
+            ? `Average Time Taken ${icon}`
+            : `Quizzes Attempted ${icon}`
+    );
+};
+
 /* API CALLS */
-function getLeaderboard(groupId) {
+function getLeaderboard(groupId, sort) {
     $.ajax({
-        url: '/group/leaderboard?groupId='+groupId,
-        method: 'POST',
-        dataType: 'JSON',
+        url: `/group/leaderboard?sort=${sort}&groupId=${groupId}`,
+        method: "POST",
+        dataType: "JSON",
         success: function (data, textStatus, xhr) {
-            console.log(data)
-            displayLeaderboard(data.leaderboard);
+            console.log(data);
+            displayLeaderboard(data.leaderboard, parseInt(sort));
         },
         error: function (xhr, textStatus, errorThrown) {
             console.log(errorThrown);
-        }
+        },
     });
 }
 

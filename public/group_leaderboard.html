@@ -52,6 +52,28 @@
             <div id="top-3">
 
             </div>
+            <div class="type-dropdown">
+                <div class="dropdowns">
+                    <span class="text-dropdown">Type: </span>
+                    <div class="dropdown">
+                        <button id="type-button">
+                            Average Score
+                            <i class="fas fa-angle-down right"></i>
+                        </button>
+                        <div class="dropdown-content" id="type-content">
+                            <div onclick="onChangeType(1)">
+                                Average Score
+                            </div>
+                            <div onclick="onChangeType(2)">
+                                Average Time Taken
+                            </div>
+                            <div onclick="onChangeType(3)">
+                                Quizzes Attempted
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div id="leaderboard">
                 <!-- leaderboard will load here with javascript -->
             </div>
