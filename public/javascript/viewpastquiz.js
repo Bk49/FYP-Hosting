@@ -57,7 +57,7 @@ function makeItFraction(data){
         console.log(data)
         let fraction = '';
         let x = (data[needed[i]]).split(" ");
-
+        console.log(x);
         if(x.length == 1){
             if(x[0].includes('/')){
                 let y = x.toString().split('/');
@@ -101,6 +101,116 @@ function makeItFraction(data){
                 </div>
             </div>
             `
+        }
+        else if (x.length == 5) {
+            let first = x[0].toString().split('/');
+            let second = x[2].toString().split('/');
+            let third = x[4].toString().split('/');
+
+            fraction = 
+            `<div class="d-flex justify-content-center align-items-center">
+                <div class="d-flex justify-content-center align-items-center me-3">
+                    <span class="f">
+                        <div class="n">${first[0]}</div>
+                        <div class="d">${first[1]}</div>
+                    </span>
+                </div>
+                ${x[1]}
+                <div class="d-flex justify-content-center align-items-center mx-3">
+                    <span class="f">
+                        <div class="n">${second[0]}</div>
+                        <div class="d">${second[1]}</div>
+                    </span>
+                </div>
+                ${x[3]}
+                <div class="d-flex justify-content-center align-items-center ms-3">
+                    <span class="f">
+                        <div class="n">${third[0]}</div>
+                        <div class="d">${third[1]}</div>
+                    </span>
+                </div>
+            </div>
+            `
+        }
+        else if (x.length == 7) {
+            if (x[2].includes("(")) {
+                let first = x[0].toString().split('/');
+                let second = (x[2].toString()).replace("(", "").split('/')
+                let third = (x[4].toString()).replace(")", "").split('/')
+                let fourth = x[6].toString().split('/');
+
+                fraction = 
+                `<div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center me-3">
+                        <span class="f">
+                            <div class="n">${first[0]}</div>
+                            <div class="d">${first[1]}</div>
+                        </span>
+                    </div>
+                    ${x[1]}
+                    (
+                    <div class="d-flex justify-content-center align-items-center mx-3">
+                        <span class="f">
+                            <div class="n">${second[0]}</div>
+                            <div class="d">${second[1]}</div>
+                        </span>
+                    </div>
+                    ${x[3]}
+                    <div class="d-flex justify-content-center align-items-center mx-3">
+                        <span class="f">
+                            <div class="n">${third[0]}</div>
+                            <div class="d">${third[1]}</div>
+                        </span>
+                    </div>
+                    )
+                    ${x[5]}
+                    <div class="d-flex justify-content-center align-items-center ms-3">
+                        <span class="f">
+                            <div class="n">${fourth[0]}</div>
+                            <div class="d">${fourth[1]}</div>
+                        </span>
+                    </div>
+                </div>
+                `
+            }
+            else {
+                let first = x[0].toString().split('/');
+                let second = x[2].toString().split('/')
+                let third = x[4].toString().split('/')
+                let fourth = x[6].toString().split('/');
+
+                fraction = 
+                `<div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex justify-content-center align-items-center me-3">
+                        <span class="f">
+                            <div class="n">${first[0]}</div>
+                            <div class="d">${first[1]}</div>
+                        </span>
+                    </div>
+                    ${x[1]}
+                    <div class="d-flex justify-content-center align-items-center mx-3">
+                        <span class="f">
+                            <div class="n">${second[0]}</div>
+                            <div class="d">${second[1]}</div>
+                        </span>
+                    </div>
+                    ${x[3]}
+                    <div class="d-flex justify-content-center align-items-center mx-3">
+                        <span class="f">
+                            <div class="n">${third[0]}</div>
+                            <div class="d">${third[1]}</div>
+                        </span>
+                    </div>
+                    ${x[5]}
+                    <div class="d-flex justify-content-center align-items-center ms-3">
+                        <span class="f">
+                            <div class="n">${fourth[0]}</div>
+                            <div class="d">${fourth[1]}</div>
+                        </span>
+                    </div>
+                </div>
+                `
+            }
         }
         
         result[needed[i]] = fraction;

@@ -329,7 +329,7 @@ body {
     color: #003844;
     margin-top: 5px;
     max-height: 170px;
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
 }
 
 .list-member {

@@ -236,13 +236,12 @@
     background-color:#6696CA;
     border-radius: 7px 7px 0px 0px;
     color: white;
-    min-width: 800px;
+    min-width: 1000px
     /* position: hidden; */
 }
 
 .skill {
-    min-width: 800px;
-
+    min-width: 1000px
 }
 
 .skillHeading > div > p {
@@ -415,7 +414,8 @@
 
 .skillsContent {
     background-color: #E1F1FF;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
     display: flex;
     flex-direction: row;
 }

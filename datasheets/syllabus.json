@@ -1,7 +1,6 @@
 [
     {
         "_id": "611c81012b391f2770603e87",
-        "education": "Primary",
         "level": 1,
         "topics": [
             {
@@ -13,7 +12,6 @@
     },
     {
         "_id": "611c81012b391f2770603e88",
-        "education": "Primary",
         "level": 2,
         "topics": [
             {
@@ -25,7 +23,6 @@
     },
     {
         "_id": "611c81012b391f2770603e89",
-        "education": "Primary",
         "level": 3,
         "topics": [
             {
@@ -37,7 +34,6 @@
     },
     {
         "_id": "611c81012b391f2770603e90",
-        "education": "Primary",
         "level": 4,
         "topics": [
             {
@@ -49,7 +45,6 @@
     },
     {
         "_id": "611c81012b391f2770603e99",
-        "education": "Primary",
         "level": 5,
         "topics": [
             {
@@ -122,7 +117,6 @@
     },
     {
         "_id": "611c81012b391f2770603e91",
-        "education": "Primary",
         "level": 6,
         "topics": [
             {
@@ -134,49 +128,155 @@
     },
     {
         "_id": "611c81012b391f2771603e91",
-        "education": "Secondary",
-        "level": 1,
+        "level": 7,
         "topics": [
             {
                 "_id": "611c81012b393f2770603e9c",
+                "topic_name": "Rational Numbers",
+                "skills": [
+                    {
+                        "_id": "611c81012b391f2214603e9c",
+                        "skill_code": "RATIONAL_NUM",
+                        "skill_name": "Rational",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 40
+                        }
+                    }
+                ]
+            },
+            {
+                "_id": "611c81012b393f2720603e9c",
                 "topic_name": "Fractions",
-                "skills": []
+                "skills": [
+                    {
+                        "_id": "611c81012b391f2114603e9c",
+                        "skill_code": "FRAC_ADD_SUB",
+                        "skill_name": "Fraction Add and Sub",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 40
+                        }
+                    }
+                ]
             }
         ]
     },
     {
         "_id": "611c81012b391f2754603e91",
-        "education": "Secondary",
-        "level": 2,
+        "level": 8,
         "topics": [
             {
                 "_id": "611c81015b391f2770673e9c",
-                "topic_name": "Fractions",
-                "skills": []
+                "topic_name": "Ordering Numbers",
+                "skills": [
+                    {
+                        "_id": "611c81012b391f2244603e9c",
+                        "skill_code": "ORDER_NUM",
+                        "skill_name": "Ordering Numbers",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 40
+                        }
+                    }
+                ]
             }
         ]
     },
     {
         "_id": "611c81012b391f2772643e91",
-        "education": "Secondary",
-        "level": 3,
+        "level": 9,
         "topics": [
             {
-                "_id": "611c81012b391f2774603e9c",
-                "topic_name": "Fractions",
-                "skills": []
+                "_id": "611c81012b391f2774633e9c",
+                "topic_name": "Integers",
+                "skills": [
+                    {
+                        "_id": "611c81012b391f2744603e9c",
+                        "skill_code": "INTEGERS_ADD_SUB",
+                        "skill_name": "Add and Sub of Integers",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 40
+                        }
+                    }
+                ]
             }
         ]
     },
     {
         "_id": "611c81012b391f1774602e94",
-        "education": "Secondary",
-        "level": 4,
+        "level": 10,
         "topics": [
             {
-                "_id": "611c81012b391f2771603e9c",
-                "topic_name": "Fractions",
-                "skills": []
+                "_id": "611c81012b391f5771603e9c",
+                "topic_name": "Rounding Off",
+                "skills": [
+                    {
+                        "_id": "611c81012b391f2740603e9c",
+                        "skill_code": "ROUND_OFF",
+                        "skill_name": "Rounding numbers",
+                        "num_of_qn": 10,
+                        "percent_difficulty": "30-50-20",
+                        "duration": 20,
+                        "easy_values": {
+                            "min": 1,
+                            "max": 10
+                        },
+                        "medium_values": {
+                            "min": 10,
+                            "max": 20
+                        },
+                        "difficult_values": {
+                            "min": 20,
+                            "max": 40
+                        }
+                    }
+                ]
             }
         ]
     }

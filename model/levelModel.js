@@ -4,9 +4,6 @@ const { ObjectId } = mongoose.Types;
 const { TopicSchema } = require("./topicModel");
 
 const LevelSchema = new Schema({
-    education: {
-        type: String,
-    },
     level: {
         type: Number,
         required: "Academic level required"

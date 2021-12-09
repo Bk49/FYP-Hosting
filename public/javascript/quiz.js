@@ -33,6 +33,36 @@ $(document).ready(function () {
     getQuizAjax(path, id);
 })
 
+function allowDrop(ev) {
+    ev.preventDefault();
+
+    
+}
+  
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.innerHTML);
+    ev.dataTransfer.setData("id", ev.target.parentElement.parentElement.parentElement.id);
+    ev.dataTransfer.setData("optionId", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+
+    var originalElementText = ev.dataTransfer.getData("text");
+    var originalElementId = ev.dataTransfer.getData("id");
+    var originalElement = document.getElementById(originalElementId);
+    var optionId = ev.dataTransfer.getData("optionId");
+    var targetInnerHTML = ev.currentTarget.children[0].innerHTML;
+
+    // Swap values if drag and drop in the same question
+    if (ev.currentTarget.parentElement.parentElement.id == originalElement.id) {
+        ev.currentTarget.children[0].innerHTML = originalElementText;
+        var originalElementText = originalElement.children[1].children[parseInt(optionId.charAt(3))-1];
+        originalElementText.children[0].innerHTML = targetInnerHTML;
+    }
+    
+}
+
 //On back press
 window.onpopstate = function (e) {
     //Clear timer 
@@ -54,8 +84,7 @@ $(document).on("click", ".dropDownOptions", function () {
     let path;
     let id = this.id;
     let array = ['level', 'topic', 'skill'];
-    console.log("pressed!!!");
-    console.log(id);
+
     for (let i = 0; i < array.length; i++) {
         // let check = $(".dropDownOptions").hasClass(`${array[i]}`);
         // if (check == true) {
@@ -104,6 +133,19 @@ $(document).on("click", "#secondaryDropDown", function() {
     $(".secondaryLvlNo").width($("#secondaryDropDown").innerWidth());
 })
 
+$(document).on("click", ".form-check-inline .form-check-input", function() {
+    var id = this.id;
+
+    if (id == 4 ) {
+        for (var i = 0; i < 4; i++) {
+            this.parentElement.parentElement.children[i].children[0].checked = false;
+        }
+    }
+    else {
+        this.parentElement.parentElement.children[4].children[0].checked = false;
+    }
+})
+
 $(document).on("click", ".click", function () {
     let id = this.id;
 
@@ -120,14 +162,14 @@ $(document).on("click", ".click", function () {
 
         //Checking for empty field
         $('input').each(function () {
-            if ($.trim($(this).val()) == "") {
+            if ($.trim($(this).val()) == "" && quizData.topic_name != "Rational Numbers") {
                 id = this.id;
                 isFill = false;
 
                 return false;
             }
             //Checking for invalid input
-            if (isNaN($(this).val())) {
+            if (isNaN($(this).val()) && quizData.topic_name != "Rational Numbers") {
                 id = this.id;
                 isNumber = false;
 
@@ -427,7 +469,8 @@ function after(path, data) {
     let notes = [];
     let end = '_name';
     let topicsArray = [];
-
+    let level = '';
+    console.log(data);
     if (path != "skill") {
         if (path == 'level') {
             data = data.topics;
@@ -438,12 +481,19 @@ function after(path, data) {
             vname = "skill";
         }
         else {
-            head = 'Primary ';
             vname = "level";
             end = '';
         }
 
         for (let i = 0; i < data.length; i++) {
+                
+                if (data[i].level > 0 && data[i].level < 7) {
+                    head = "Primary "
+                }
+                else {
+                    head = "Secondary "
+                }
+
                 notes.push({
                     "id": data[i]._id,
                     "display": head + data[i][vname + end],
@@ -453,13 +503,19 @@ function after(path, data) {
             
             
         }
-console.log(notes.length)
 
-        console.log(topicsArray);
         displayCard(notes, vname);
     }
     else {
-        head = 'Primary ';
+        if (data.level > 0 && data.level < 7) {
+            head = 'Primary '
+            level = data.level
+        }
+        else {
+            head = 'Secondary '
+            level = data.level - 6
+        }
+
         $("body").html(
             `<div class="row justify-content-center m-2">
                 <div  class="d-flex justify-content-center">
@@ -468,7 +524,7 @@ console.log(notes.length)
                 <div class="col-12 col-sm-10 " id="content">
                     <div class="row flex-nowrap noBar justify-content-center">
                         <div class="d-flex flex-column justify-content-center align-items-center py-5 px-3 p-sm-5" ">       
-                            <h4 class="text-center" id="levelTxt">${head} ${data.level}</h4>
+                            <h4 class="text-center" id="levelTxt">${head} ${level}</h4>
                             <h1 class="text-center" id="skillTxt">${data.skill_name}</h4>
                             <h5 class="text-center" id="durationTxt"><i class="fas fa-clock"></i> Time Limit: ${data.duration} Minutes</h4><br/>
                             <div class="col-6 border p-sm-5 p-3 mt-2" style="border-radius:15px;" id="instructionsBox">
@@ -477,7 +533,7 @@ console.log(notes.length)
                                     <p class="text-center" id="instructionsTxt">Test will be saved and submit automatically when timer is up</p>
                                     <p class="m-1 text-center" id="instructionsTxt">You are required to finish the test in one sitting</p>
                                     <br/><br/>
-                                    <p class="text-center" id="instructionsTxt">There are a total of 10 questions in the quiz</p>
+                                    <p class="text-center" id="instructionsTxt">There are a total of ${data.num_of_qn} questions in the quiz</p>
                                     <p class="text-center" id="instructionsTxt">Answer all of the questions</p>
                                 </div>
                             </div>
@@ -523,21 +579,32 @@ function displayQuestion() {
 }
 
 function displayCard(data, name) {
-    let container = document.getElementById("container");
-    container.innerHTML = '';
+    let primaryContainer = document.getElementById("container");
+    let secondaryContainer = document.getElementById("container2")
+    let lvlName = "";
+    let lvl = 0;
+    primaryContainer.innerHTML = '';
     //Checking if quiz is available
-    console.log(data.length)
     if (data.length > 0) {
         for (let i = 0; i < data.length; i++) {
+
+            lvl = (data[i].display.charAt(data[i].display.length - 2) + data[i].display.charAt(data[i].display.length - 1)).trim();
+            
+            if (lvl > 0 && lvl < 7) {
+                lvlName = "Primary " + lvl;
+            }
+            else {
+                lvlName = "Secondary " + (lvl - 6); 
+            }
+
             let content =
                 `
                 <div class="row p-0">
                     <a class="btn btn-block dropdown mt-2" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
-                        ${data[i].display}<i class="fas fa-angle-down"></i>
+                        ${lvlName}<i class="fas fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu ${name} levelNo" aria-labelledby="dropdownMenuLink" style="width:${$("#opdownMenuLink").width()}">`
                 var topics = "";
-                console.log(data[i].topic.length);
                 if (data[i].topic.length <= 0) {
                     topics += 
                     `
@@ -556,11 +623,17 @@ function displayCard(data, name) {
                 }
                 content += topics;
                 content += "</ul></div></div>";
-            container.innerHTML += content;
+
+                if (lvl > 0 && lvl < 7) {
+                    primaryContainer.innerHTML += content;
+                }
+                else {
+                    secondaryContainer.innerHTML += content;
+                }
         }
     }
     else {
-        container.innerHTML =
+        primaryContainer.innerHTML =
             `<div class='d-flex flex-column align-items-center justify-content-center notAvailable'>
                 <i class="icon-blue fas fa-atom fa-4x"></i>
                 <p class="h5 mt-3">No Quiz Available!</p>
@@ -604,287 +677,26 @@ function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//Fractions
-const fraction = {
-    getGCD: (a, b) => {
-        if (b == 0) {
-            return a;
-        }
-        else {
-            return fraction.getGCD(b, a % b);
-        }
-    },
-    add: (array) => {
-        // a/b + c/d
-        numerator = array.a * array.d + array.b * array.c;
-        denominator = array.b * array.d;
+// Function to generated decimal between min, max and precision (both included)
+function generateRandomDecimal(min, max, precision) {
+    var value = Math.random() * (max - min + 1) + min;
 
-        return fraction.proper(numerator, denominator);
-    },
-    multiply: (array) => {
-        // a/b + c/d
-        numerator = array.a * array.c;
-        denominator = array.b * array.d;
+    return value.toFixed(precision);
+}
 
-        return fraction.proper(numerator, denominator);
-    },
-    proper: (numerator, denominator) => {
-        let result = { "numerator": numerator, "denominator": denominator };
+function generateRandomString(array) {
+    var value = array[generateRandomNumber(0, array.length-1)];
 
-        if ((numerator >= denominator)) {
-            result = {};
-            result['whole'] = Math.floor(numerator / denominator);
-            if (numerator != denominator && numerator % denominator != 0) {
-                result['numerator'] = numerator - (denominator * result['whole']);
-                result['denominator'] = denominator;
-            }
-        }
-
-        return result;
-    },
-    sort: (array) => {
-        let sorted = {};
-        const alphabets = ["a", "b", "c", "d"];
-
-        for (let i = 0; i < array.length; i++) {
-            sorted[alphabets[i]] = array[i];
-        }
-
-        return sorted;
-    },
-    checkDuplicates: (sorted) => {
-        for (let i = 0; i < questionArray.length; i++) {
-            var dupes = true;
-
-            for (key in sorted) {
-                if (questionArray[i][key] != sorted[key]) {
-                    dupes = false;
-                    break;
-                }
-            }
-            if (dupes) break;
-        }
-
-        return dupes;
-    },
-    stringQuestion: (question) => {
-        let result = question.a + "/" + question.b;
-
-        if (quizData.skill_code != 'FRAC_SIMPLIFY') {
-            (quizData.skill_code == 'FRAC_ADD') ? operator = " + " : operator = " x ";
-            result = question.a + "/" + question.b + operator + question.c + "/" + question.d;
-        }
-
-        return result;
-    },
-    stringAnswer: (answer) => {
-        let result;
-
-        if ('ansA' in answer) {
-            ('ans' in answer) ? result = answer.ans + " " + answer.ansA + "/" + answer.ansB : result = answer.ansA + "/" + answer.ansB;
-        }
-        else {
-            result = answer.ans;
-        }
-
-        return result;
-    },
-    generateQuestion: (quizData) => {
-        const numOfQ = quizData.num_of_qn;
-        const percentDifficulty = quizData.percent_difficulty.split("-");
-        const numOfEasy = numOfQ * (percentDifficulty[0] / 100);
-        const numOfMedium = numOfQ * (percentDifficulty[1] / 100);
-
-        for (let i = 0; i < numOfQ; i++) {
-            let gcd;
-            let ans;
-            let sorted;
-            let amount = 4;
-            let checkpoint = true;
-            let key = "difficult_values";
-
-            if (i < numOfEasy) {
-                key = "easy_values";
-            }
-            else if (i < numOfEasy + numOfMedium) {
-                key = "medium_values";
-            }
-
-            if (quizData.skill_code == 'FRAC_SIMPLIFY') amount = 2;
-
-            while (checkpoint) {
-                let numberArray = [];
-
-                for (let l = 0; l < amount; l++) {
-                    numberArray.push(generateRandomNumber(quizData[key].min, quizData[key].max));
-                }
-
-                sorted = fraction.sort(numberArray);
-                let dupes = (questionArray.length != 0) ? fraction.checkDuplicates(sorted) : false;
-
-                if (!dupes) {
-                    if (quizData.skill_code == 'FRAC_SIMPLIFY') {
-                        gcd = fraction.getGCD(sorted.a, sorted.b);
-
-                        if (gcd != 1 && sorted.a != sorted.b) {
-                            ans = fraction.proper(sorted.a, sorted.b);
-                            checkpoint = false;
-                        }
-                    }
-                    else {
-                        if (sorted.a != sorted.b && sorted.c != sorted.d) {
-                            (quizData.skill_code == 'FRAC_ADD') ? ans = fraction.add(sorted) : ans = fraction.multiply(sorted);
-                            if (ans.numerator != null) gcd = fraction.getGCD(ans.numerator, ans.denominator);
-                            checkpoint = false;
-                        }
-                    }
-                }
-            }
-
-            questionArray.push(sorted);
-            if ('whole' in ans) questionArray[i].ans = ans.whole;
-            if ('numerator' in ans) questionArray[i].ansA = ans.numerator / gcd;
-            if ('denominator' in ans) questionArray[i].ansB = ans.denominator / gcd;
-        }
-    },
-    arrangeQuestion: () => {
-        let amount = 3;
-        let content = `<div class="col-12 scrollbar border rounded" id="scrollQuestions" style="border-radius: 7px;">`;
-        if (quizData.skill_code == 'FRAC_SIMPLIFY') amount = 2;
-        for (let i = 0; i < questionArray.length; i++) {
-            content += `<div class="row col-9 justify-content-center align-items-center text-center m-auto mb-5" style="font-family: Poppins"><div class="small col-md-2">Q${i + 1}</div>`;
-
-            for (let l = 0; l < amount; l++) {
-                let name = 'col-12';
-                let operator = null;
-                let wholeInput = "";
-                let className = 'col-12';
-                let holderA = questionArray[i].a;
-                let holderB = questionArray[i].b;
-
-                if (l == 1) {
-                    holderA = questionArray[i].c;
-                    holderB = questionArray[i].d;
-                }
-
-                if (l == amount - 1) {
-                    if ('ans' in questionArray[i]) {
-                        className = 'col-6 p-0';
-
-                        if ('ansA' in questionArray[i]) name = 'col-6 d-flex justify-content-end p-1';
-
-                        wholeInput = `<div class="${name}"><input class="text-center" size="1" id='input${i}'></div>`;
-                    }
-                    if ('ansA' in questionArray[i]) {
-                        holderA = `<input class="text-center" style="font-family: Roboto" size = "1" id='inputA${i}'>`;
-                        holderB = `<input class="text-center" style="font-family: Roboto" size = "1" id='inputB${i}'>`;
-                    }
-                    else {
-                        holderA = null, holderB = null;
-                    }
-
-                }
-                content += `<div class="row col-md-2 align-items-center">` + wholeInput;
-
-                if (holderA != null) {
-                    content += `<div class="${className}"><div style="border-bottom:solid 1px" class="pb-1">${holderA}</div><div class="pt-1">${holderB}</div></div>`;
-                }
-
-                content += "</div>";
-
-                if (l == amount - 2) operator = "=";
-
-                if (quizData.skill_code != 'FRAC_SIMPLIFY') {
-                    if (l == 0) (quizData.skill_code == 'FRAC_ADD') ? operator = "+" : operator = "x";
-                }
-
-                if (operator != null) {
-                    content +=
-                        `<div class="col-md-1">
-                            <div>${operator}</div>
-                        </div>`;
-                }
-            }
-            content += `<div class='col-md-2 reviewClass'><span id='review${i}'></span></div></div>`;
-        }
-
-        return content;
-    },
-    markQuiz: () => {
-        let score
-        let easy = 0;
-        let medium = 0;
-        let difficult = 0;
-        let questions = [];
-
-        const numOfQ = quizData.num_of_qn, percentDifficulty = quizData.percent_difficulty.split("-");
-        const numOfEasy = numOfQ * (percentDifficulty[0] / 100);
-        const numOfMedium = numOfQ * (percentDifficulty[1] / 100);
-        const numOfDifficult = numOfQ * (percentDifficulty[2] / 100);
-
-        for (let i = 0; i < numOfQ; i++) {
-            let review = '<i class="fas fa-check" style="color: #42FE00"></i>';
-            let difficulty = 'difficult';
-            let isCorrect = false;
-            let studentAns = {};
-
-            let input = ('ans' in questionArray[i]) ? $(`#input${i}`).val() : undefined;
-            let inputA = ('ansA' in questionArray[i]) ? $(`#inputA${i}`).val() : undefined;
-            let inputB = ('ansB' in questionArray[i]) ? $(`#inputB${i}`).val() : undefined;
-
-            if (input != undefined) studentAns['ans'] = input;
-            if (inputA != undefined) studentAns['ansA'] = inputA;
-            if (inputB != undefined) studentAns['ansB'] = inputB;
-
-            $(".reviewClass").css("display", "block");
-
-            if (inputA == questionArray[i].ansA && inputB == questionArray[i].ansB && input == questionArray[i].ans) {
-                if (i < numOfEasy) {
-                    difficulty = 'easy';
-                    easy++;
-                }
-                else if (i < numOfEasy + numOfMedium) {
-                    difficulty = 'medium';
-                    medium++;
-                }
-                else {
-                    difficult++;
-                }
-                isCorrect = true;
-            }
-            else {
-                review = '<i class="fas fa-times" style="color: #FF0505"></i>  Ans: ';
-
-                if ('ans' in questionArray[i]) review += `${questionArray[i].ans}`;
-                if ('ansA' in questionArray[i]) review += `<sup>${questionArray[i].ansA}</sup>&frasl;<sub>${questionArray[i].ansB}</sub>`;
-            }
-            document.getElementById(`review${i}`).innerHTML = review;
-
-            questions.push({
-                "skill_id": quizData.skillId,
-                "question_number": i + 1,
-                "question": fraction.stringQuestion(questionArray[i]),
-                "answer": fraction.stringAnswer(studentAns),
-                "correct_answer": fraction.stringAnswer(questionArray[i]),
-                "isCorrect": isCorrect,
-                "difficulty": difficulty
-            });
-        }
-
-        score = {
-            "easy": (easy / numOfEasy) * 100,
-            "medium": (medium / numOfMedium) * 100,
-            "difficult": (difficult / numOfDifficult) * 100,
-        }
-        score["total"] = ((score.easy / 100) * numOfEasy + (score.medium / 100) * numOfMedium + (score.difficult / 100) * numOfDifficult) / numOfQ * 100;
-
-        let points = easy * 5 + medium * 10 + difficult * 15;
-        return [questions, score, points];
-    }
+    return value;
 }
 
 const funcs = {
     'Fractions': fraction,
+    'Rounding Off': roundingOff,
+    'Integers': integers,
+    // 'Algebra': algebra,
+    'Ordering Numbers': ordering,
+    'Rational Numbers': rationalNumbers
 };
 
 
