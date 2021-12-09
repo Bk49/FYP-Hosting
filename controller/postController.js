@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 
 // model and functions
-const groupModel = require("../model/groupModel");
+const { groupModel } = require("../model/groupModel");
 
 // error handler modules
 const { MongoError } = require("mongodb");

@@ -10,20 +10,20 @@ $(document).ready(function () {
         url: '/level',
         dataType: 'JSON',
         success: function (data, textStatus, xhr) {
-            console.log(data);
             if (data.length >= 1) {
                 let notes = [];
+                let display = "";
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].education == "Primary") {
-                        data[i].level = "Primary " + data[i].level;
+                    if (data[i].level > 0 && data[i].level < 7) {
+                        display = "Primary " + data[i].level;
                     }
                     else {
-                        data[i].level = "Secondary " + data[i].level;
+                        display = "Secondary " + (data[i].level - 6);
                     }
                     notes.push({
                         "id": data[i]._id,
-                        "display": data[i].level,
-                        "education": data[i].education
+                        "level": data[i].level,
+                        "display": display,
                     })
                 }
                 displayLevel(notes, "level");
@@ -80,8 +80,6 @@ $(document).on("click", ".level", function () {
         url: `/level/${id}`,
         dataType: 'JSON',
         success: function (data, textStatus, xhr) {
-            console.log(data);
-
             displayTopic(data, "topic");
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -92,7 +90,6 @@ $(document).on("click", ".level", function () {
 
 $(document).on("click", ".editSkill", function () {
     let id = this.id; // get id of skill being clicked
-    console.log("few");
     // get skill details by id
     $.ajax({
         url: `/skill/${id}`,
@@ -140,7 +137,6 @@ $(document).on("click", "#setDefault", function () {
 //Level
 $(document).on("click", ".addLevelBtn", function () {
     let level = $('#inputLevel').val();
-    console.log(level);
     if (level > 0) {
         checkAuth(() => $.ajax({
             url: `/level`,
@@ -293,8 +289,7 @@ $(document).on("click", ".addTopicBtn", function () {
 $(document).on("click", ".editTopicBtn", function () {
     let topic = $('#inputTopic').val();
     let id = this.id;
-    console.log(id);
-    console.log(topic)
+
     checkAuth(() => $.ajax({
         url: `/topic/${id}`,
         type: 'PUT',
@@ -500,7 +495,8 @@ $(document).on("click", ".updateSkillBtn", function () {
             errorDisplay.innerHTML = "";
 
             $('#skillModal').modal('hide');
-            $(`#${data.level_id}`).trigger('click');
+            $(`.level#${data.level_id}`).trigger('click');
+
         },
         error: function (xhr, textStatus, errorThrown) {
             const res = xhr.responseJSON;
@@ -529,7 +525,6 @@ $(document).on("click", ".updateSkillBtn", function () {
 $(document).on("click", ".deleteSkillBtn", function () {
     let id = document.querySelector('#skill_id').value;
     $('#skillModal').modal('hide');
-    console.log(id);
     $.confirm({
         icon: 'fas fa-exclamation-triangle',
         title: 'Are you sure?',
@@ -617,7 +612,6 @@ $(document).on("click", ".addTopic", function () {
 $(document).on("click", ".editTopic", function () {
     let topic = $(this).prev("p").text();
     let id = $(this).parent().parent().parent().attr("id");
-    console.log(id);
     $('#inputTopic').val(topic);
     $('#topicModal').modal('show');
     $('#topicModalTitle').html('Edit Topic');
@@ -661,7 +655,6 @@ $(document).on("click", ".addSkill", function () {
 })
 
 $(document).on("click", ".expandDifficulty", function () {
-    console.log("Testing");
 
     var dropdownContent = this.parentElement.parentElement.nextElementSibling;
 
@@ -678,7 +671,6 @@ $(document).on("click", ".expandDifficulty", function () {
 
 // DISPLAY FUNCTIONS
 function displayLevel(data, name) {
-    console.log(name);
     let primaryContainer = document.getElementById("levelContainer");
     let secondaryContainer = document.getElementById("levelContainer2");
     let content = '';
@@ -695,9 +687,8 @@ function displayLevel(data, name) {
         emptyContainer.style.display = 'none'
         primaryLevelContainer.style.display = 'block'
         secondaryLevelContainer.style.display = 'block'
-        console.log(data);
         for (let i = 0; i < data.length; i++) {
-            if (data[i].education == "Primary") {
+            if (data[i].level > 0 && data[i].level < 7) {
                 content = `
                 <div class="${name}" id="${data[i].id}">
                     <div class="level-container">
@@ -731,11 +722,15 @@ function testing() {
 }
 function displayTopic(data, name) {
     const { _id, level, topics } = data;
-
     document.getElementById("primaryLevelContainer").style.display = 'none';
     document.getElementById("secondaryLevelContainer").style.display = 'none';
     document.getElementById("topicContainer").style.display = 'block';
-    document.getElementById("levelTag").innerHTML = "Primary " + level;
+    if (level > 0 && level < 7) {
+        document.getElementById("levelTag").innerHTML = "Primary " + level;
+    }
+    else {
+        document.getElementById("levelTag").innerHTML = "Secondary " + (level - 6);
+    }
     document.getElementById("levelContainer").style.display = "none";
     // document.getElementById("back").style.display = "block";
 
@@ -781,7 +776,7 @@ function displayTopic(data, name) {
                 <div class="col-4">
                     <p class="ps-0">Skill Name</p>
                 </div>
-                <div class="col">
+                <div class="col-2">
                     <p class="ps-0">Skill Code</p>
                 </div>
                 <div class="col d-flex justify-content-center">
@@ -805,7 +800,7 @@ function displayTopic(data, name) {
                     <div class="col-4 d-flex">
                         <p class="ps-0">${element.skill_name}</p>
                     </div>
-                    <div class="col d-flex">
+                    <div class="col-2 d-flex">
                         <p class="ps-0">${element.skill_code}</p>
                     </div>
                     <div class="col d-flex justify-content-center">

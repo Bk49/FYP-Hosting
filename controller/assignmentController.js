@@ -253,6 +253,7 @@ router.post(
 
             res.status(200).send({ new_id: result._id });
         } catch (err) {
+            console.log("err is");
             console.log(err)
             if (err instanceof Error || err instanceof MongoError)
                 res.status(500).send({

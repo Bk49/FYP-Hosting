@@ -426,9 +426,15 @@ function displayAssignments(assignments) {
 function populateLevelSelect(levels) {
     let levelSelect = document.querySelector("#level-select");
     let content = ``;
+    let education = `Primary`;
     levels.forEach(row => {
+        if (row.level > 6 ) {
+            education = `Secondary`
+            row.level = row.level - 6;
+        }
+
         content += `
-            <option value="${row._id}">Primary ${row.level}</option>
+            <option value="${row._id}">${education} ${row.level}</option>
         `;
     });
     levelSelect.innerHTML += content;
