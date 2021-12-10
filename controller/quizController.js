@@ -211,43 +211,51 @@ router.post("/", validate("createQuiz"), async (req, res) => {
         // Get leaderboard first so that later on can check if top 3 places has any difference (only require if there is a group)
         const { assignment_id } = req.body;
         let oldLeaderboard;
-        if (assignment_id) {
-            const { group_id } = await assignmentModel.getAsgById(
-                assignment_id
-            );
-            oldLeaderboard = [
-                await groupModel.viewGroupLeaderboardTop(group_id, 1),
-                await groupModel.viewGroupLeaderboardTop(group_id, 2),
-                await groupModel.viewGroupLeaderboardTop(group_id, 3),
-            ];
-        }
+        const { group_id } = await assignmentModel.getAsgById(assignment_id);
+        oldLeaderboard = [
+            await groupModel.viewGroupLeaderboardTop(group_id, 1),
+            await groupModel.viewGroupLeaderboardTop(group_id, 2),
+            await groupModel.viewGroupLeaderboardTop(group_id, 3),
+        ];
+
         const result = await quizModel.createQuiz(req.body);
 
         // This notifications part cannot merge with group one because the quiz must be inserted before the createAssignmentMarkingNotification can check if all students completed the quiz
-        const { asgId } = result;
         // If there is assignment, check if need to create notifications for assignment
-        if (asgId) {
-            await notificationModel.createAssignmentMarkingNotification(
-                asgId,
-                true
-            ); // Specify true to mention that it is checking for all students complete before deadline
 
-            // When there is a new quiz being added, check if changes to leaderboard to push notifications if needed
-            const newLeaderboard = [
-                await groupModel.viewGroupLeaderboardTop(group_id, 1),
-                await groupModel.viewGroupLeaderboardTop(group_id, 2),
-                await groupModel.viewGroupLeaderboardTop(group_id, 3),
-            ];
+        await notificationModel.createAssignmentMarkingNotification(
+            assignment_id,
+            true
+        ); // Specify true to mention that it is checking for all students complete before deadline
 
-            // If leaderboard changes, push notifications
-            if (!_.isEqual(newLeaderboard, oldLeaderboard)) {
+        // When there is a new quiz being added, check if changes to leaderboard to push notifications if needed
+        const newLeaderboard = [
+            await groupModel.viewGroupLeaderboardTop(group_id, 1),
+            await groupModel.viewGroupLeaderboardTop(group_id, 2),
+            await groupModel.viewGroupLeaderboardTop(group_id, 3),
+        ];
+
+        // If leaderboard changes, push notifications
+        for (let j = 0; j < 3; j++) {
+            if (
+                Object.keys(newLeaderboard[j].leaderboard).length !==
+                    Object.keys(oldLeaderboard[j].leaderboard).length ||
+                Object.keys(newLeaderboard[j].leaderboard).every(
+                    (p) =>
+                        newLeaderboard[j].leaderboard[p] !==
+                        oldLeaderboard[j].leaderboard[p]
+                )
+            ) {
                 await notificationModel.createLeaderboardChangesNotification(
-                    asgId
+                    assignment_id
                 );
+                break;
             }
         }
+
         res.status(201).send({ new_id: result._id });
     } catch (err) {
+        console.log(err);
         if (err instanceof Error || err instanceof MongoError)
             res.status(500).send({
                 error: err.message,
