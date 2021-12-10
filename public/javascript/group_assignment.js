@@ -45,7 +45,7 @@ $(document).on("click", ".tag-container", function () {
 $(document).on("click", ".assignment", function () {
 
     var toggleContent = this.firstElementChild.lastElementChild;
-    var toggleIcon = this.firstElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
+    var toggleIcon = this.firstElementChild;
 
     if (toggleContent.style.display == "none" || toggleContent.style.display == "") {
         toggleIcon.className = "fas fa-angle-down fa-lg my-auto w-auto expandIcon";
