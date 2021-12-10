@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import { NativeRouter, Route, Routes } from "react-router-native";
 // Error pages import
 import Error403 from "./components/pages/error-pages/403"
