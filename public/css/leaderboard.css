@@ -24,7 +24,7 @@
 
 .rightbar {
     font-family: "Roboto", Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* Leaderboard header and change school button styles => Only applies to normal leaderboard */

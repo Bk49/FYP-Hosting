@@ -279,6 +279,13 @@ const quizModel = {
                 else if (filterType == 3)
                     matchAry.push({ "user.grade": user.grade });
 
+                const matchAryObj =
+                    matchAry.length > 1
+                        ? {
+                              $and: matchAry,
+                          }
+                        : matchAry[0];
+
                 // Check the way to be sorted is by average score, time taken or quizzes completed
                 let groupObj = { _id: "$done_by" };
                 let sortObj = {};
@@ -323,13 +330,7 @@ const quizModel = {
                         },
                     },
                     {
-                        $match: {
-                            $and: matchAry,
-                            // [
-                            //     { "user.role": "student" },
-                            //     { "user.school": user.school },
-                            // ],
-                        }, //ensure only students are in leaderboard
+                        $match: matchAryObj,
                     },
                     match_options,
                     {
