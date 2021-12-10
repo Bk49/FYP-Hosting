@@ -22,7 +22,7 @@ $(document).on("click", "#change-level", function () {
 // For changing of dropdown: Type
 const onChangeType = (type = 1) => {
     const level = $("#change-level").text().split(" ")[3];
-    const filterTxt = $("#type-button").text().split(" ")[0];
+    const filterTxt = $("#filter-button").text().trim();
     const filter = filterTxt === "Global" ? 1 : filterTxt === "School" ? 2 : 3;
     getLeaderboard(level, type, filter);
     $("#type-content").css("visibility", "hidden");
