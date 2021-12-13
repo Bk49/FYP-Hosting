@@ -9,8 +9,6 @@
     src: url(fonts/coolvetica/coolvetica_condensed_rg.ttf);
 }
 
-
-
 @font-face {
     font-family: Feather;
     src: url(fonts/feather/feather.ttf);
@@ -44,27 +42,24 @@
 
 /* Page Layout */
 
-.overviewheader h1{
-font-family: Coolvetica;
-font-style: normal;
-font-weight: normal;
-font-size: 45px;
-line-height: 54px;
-margin-top: 54px;
-/* identical to box height */
+.overviewheader h1 {
+    font-family: Coolvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 45px;
+    line-height: 54px;
+    margin-top: 54px;
+    /* identical to box height */
 
-
-color: #000000;
-
+    color: #000000;
 }
 
 .profileimg-wrapper {
     /* border: 1.5px solid rgba(0, 0, 0, 0.2); */
     min-width: 410px;
     min-height: 220px;
-   
-    
-    background: linear-gradient(180deg, #FF99e9 0%, #99f1fd 100%);
+
+    background: linear-gradient(180deg, #ff99e9 0%, #99f1fd 100%);
     border-radius: 15px;
     align-self: center;
 }
@@ -83,25 +78,22 @@ color: #000000;
     margin: 0;
 }
 
-
-
-.readyForaQuizImg{
+.readyForaQuizImg {
     margin-top: 10px;
     width: 95%;
     min-width: 10px;
     border-radius: 15px;
-   
 }
 
 .profile-card {
     display: flex;
     margin: 50px;
     width: 430px;
-   
+
     flex-direction: column;
-    
+
     /* background-color: #98C5FF; */
-    background: linear-gradient(126.37deg, #E0EAFC 0%, #CFDEF3 100%);
+    background: linear-gradient(126.37deg, #e0eafc 0%, #cfdef3 100%);
     backdrop-filter: blur(6px);
     /* margin: -490px 0px 0px 600px; */
     min-height: 411px;
@@ -113,7 +105,7 @@ color: #000000;
 .profile-card h3 {
     text-align: center;
     font-family: "Feather", sans-serif;
-    color: #3DB3FF;
+    color: #3db3ff;
     justify-content: center;
     font-weight: 700;
     text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
@@ -122,7 +114,7 @@ color: #000000;
 #account-fn {
     text-align: center;
     font-family: "Feather", sans-serif;
-    color: #3DB3FF;
+    color: #3db3ff;
     justify-content: center;
     font-weight: 700;
     text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
@@ -132,7 +124,7 @@ color: #000000;
 #account-ln {
     text-align: center;
     font-family: "Feather", sans-serif;
-    color: #3DB3FF;
+    color: #3db3ff;
     justify-content: center;
     font-weight: 700;
     text-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
@@ -146,9 +138,9 @@ color: #000000;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 1px;
-    
+
     /* background-color: #98C5FF; */
-    background: linear-gradient(162.98deg, #83A4D4 0%, #B6FBFF 100%);
+    background: linear-gradient(162.98deg, #83a4d4 0%, #b6fbff 100%);
     backdrop-filter: blur(6px);
     /* margin: -490px 0px 0px 600px; */
     min-height: 579px;
@@ -160,11 +152,10 @@ color: #000000;
 .assignment-card h3 {
     text-align: center;
     font-family: "Feather", sans-serif;
-    color:#F2F2F2;
+    color: #f2f2f2;
     justify-content: center;
     font-weight: 700;
     text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    
 }
 
 .row {
@@ -173,32 +164,31 @@ color: #000000;
 }
 
 .small-assignment-box {
-    
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     background-color: #ffffff;
-    margin-top: 30px;  
+    margin-top: 30px;
 }
 
 .small-assignment-side-button-1 {
-    background: #6696CA;
+    background: #6696ca;
     box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 15px 15px 0px;
-    border:none;
+    border: none;
 }
 
 .small-assignment-side-button-2 {
-    background: #6696CA;
+    background: #6696ca;
     box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 15px 15px 0px;
-    border:none;
+    border: none;
 }
 
 .small-assignment-side-button-3 {
-    background: #6696CA;
+    background: #6696ca;
     box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 15px 15px 0px;
-    border:none;
+    border: none;
 }
 
 .assignmentimg1 {
@@ -207,7 +197,7 @@ color: #000000;
     justify-content: center;
     align-self: center;
     margin-left: 10px;
-   margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 .small-assignment-header h4 {
@@ -218,26 +208,22 @@ color: #000000;
     line-height: 24px;
     align-self: end;
     justify-content: center;
-    margin-left: 10px;   
+    margin-left: 10px;
     margin-bottom: 12px;
 }
 
 .small-assignment-text-box {
-
-    background-color: #FFC83C;
+    background-color: #ffc83c;
     border-radius: 15px;
     max-height: 25px;
     margin-left: 15px;
     margin-right: 25px;
-    
 }
 
-
 .small-assignment-text-box2 {
-    
     border-radius: 15px;
     max-height: 25px;
-    background: #7B61FF;
+    background: #7b61ff;
     align-self: end;
     margin-left: 5px;
     margin-right: 15px;
@@ -256,7 +242,7 @@ color: #000000;
     font-size: 14px;
     line-height: 14px;
     white-space: nowrap;
-    color: #fff; 
+    color: #fff;
 }
 
 #Date-1 {
@@ -267,7 +253,7 @@ color: #000000;
     line-height: 24px;
     white-space: nowrap;
     overflow: auto;
-    color: #fff; 
+    color: #fff;
 }
 
 #Title-2 {
@@ -282,7 +268,7 @@ color: #000000;
     font-size: 14px;
     line-height: 14px;
     white-space: nowrap;
-    color: #fff; 
+    color: #fff;
 }
 
 #Date-2 {
@@ -293,11 +279,11 @@ color: #000000;
     line-height: 24px;
     white-space: nowrap;
     overflow: auto;
-    color: #fff; 
+    color: #fff;
 }
 
-.fa-clock{
-    color: #fff; 
+.fa-clock {
+    color: #fff;
     margin-right: 5px;
 }
 
@@ -313,7 +299,7 @@ color: #000000;
     font-size: 14px;
     line-height: 14px;
     white-space: nowrap;
-    color: #fff; 
+    color: #fff;
 }
 
 #Date-3 {
@@ -324,29 +310,26 @@ color: #000000;
     line-height: 24px;
     white-space: nowrap;
     overflow: auto;
-    color: #fff; 
+    color: #fff;
 }
 
-
-
 .assignmentheader {
-    width:100%;
+    width: 100%;
     align-self: start;
     font-family: "Feather";
     max-height: 50px;
-    
 }
 /* top | right | bottom | left */
 
 .assignmentbutton {
-    
     width: 100%;
     min-height: 68px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px -2px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+        inset 0px -2px 1px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
-    justify-content:end;
+    justify-content: end;
     align-items: end;
-    background: #81C6ED;
+    background: #81c6ed;
     color: #fff;
     font-family: "Poppins", "Segoe UI", Arial, sans-serif;
     font-size: 18px;
@@ -377,8 +360,7 @@ color: #000000;
     margin-top: 50px;
     flex-direction: column;
     justify-content: start;
-    
-    
+
     /* background-color: #98C5FF; */
     backdrop-filter: blur(6px);
     /* margin: -490px 0px 0px 600px; */
@@ -386,43 +368,40 @@ color: #000000;
     border-radius: 20px;
     padding: 28px;
     box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.05);
-    background: linear-gradient(162.98deg, #654EA3 0%, #EAAFC8 100%);
-    
+    background: linear-gradient(162.98deg, #654ea3 0%, #eaafc8 100%);
 }
 
-#NotificationTitle-1{
+#NotificationTitle-1 {
     margin: 0;
 }
 
 .notification-card h3 {
     text-align: center;
     font-family: "Feather", sans-serif;
-    color:#F2F2F2;
+    color: #f2f2f2;
     justify-content: center;
     font-weight: 700;
-    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);   
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
     margin-bottom: 30px;
-    
 }
 
 .notification-large-box {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     display: flex;
-    background: #F0F0F0;
+    background: #f0f0f0;
     flex-direction: column;
     max-height: 1000px;
-    
 }
 
 .notification-scroll-box {
     max-height: inherit;
     overflow-y: scroll;
-    margin: 5px 5px 5px 0 
+    margin: 5px 5px 5px 0;
 }
 
 .notification-scroll-box::-webkit-scrollbar {
-    background: #F0F0F0;
+    background: #f0f0f0;
     width: 5px;
 }
 
@@ -431,20 +410,14 @@ color: #000000;
 }
 
 .notification-scroll-box::-webkit-scrollbar-thumb {
-    background: #C9B3CE;
+    background: #c9b3ce;
     border-radius: 100px;
-    
 }
 
 .notificationheader {
     align-self: start;
     font-family: "Feather";
-    max-height: 50px;    
-}
-
-.notificationimg1 {
-    width: 35px;
-    max-height: 35px;
+    max-height: 50px;
 }
 
 .small-notification-box {
@@ -452,8 +425,8 @@ color: #000000;
     border-radius: 15px;
     background-color: #ffffff;
     border-radius: 15px;
-    margin:auto;
-    margin-top: 25px;  
+    margin: auto;
+    margin-top: 25px;
     margin-bottom: 10px;
     width: 95%;
 }
@@ -463,8 +436,9 @@ color: #000000;
     max-height: 35px;
     justify-content: center;
     align-self: center;
-   margin-bottom: 5px;
-   margin-top: 10px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    border-radius: 100%;
 }
 
 .small-notification-header h4 {
@@ -476,18 +450,16 @@ color: #000000;
     line-height: 24px;
     align-self: end;
     justify-content: center;
-    margin-left: 10px;   
+    margin-left: 10px;
     margin-bottom: 12px;
 }
 
 .small-notification-text-box {
-
-    background-color: #FFC83C;
+    background-color: #ffc83c;
     border-radius: 15px;
     max-height: 25px;
     margin-left: 15px;
     margin-right: 25px;
-    
 }
 .small-notification-normal-text {
     margin-bottom: 10px;
@@ -511,16 +483,14 @@ color: #000000;
     line-height: 14px;
     white-space: nowrap;
     overflow: auto;
-    color: #fff; 
-
+    color: #fff;
 }
 
 .small-notification-text-box2 {
-    
-    background-color: #FFC83C;
+    background-color: #ffc83c;
     border-radius: 15px;
     max-height: 25px;
-    background: #7B61FF;
+    background: #7b61ff;
     align-self: end;
     margin-left: 25px;
     margin-right: 15px;
@@ -535,28 +505,28 @@ color: #000000;
     line-height: 24px;
     white-space: nowrap;
     overflow: auto;
-    color: #fff; 
+    color: #fff;
 }
 
 .small-notification-side-button-1 {
-    background: #BC66CA;
+    background: #bc66ca;
     box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 15px 15px 0px;
-    border:none;
+    border: none;
 }
 
 .small-notification-side-button-2 {
-    background: #BC66CA;
+    background: #bc66ca;
     box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 15px 15px 0px;
-    border:none;
+    border: none;
 }
 
 .small-notification-side-button-3 {
-    background: #BC66CA;
+    background: #bc66ca;
     box-shadow: -1px 0px 4px rgba(0, 0, 0, 0.25);
     border-radius: 0px 15px 15px 0px;
-    border:none;
+    border: none;
 }
 
 .attempt-daily-quiz-card {
@@ -564,27 +534,27 @@ color: #000000;
     margin: 50px;
     width: 430px;
     flex-direction: column;
-    
+
     /* background-color: #98C5FF; */
-    background: linear-gradient(126.37deg, #E0EAFC 0%, #CFDEF3 100%);
+    background: linear-gradient(126.37deg, #e0eafc 0%, #cfdef3 100%);
     backdrop-filter: blur(6px);
     /* margin: -490px 0px 0px 600px; */
     min-height: 411px;
-    
-    background: linear-gradient(126.37deg, #9796F0 0%, #FBC7D4 100%);
+
+    background: linear-gradient(126.37deg, #9796f0 0%, #fbc7d4 100%);
     border-radius: 15px;
 }
 
 .attempt-daily-quizbutton {
-    
     width: 80%;
     min-height: 68px;
 
     border-radius: 20px;
-    background: #3DB3FF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px -2px 2px rgba(0, 0, 0, 0.25);
+    background: #3db3ff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+        inset 0px -2px 2px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
-    justify-content:end;
+    justify-content: end;
     align-items: end;
     color: #fff;
     font-family: "Poppins", "Segoe UI", Arial, sans-serif;
@@ -615,9 +585,9 @@ color: #000000;
     width: 430px;
     flex-direction: column;
     margin: auto;
-    
+
     /* background-color: #98C5FF; */
-    background: linear-gradient(139.59deg, #A1FFCE 0%, #FAFFD1 100%);
+    background: linear-gradient(139.59deg, #a1ffce 0%, #faffd1 100%);
     backdrop-filter: blur(6px);
     /* margin: -490px 0px 0px 600px; */
     min-height: 180px;
@@ -629,8 +599,6 @@ color: #000000;
 .leaderboardimg-wrapper {
     /* border: 1.5px solid rgba(0, 0, 0, 0.2); */
 
-    
-    
     border-radius: 15px;
     align-self: center;
     justify-content: center;
@@ -638,7 +606,7 @@ color: #000000;
 
 .leaderboardimg {
     width: 430px;
-border-radius: 15px;
+    border-radius: 15px;
 }
 
 .leaderboard-button-container {
@@ -650,7 +618,7 @@ border-radius: 15px;
     max-width: 380px;
     margin-left: 25px;
     border-radius: 15px;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     color: #fff;
     font-family: "Poppins", "Segoe UI", Arial, sans-serif;
@@ -659,8 +627,9 @@ border-radius: 15px;
     padding: 6px 48px;
     transition-duration: 0.3s;
     border: 0;
-    background: #FFBA52;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px -2px 1px rgba(0, 0, 0, 0.25);
+    background: #ffba52;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+        inset 0px -2px 1px rgba(0, 0, 0, 0.25);
 }
 
 .leaderboard-button:hover {
@@ -672,7 +641,6 @@ border-radius: 15px;
     position: relative;
     top: 1px;
 }
-
 
 .outstanding {
     background-color: #f4f9ff;
@@ -694,7 +662,6 @@ border-radius: 15px;
     color: #696969;
 }
 
-
 /* Play Game wrapper */
 .play-game {
     position: relative;
@@ -713,7 +680,6 @@ border-radius: 15px;
     font-size: 18px;
     transition: 0.3s ease;
     width: 430px;
-
 }
 
 .play-game:hover {
@@ -764,7 +730,7 @@ border-radius: 15px;
         order: 2;
         margin: 0;
     } */
-    /* .column2 {
+/* .column2 {
         width: 100%;
         padding: 12px;
     }
@@ -789,4 +755,4 @@ border-radius: 15px;
     .column2 {
         width: 75%;
     }
-} */ 
+} */
