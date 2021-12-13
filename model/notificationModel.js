@@ -57,6 +57,41 @@ const notificationModel = {
                             created_at: -1,
                         },
                     },
+                    {
+                        $lookup: {
+                            from: "users",
+                            as: "teacher",
+                            localField: "teacher_id",
+                            foreignField: "_id",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "groups",
+                            as: "group",
+                            localField: "group_id",
+                            foreignField: "_id",
+                        },
+                    },
+                    {
+                        $project: {
+                            group_id: 0,
+                            group: {
+                                members: 0,
+                                posts: 0,
+                                __v: 0,
+                                owner: 0,
+                            },
+                            teacher: {
+                                password: 0,
+                                email: 0,
+                                gender: 0,
+                                role: 0,
+                                created_at: 0,
+                                __v: 0,
+                            },
+                        },
+                    },
                 ]);
                 if (!result) throw "NOT_FOUND";
 
