@@ -179,6 +179,8 @@ $(document).on("click", ".click", function () {
 
 
         if (isFill && isNumber || countdown < 1) {
+            // var c = document.getElementById('the_canvas_element_id');
+            // var t = c.getContext('2d');
             //Stop the timer
             clearInterval(intervalId);
 
@@ -227,7 +229,44 @@ $(document).on("click", ".click", function () {
                             <a class="my-3" href="https://www.instagram.com/"><button class="btn btn-lg text-light" id="instagram"><i class="fab fa-instagram"></i> Share Instagram</button></a><br>
                         </div>
                         <div class="col-4 d-flex ">
-                            <a class="my-3" href="https://www.instagram.com/"><button class="btn btn-lg text-light" id="facebook"><i class="fab fa-facebook-square"></i> Share Facebook</button></a><br>
+
+                            <!-- Load Facebook SDK for JavaScript -->
+                            <div id="fb-root"></div>
+                            <script>
+                                (function(d, s, id) {
+                                    console.log("get s");
+
+                                    console.log(s);
+                                    console.log(d);
+                                    console.log(id);
+
+                                    var js, fjs = d.getElementsByTagName(s)[0];
+                                    if (d.getElementById(id)) return;
+                                    js = d.createElement(s); js.id = id;
+                                    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+                                    fjs.parentNode.insertBefore(js, fjs);
+                                }(document, 'script', 'facebook-jssdk'));
+                            </script>
+                                             
+                            <a class="my-3 share-btn" href="#"><button class="btn btn-lg text-light" id="facebook"><i class="fab fa-facebook"></i> Share Facebook</button></a><br>
+                            <script type="text/javascript">
+                            function fb_share() {
+                                // facebook share dialog
+                                FB.ui( {
+                                    method: 'feed',
+                                    caption: "regreg",
+                                    description: "testtest",
+                                    name: "testing123",
+                                    picture: "http://fbrell.com/f8.jpg"
+                                });
+
+                            }
+                            // add click event to link using jQuery
+                            $(document).ready(function(){
+                            $('.share-btn').on( 'click', fb_share );
+                            });
+                            </script>
+
                         </div>
                     </div>
                 </div>
@@ -334,6 +373,20 @@ $(document).on("click", ".returnBtn", function () {
     });
 })
 
+// $(function() { 
+//     $("#shareBtn").click(function() { 
+//         html2canvas($("#scoreMessage"), {
+//             onrendered: function(canvas) {
+//                 theCanvas = canvas;
+//                 document.body.appendChild(canvas);
+
+//                 canvas.toBlob(function(blob) {
+// 					saveAs(blob, "Dashboard.png"); 
+// 				});
+//             }
+//         });
+//     });
+// }); 
 /* API CALLS */
 function getQuizAjax(path, id) {
     $.ajax({
