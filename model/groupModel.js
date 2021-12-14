@@ -170,6 +170,7 @@ const groupModel = {
                             "owner.first_name": 1,
                             "owner.last_name": 1,
                             "owner.role": 1,
+                            "owner.pfp": 1,
                             members: 1,
                         },
                     },
@@ -231,6 +232,15 @@ const groupModel = {
                                         input: "$user",
                                         as: "user",
                                         in: "$$user.email",
+                                    },
+                                },
+                            },
+                            "members.pfp": {
+                                $first: {
+                                    $map: {
+                                        input: "$user",
+                                        as: "user",
+                                        in: "$$user.pfp",
                                     },
                                 },
                             },
@@ -955,6 +965,7 @@ const groupModel = {
                             last_name: "$user.last_name",
                             school: "$user.school",
                             grade: "$user.grade",
+                            pfp: "$user.pfp",
                         },
                     },
                     {

@@ -92,6 +92,7 @@ const assignmentModel = {
                                     },
                                 },
                             },
+                            pfp: { $first: "$user.pfp" },
                         },
                     },
                     {
