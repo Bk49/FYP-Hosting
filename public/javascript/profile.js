@@ -162,7 +162,11 @@ function updateAccount(data) {
             processData: false,
             data: formData,
             success: function (data, textStatus, xhr) {
-                console.log(data);
+                $.alert({
+                    title: "Profile image uploaded!",
+                    content: "Reload page to see the new changes!",
+                });
+                localStorage.setItem("userInfo", JSON.stringify(data.user))
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log(xhr.responseText);
@@ -178,7 +182,7 @@ function updateAccount(data) {
         success: function (data, textStatus, xhr) {
             $.alert({
                 title: "Updated!",
-                content: "Profile successfully updated!",
+                content: "Profile successfully updated! Image might take a few seconds to upload",
             });
             localStorage.setItem("userInfo", JSON.stringify(data.user));
         },
