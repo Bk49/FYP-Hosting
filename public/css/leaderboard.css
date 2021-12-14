@@ -119,6 +119,8 @@
     width: 7vw;
     border-radius: 1000px;
     margin: auto;
+    aspect-ratio: 1;
+    object-fit: cover;    
 }
 
 .top-rank:nth-child(2) {

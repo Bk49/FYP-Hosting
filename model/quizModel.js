@@ -350,6 +350,7 @@ const quizModel = {
                     row.last_name = row.user[0].last_name;
                     row.school = row.user[0].school;
                     row.grade = row.user[0].grade;
+                    row.pfp = row.user[0].pfp
                     delete row.user;
                 });
 

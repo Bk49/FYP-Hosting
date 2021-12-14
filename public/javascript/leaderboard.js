@@ -144,6 +144,7 @@ function displayLeaderboard(data, type) {
                 last_name,
                 school,
                 grade,
+                pfp
             } = data[i];
 
             const school_proper = school
@@ -169,7 +170,7 @@ function displayLeaderboard(data, type) {
                         i == 0 ? "first" : i == 1 ? "second" : "third"
                     }">
                         <span class="top-rank-num">${i + 1}${ordinal}</span>
-                        <img class="pfp" src="./images/testing.jpg"/>
+                        <img class="pfp" src="${pfp ? pfp : "./avatars/elephant.png"}"/>
                         <span class="top-name">${first_name} ${last_name}</span>
                         <span class="top-grade">${grade_formatted}</span>
                         <span class="top-school">${school_proper}</span>

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let role = JSON.parse(localStorage.getItem("userInfo")).role;
+    const { role, pfp } = JSON.parse(localStorage.getItem("userInfo"));
     if (role == "admin") {
         window.location.href = "/control.html";
     } else if (role == "parent" || role == "teacher") {
@@ -9,6 +9,7 @@ $(document).ready(function () {
         document.getElementById("name").innerHTML = getName();
     });
     getRecommendation();
+    $(`#welcome-pfp`).attr("src", pfp)
 
     let user = JSON.parse(localStorage.getItem("userInfo"));
     let width = (user.exp_points / ((user.rank_level + 1) * 1000)) * 100;
@@ -35,25 +36,6 @@ function getNotification(userId) {
     });
 }
 
-// function getNotificationByUser(notification) {
-//     console.log(notification);
-
-//     $.ajax({
-//         url: `/user/${notification.teacher_id}`,
-//         type: "GET",
-//         dataType: "JSON",
-//         success: function (data, textStatus, xhr) {
-//             console.log(data);
-//             console.log(data.first_name);
-//             console.log(data.last_name);
-//             displayNotifications(data, notification);
-//         },
-//         error: function (xhr, textStatus, errorThrown) {
-//             console.log(errorThrown);
-//         },
-//     });
-// }
-
 function displayNotifications(data) {
     var notificationBox = document.getElementById("notification-box");
     for (let notification of data) {
@@ -68,9 +50,10 @@ function displayNotifications(data) {
         switch (type) {
             case "recurring":
             case "new":
+                const pfp = notification.teacher[0].pfp;
                 href = `quiz.html?skill=${notification.skill_id}&assignment=${notification.assignment_id}`;
                 // Temporary image to represent pfp of TEACHER
-                imageUrl = `./images/testing.jpg`;
+                imageUrl = pfp ? pfp : `./images/testing.jpg`;
                 break;
             case "leaderboard":
                 href = `group_leaderboard.html?groupId=${notification.group_id}`;
@@ -237,7 +220,6 @@ function getAssignmentByUser() {
         url: `/assignment/user?userId=${userId}`,
         dataType: "JSON",
         success: function (data, textStatus, xhr) {
-            console.log(data);
             displayAssignments(data);
         },
         error: function (xhr, textStatus, errorThrown) {
@@ -247,57 +229,28 @@ function getAssignmentByUser() {
 }
 
 function displayAssignments(data) {
-    var title1 = document.getElementById("Title-1");
-    var skill1 = document.getElementById("Skill-1");
-    var date1 = document.getElementById("Date-1");
+    for (let i = 0; i < 3; i++) {
+        console.log(data);
+        document.getElementById(`Title-${i + 1}`).innerHTML = data[i].title;
+        document.getElementById(`Skill-${i + 1}`).innerHTML =
+            data[i].skill_name;
+        document.getElementById(
+            `Date-${i + 1}`
+        ).innerHTML = `<i class="fas fa-clock"></i>${displayDate(
+            data[i].deadline
+        )}`;
+        if (data[i].pfp) $(`#Image-${i + 1}`).attr("src", data[i].pfp);
 
-    var title2 = document.getElementById("Title-2");
-    var skill2 = document.getElementById("Skill-2");
-    var date2 = document.getElementById("Date-2");
-
-    var title3 = document.getElementById("Title-3");
-    var skill3 = document.getElementById("Skill-3");
-    var date3 = document.getElementById("Date-3");
-
-    title1.innerHTML = data[0].title;
-    skill1.innerHTML = data[0].skill_name;
-    date1.innerHTML = `<i class="fas fa-clock"></i>${displayDate(
-        data[0].deadline
-    )}`;
-
-    title2.innerHTML = data[1].title;
-    skill2.innerHTML = data[1].skill_name;
-    date2.innerHTML = `<i class="fas fa-clock"></i>${displayDate(
-        data[1].deadline
-    )}`;
-
-    title3.innerHTML = data[2].title;
-    skill3.innerHTML = data[2].skill_name;
-    date3.innerHTML = `<i class="fas fa-clock"></i>${displayDate(
-        data[2].deadline
-    )}`;
-
-    $(document).on("click", ".small-assignment-side-button-1", function () {
-        window.location.href =
-            "/quiz.html?skill=" +
-            data[0].skill_id +
-            "&assignment=" +
-            data[0]._id;
-    });
-
-    $(document).on("click", ".small-assignment-side-button-2", function () {
-        window.location.href =
-            "/quiz.html?skill=" +
-            data[1].skill_id +
-            "&assignment=" +
-            data[1]._id;
-    });
-
-    $(document).on("click", ".small-assignment-side-button-3", function () {
-        window.location.href =
-            "/quiz.html?skill=" +
-            data[2].skill_id +
-            "&assignment=" +
-            data[2]._id;
-    });
+        $(document).on(
+            "click",
+            `.small-assignment-side-button-${i + 1}`,
+            function () {
+                window.location.href =
+                    "/quiz.html?skill=" +
+                    data[i].skill_id +
+                    "&assignment=" +
+                    data[i]._id;
+            }
+        );
+    }
 }
