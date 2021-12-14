@@ -1,11 +1,20 @@
 $(document).ready(() => {
     getNotificationsByUserId();
+    setProfileImage();
 });
 
 const token = localStorage.getItem("token");
 const base64Url = token.split(".")[1]; // token you get
 const base64 = base64Url.replace("-", "+").replace("_", "/");
 const { sub, issuedRole } = JSON.parse(window.atob(base64));
+
+// Set profile image
+
+const setProfileImage = () => {
+    const { pfp } = JSON.parse(localStorage.getItem("userInfo"));
+    if (!pfp) return;
+    $("#topbar-pfp").attr("src", pfp);
+};
 
 /* API CALLS */
 const getNotificationsByUserId = () => {
@@ -31,7 +40,7 @@ const renderNotification = (data) => {
     } else {
         if (issuedRole === "student") {
             for (let notification of data) {
-                console.log(notification.skill_id)
+                console.log(notification.skill_id);
                 const type =
                     notification.content.slice(0, 5) === "There"
                         ? "leaderboard"
@@ -59,10 +68,8 @@ const renderNotification = (data) => {
                 // Append the html code
                 $("#notificationList").append(`
                         <div onclick="location.href='${href}'" class="notification-container  ${
-                            notification.unread
-                                ? "notification-container-unread"
-                                : ""
-                        }"> 
+                    notification.unread ? "notification-container-unread" : ""
+                }"> 
                             <div class="notification-image-container">
                                 <img src="${imageUrl}" class="notification-image" />
                             </div>
@@ -80,6 +87,7 @@ const renderNotification = (data) => {
                         `);
             }
         } else {
+            // Teacher's notification
             for (let notification of data) {
                 $("#notificationList").append(`
                 <a class="notification-link" href="group_assignment.html?groupId=${
@@ -91,7 +99,7 @@ const renderNotification = (data) => {
                             : ""
                     }"> 
                         <div class="notification-image-container">
-                            <img src="${"./images/sample_groupimg.png"}" class="notification-image" />
+                            <img src="${notification.group[0].pfp ? notification.group[0].pfp : "./images/sample_groupimg.png"}" class="notification-image" />
                         </div>
                         <div class="notification-right-items-container">
                             <div class="notification-content-container">
