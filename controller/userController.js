@@ -225,10 +225,13 @@ router.put("/pfp/:userId", upload.single("image"), async (req, res) => {
                 } else {
                     result = await userModel.updateProfileImage(url, userId);
                     delete result.password;
+                    console.log(result);
+                    return res
+                        .status(200)
+                        .send({ message: "User Updated", user: result });
                 }
             }
         );
-        return res.status(200).send({ message: "User Updated" });
     } catch (err) {
         if (err instanceof Error || err instanceof MongoError)
             res.status(500).send({
