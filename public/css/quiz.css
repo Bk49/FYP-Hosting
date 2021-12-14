@@ -400,6 +400,10 @@ ul {
     color : #FFFFFF;
     background-image: linear-gradient(to bottom right,#83A4D4, #B6FBFF);
 }
+/* #fb-root{
+    font-size: 100px;
+    width: 500px;
+}
 
 .orderingOptions {
     border: grey;
@@ -411,3 +415,7 @@ ul {
     justify-content: center;
     align-items: center;
 }
+.fb-share-button{
+    font-size: 100px;
+    width: 500px;
+} */

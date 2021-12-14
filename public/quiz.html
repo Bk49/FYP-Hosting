@@ -26,6 +26,18 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId            : 344764737461252,
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v12.0'
+          });
+        };
+      </script>
+      <!-- <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script> -->
+      
     <!--ChartJs-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -47,6 +59,7 @@
     <script src="./javascript/stats.js"></script>
     <script src="./javascript/sidebar.js"></script>
 
+
     <!-- Confetti Animation library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 
@@ -62,7 +75,6 @@
         <div class="col p-0">
             <div class="header"></div>
             <h3 id="title" class="text-center h3 mt-4">Quiz</h3>
-
             <!-- <div class="row mx-auto d-flex justify-content-between">
                 <div class="col-lg-4 col-md-8 d-flex justify-content-center">
                     <div class="card" id="primaryCard">
