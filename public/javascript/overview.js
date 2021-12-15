@@ -53,7 +53,7 @@ function displayNotifications(data) {
                 const pfp = notification.teacher[0].pfp;
                 href = `quiz.html?skill=${notification.skill_id}&assignment=${notification.assignment_id}`;
                 // Temporary image to represent pfp of TEACHER
-                imageUrl = pfp ? pfp : `./images/testing.jpg`;
+                imageUrl = pfp ? pfp : `./avatars/panda (1).png`;
                 break;
             case "leaderboard":
                 href = `group_leaderboard.html?groupId=${notification.group_id}`;

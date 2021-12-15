@@ -55,7 +55,7 @@ const renderNotification = (data) => {
                     case "new":
                         href = `quiz.html?skill=${notification.skill_id}&assignment=${notification.assignment_id}`;
                         // Temporary image to represent pfp of TEACHER
-                        imageUrl = `./images/testing.jpg`;
+                        imageUrl = `./avatars/panda (1).png`;
                         break;
                     case "leaderboard":
                         href = `group_leaderboard.html?groupId=${notification.group_id}`;
