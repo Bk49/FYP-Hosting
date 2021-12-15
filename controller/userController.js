@@ -298,6 +298,47 @@ router.post("/login", validate("loginUser"), async (req, res) => {
     }
 });
 
+    /**
+ * POST /user/socialLogin - verify user by email 
+ */
+ router.post("/socialLogin",
+    validate("socialLogin"),
+    async (req, res) => {
+        const { email, rememberMe } = req.body;
+        const { cookies } = req;
+        try {
+            console.time("GET verify user");
+            const result = await user.verifySocialUser(email);
+
+            if (!result._id || !result.role) throw "NO_MATCH";
+            var expiry = (rememberMe == "true") ? 365 : 1;
+
+            // grant access and refresh token
+            const accessTK = createAccessToken(result._id, result.role);
+            const refreshTK = createRefreshToken(result._id, result.role, expiry + "d");
+            console.log("Test")
+
+            // send refresh token as cookie & access token in body
+            res.cookie("refreshTK", refreshTK, {
+                maxAge: expiry * 24 * 60 * 60 * 1000, //expires in x days
+                httpOnly: true,
+                // path: "/user" // endpoint to get new access token using refresh token
+            });
+            res.send({ accessTK, "user": result, "cookie": cookies });
+
+        } catch (err) {
+            console.log(err)
+            if (err == "NO_MATCH")
+                res.status(400).send({ error: "Email is incorrect", code: err });
+            else if (err instanceof Error || err instanceof MongoError)
+                res.status(500).send({ error: err.message, code: "DATABASE_ERROR" });
+            else
+                res.status(500).send({ error: "Could not verify user", code: "UNEXPECTED_ERROR" });
+        } finally {
+            console.timeEnd("GET verify user");
+        }
+    });
+
 /**
  * POST /user/logout
  */

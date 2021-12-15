@@ -85,7 +85,63 @@ $(document).on("click", "#updateBtn", function () {
     updateAccount(data);
 });
 
+function onLoad() {
+    gapi.load('auth2', function() {
+      gapi.auth2.init();
+    });
+}
+
+function signOut() {
+    onLoad();
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+    console.log('User signed out.');
+    });
+}
+
+
+// facebook log out
+
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : '263881595630899',
+        cookie     : true,                     // Enable cookies to allow the server to access the session.
+        xfbml      : true,                     // Parse social plugins on this webpage.
+    });
+
+    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+        statusChangeCallback(response);        // Returns the login status.
+    });
+};
+
+function checkLoginState() {                 // Called when a person is finished with the Login Button.
+    FB.getLoginStatus(function(response) {   // See the onlogin handler
+        statusChangeCallback(response);
+    });
+}
+
+
+function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    console.log('statusChangeCallback');
+    console.log(response);                   // The current login status of the person.
+    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+        console.log('test1')
+      fbLogOut();  
+    }
+}
+//             var accessToken = response.authResponse.accessToken;
+
+function fbLogOut() {
+    console.log('test2')
+    FB.logout(function(response) {
+        console.log("FB LOG OUT")
+    });
+}
+
 $(document).on("click", "#logoutBtn", function () {
+    checkLoginState();
+    onLoad();
+    signOut();
     $.ajax({
         url: "/user/logout",
         method: "POST",
@@ -101,6 +157,7 @@ $(document).on("click", "#logoutBtn", function () {
         },
     });
 });
+
 
 $(document).on("click", "#deleteBtn", function () {
     var userid = JSON.parse(localStorage.getItem("userInfo"))._id;
