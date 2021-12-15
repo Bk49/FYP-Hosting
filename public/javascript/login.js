@@ -1,4 +1,3 @@
-
 var schoolOption = '';
 
 /*EVENT LISTENER*/
@@ -6,6 +5,98 @@ $(document).ready(function () {
     getSchool();
     tokenExist();
 })
+
+/* FACEBOOK LOGIN */
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : '263881595630899',
+        status     : true,
+        cookie     : true,                     // Enable cookies to allow the server to access the session.
+        xfbml      : true,                     // Parse social plugins on this webpage.
+    });
+
+    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+        statusChangeCallback(response);        // Returns the login status.
+    });
+};
+
+function checkLoginState() {                 // Called when a person is finished with the Login Button.
+    FB.getLoginStatus(function(response) {   // See the onlogin handler
+        statusChangeCallback(response);
+    });
+}
+
+
+function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    console.log('statusChangeCallback');
+    console.log(response);                   // The current login status of the person.
+    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+      fbLogin();  
+    }
+}
+
+function fbLogin() {
+    FB.login(function(response) {
+        if (response.status === 'connected') {
+            FB.api('/me', {fields: 'name, email'}, 
+            function(response) {
+                console.log(response)
+                console.log("Email : " + response.email);
+                console.log(response.first_name);
+                let email = response.email;
+                let rememberMe = $('#remember_me').is(':checked');
+
+                let data = {
+                    "email": email,
+                    "rememberMe": rememberMe
+                }
+
+                $.ajax({
+                    url: '/user/socialLogin',
+                    type: 'POST',
+                    data: data,
+                    dataType: "json",
+                    success: function (data, textStatus, xhr) {
+
+                        localStorage.setItem('token', data.accessTK);
+                        localStorage.setItem('userInfo', JSON.stringify(data.user));
+
+                        if (data.user.role == "admin") {
+                            window.location.href = './control.html'; //Admin to control page
+                        }
+                        else {
+                            window.location.href = './overview.html';
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        let error;
+                        let key;
+                        let message = JSON.parse(xhr.responseText);
+
+                        if (message.code == "INVALID_REQUEST") { //invalid_req code err returns array
+                            error = JSON.parse(xhr.responseText).error[0];
+
+                            switch (error.split(" ")[0]) {
+                                case 'Email':
+                                    key = "email";
+                                    break;
+                                case 'Password':
+                                    key = "password";
+                                    break;
+                            }
+                        }
+                        else {
+                            error = message.error;
+                        }
+                        showError(error, key);
+                    }
+                })
+                //Prevent form to run normally
+                event.preventDefault();
+            });
+        }
+    })
+}
 
 $(document).on("click", "#loginBtn", function (event) {
     let email = $('#email').val();
@@ -62,8 +153,10 @@ $(document).on("click", "#loginBtn", function (event) {
     event.preventDefault();
 })
 
-$(document).on("click", "#socialLoginBtn", function (event) {
-    let email = $('#email').val();
+//GOOGLE LOGIN
+function onSuccess(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    let email = profile.getEmail();
     let rememberMe = $('#remember_me').is(':checked');
 
     let data = {
@@ -110,7 +203,65 @@ $(document).on("click", "#socialLoginBtn", function (event) {
     })
     //Prevent form to run normally
     event.preventDefault();
-})
+}
+
+// FACEBOOK LOGIN
+// $(document).on("click", "#fbLoginBtn", function (event) {
+//     FB.api('/me', { locale: 'en_US', fields: 'name, email' },
+//     function(response) {
+//         console.log(response.email);
+//         let email = response.email;
+//         let rememberMe = $('#remember_me').is(':checked');
+
+//         let data = {
+//             "email": email,
+//             "rememberMe": rememberMe
+//         }
+
+//         $.ajax({
+//             url: '/user/socialLogin',
+//             type: 'POST',
+//             data: data,
+//             dataType: "json",
+//             success: function (data, textStatus, xhr) {
+
+//                 localStorage.setItem('token', data.accessTK);
+//                 localStorage.setItem('userInfo', JSON.stringify(data.user));
+
+//                 if (data.user.role == "admin") {
+//                     window.location.href = './control.html'; //Admin to control page
+//                 }
+//                 else {
+//                     window.location.href = './overview.html';
+//                 }
+//             },
+//             error: function (xhr, textStatus, errorThrown) {
+//                 let error;
+//                 let key;
+//                 let message = JSON.parse(xhr.responseText);
+
+//                 if (message.code == "INVALID_REQUEST") { //invalid_req code err returns array
+//                     error = JSON.parse(xhr.responseText).error[0];
+
+//                     switch (error.split(" ")[0]) {
+//                         case 'Email':
+//                             key = "email";
+//                             break;
+//                         case 'Password':
+//                             key = "password";
+//                             break;
+//                     }
+//                 }
+//                 else {
+//                     error = message.error;
+//                 }
+//                 showError(error, key);
+//             }
+//         })
+//         //Prevent form to run normally
+//         event.preventDefault();
+//     });
+// })
 
 $(document).on("change", "#role", function () {
     let content = '';
@@ -157,114 +308,6 @@ $(document).on('click', ".showPassword", function () {
     input.type = type;
     $(this).children().toggleClass("fas fa-eye-slash fas fa-eye"); //Toggling show password icon
 
-})
-
-$(document).on('click', '#signupBtn', function (event) {
-    let data = {
-            "first_name": '',
-            "last_name": '',
-            "email": '',
-            "password": '',
-            "role": '',
-            "gender": '',
-        };
-    
-    //Inputing user's input into data
-    for (key in data) {
-        if (key == 'gender') {
-            data[key] = $('input:radio:checked').val();
-        } else {
-            if ( $('#email').is('[readonly]') && key == "password" ) { 
-                data[key] = "Testing12!";
-            } else {
-                data[key] = $('#' + key).val();
-            }
-            //Checking for empty fields
-            if (data[key] == "") {
-                showError("Field is required", key);
-                console.log("test1")
-                return false;
-            }
-        }
-    }
-
-    if ( $('#email').is('[readonly]') ) { 
-        console.log("Test2")
-    } else {
-        if ($('#confirmPassword').val() == "" || $('#confirmPassword').val() == null) {
-            showError("Field is required", "confirmPassword");
-            console.log("test2")
-            return false;
-        }
-    }
-
-    if ($('input:checkbox:checked').val() == null) {
-        showError("Please agree to QEDed's Terms of Service and Privacy Policy", "agreement");
-        return false;
-    }
-
-    if (data.role == 'student') {
-        data.grade = $('#grade').val();
-        data.school = $('#school').val();
-    }
-
-    //Checking if password and confirm password matches
-    if (data.password == $('#confirmPassword').val() || $('#email').is('[readonly]')) {
-        $.ajax({
-            url: '/user',
-            type: 'POST',
-            data: data,
-            dataType: "JSON",
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (data, textStatus, xhr) {
-                createGameInfo(data.result._id);
-                window.location.href = './login.html';
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                let key;
-
-                if (JSON.parse(xhr.responseText).code == "INVALID_REQUEST") {
-                    var error = JSON.parse(xhr.responseText).error[0];
-
-                    switch (error.split(" ")[0]) {
-                        case 'First':
-                            key = "first_name";
-                            break;
-                        case 'Last':
-                            key = "last_name";
-                            break;
-                        case 'Email':
-                            key = "email";
-                            break;
-                        case 'Role':
-                            key = "role";
-                            break;
-                        case 'Gender':
-                            key = "gender";
-                            break;
-                        case 'Password':
-                            key = "password";
-                            break;
-                        case 'Grade':
-                            key = "grade";
-                            break;
-                    }
-                }
-                else {
-                    console.log(JSON.parse(xhr.responseText).error +"hiiiiiiiii")
-                    error = JSON.parse(xhr.responseText).error;
-                }
-                showError(error, key);
-            }
-        })
-    }
-    else {
-        showError("Passwords does not match!", "password");
-    }
-    //Prevent form to run normally
-    event.preventDefault();
 })
 
 /* API CALLS */
@@ -346,68 +389,13 @@ function showError(message, key) {
     errorBox.style.display = "block";
 }
 
-// google sign up
+// google login
 
 setTimeout(function () {
     $('.googleSignUp div div span span:last').text("Sign up with Google");
     $('.googleSignUp div div span span:first').text("Sign up with Google");
-}, 1000);
+}, 0);
 
-function onSuccess(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    document.getElementById("first_name").value = profile.getGivenName();
-    document.getElementById("last_name").value = profile.getFamilyName();
-    document.getElementById("email").value = profile.getEmail();
-    document.getElementById("email").readOnly = true;
-    $('.input-group').remove();
-    console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    var id_token = googleUser.getAuthResponse().id_token;
-    console.log("ID Token: " + id_token);
-}
-
-// facebook sign up
-
-window.fbAsyncInit = function() {
-    FB.init({
-        appId      : '263881595630899',
-        cookie     : true,                     // Enable cookies to allow the server to access the session.
-        xfbml      : true,                     // Parse social plugins on this webpage.
-    });
-
-    FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-        statusChangeCallback(response);        // Returns the login status.
-    });
-};
-
-function checkLoginState() {                 // Called when a person is finished with the Login Button.
-    FB.getLoginStatus(function(response) {   // See the onlogin handler
-        statusChangeCallback(response);
-    });
-}
-
-
-function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
-    console.log('statusChangeCallback');
-    console.log(response);                   // The current login status of the person.
-    if (response.status === 'connected') {   // Logged into your webpage and Facebook.
-      fbLogin();  
-    } else {                                 // Not logged into your webpage or we are unable to tell.
-        
-    }
-}
-
-function fbLogin() {
-    FB.api('/me', {fields: 'name, email, first_name, last_name'}, function(response) {
-        console.log( response );
-        console.log( response.email );
-        document.getElementById("first_name").value = response.first_name
-        document.getElementById("last_name").value = response.last_name
-        document.getElementById("email").value = response.email
-        document.getElementById("email").readOnly = true;
-        $('.input-group').remove();
-        console.log('Logged in as: ' + response.name);
-    });
-}
 
 function onFailure(error) {
     console.log(error);
@@ -422,11 +410,5 @@ function renderButton() {
         'theme': 'dark',
         'onsuccess': onSuccess,
         'onfailure': onFailure
-    });
-}
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-    console.log('User signed out.');
     });
 }

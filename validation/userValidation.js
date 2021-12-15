@@ -147,6 +147,24 @@ exports.validate = (method) => {
                 errorHandler
             ]
         }
+        case "socialLogin": {
+            return [
+                attribute.email(),
+                body("rememberMe", "Remember Me cannot be empty")
+                    .stripLow()
+                    .isBoolean()
+                    .escape()
+                    .notEmpty(),
+                // catches error if body has extra unexpected parameters
+                body()
+                    .custom(body => {
+                        const keys = ["email","rememberMe"];
+                        return Object.keys(body).every(key => keys.includes(key));
+                    })
+                    .withMessage("Some extra parameters are sent"),
+                errorHandler
+            ]
+        }
         case "searchUser": {
             return [
                 query("query", "Email must be a valid format")

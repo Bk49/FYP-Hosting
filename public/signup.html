@@ -30,6 +30,17 @@
 
     <!--Javascript-->
     <script src="./javascript/signup.js"></script>
+    
+    <!--Google Sign In-->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="904557292676-40s47a3im305kv1vd7foelgpjj88il89.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+    <!--Facebook Sign In-->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v12.0&appId=263881595630899&autoLogAppEvents=1" nonce="3FeMaY8v"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
 </head>
 
 <body class="d-flex align-items-center">
@@ -100,6 +111,8 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block" id="signupBtn">Sign Up</button>
+                <center><div id="my-signin2" class="p-2 googleSignUp" data-text="signup_with"></div></center>
+                <center><fb:login-button scope="public_profile, email" size="xlarge" onlogin="checkLoginState();">Sign Up With Facebook</fb:login-button></center>
             </div>
         </form>
         <hr class="border">

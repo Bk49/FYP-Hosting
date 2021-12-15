@@ -251,6 +251,29 @@ const userModel = {
             }
         });
     },
+    // socialLogin
+    verifySocialUser: (email) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let user = await User.findOne({ email })
+                    .select("-__v") // exclude __v from result
+                    .exec();
+                if (!user) throw "NO_MATCH";
+
+                // const match = await bcrypt.compare(password, user.password);
+                // if (!match) throw "NO_MATCH";
+
+                // // remove password before returning
+                // user.password = undefined;
+
+                console.log("SUCCESS! Result", user);
+                resolve(user);
+            } catch (err) {
+                console.error("ERROR! Failed to verify user:", err);
+                reject(err);
+            }
+        })
+    },
     //updates user based on fields given
     updateProfile: (userId, changedFields) => {
         return new Promise(async (resolve, reject) => {

@@ -34,8 +34,19 @@
     <!--CSS-->
     <link rel="stylesheet" href="./css/signup.css">
 
-    <!--Javascript-->
-    <script src="./javascript/signup.js"></script>
+   <!--Javascript-->
+   <script src="./javascript/login.js"></script>
+
+   <!--Google Sign In-->
+   <script src="https://apis.google.com/js/platform.js" async defer></script>
+   <meta name="google-signin-client_id" content="904557292676-40s47a3im305kv1vd7foelgpjj88il89.apps.googleusercontent.com">
+   <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+   <!--Facebook Sign In-->
+   <div id="fb-root"></div>
+   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v12.0&appId=263881595630899&autoLogAppEvents=1" nonce="TJXfImLC"></script>
+   <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
 </head>
 
 <body class="d-flex align-items-center">
@@ -80,9 +91,16 @@
             <!-- <button class="form-control rounded-pill mt-3" id="loginBtn">Login</button> -->
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Login</button>
+                <!--Google Login-->
+                <div class="socialLogins">
+                    <center><div id="my-signin2" class="p-2 googleSignIn" id="socialLoginBtn"></div></center>
+                    <!--Facebook Login-->
+                    <!-- <center><div class="fb-login-button" id="fbLoginBtn" data-width=""" data-size="large" data-button-type="login_with" data-layout="rounded" data-auto-logout-link="true" data-use-continue-as="true"></div></center> -->
+                    <center><fb:login-button scope="public_profile, email" size="xlarge" style="width: 100%;" onlogin="checkLoginState();">Sign In With Facebook</fb:login-button></center>
+                </div>
             </div>
         </form>
-
+        
         <hr>
 
         <!-- <i class="fab fa-google mb-2"></i> -->
