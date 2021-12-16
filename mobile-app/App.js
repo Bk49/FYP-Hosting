@@ -30,6 +30,11 @@ import SignUp from "./components/pages/individual-pages/SignUp"
 import Stats from "./components/pages/individual-pages/Stats"
 import ViewPastQuiz from "./components/pages/individual-pages/ViewPastQuiz"
 
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 export default App = () => {
     return (
@@ -70,6 +75,13 @@ export default App = () => {
                 <Route exact path="/viewpastquiz" element={<ViewPastQuiz/>} />
 
             </Routes>
-        </NativeRouter>
+        </NativeRouter>,
+        <NavigationContainer>
+            <Stack.Navigator screenOptions={{headerShown: false}}>
+                <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }}/>
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="SignUp" component={SignUp} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 };
