@@ -72,6 +72,28 @@ router.get("/:questionId",
     });
 
 /**
+ * GET /qna/group/:groupId - Get questions by group id
+ */
+ router.get("/group/:groupId",
+ async (req, res) => {
+     const { groupId } = req.params;
+     try {
+         console.time("GET question by id");
+         const result = await groupModel.getQuestionByGroupId(groupId);
+
+         res.status(200).json(result);
+     } catch (err) {
+         if (err instanceof Error || err instanceof MongoError)
+             res.status(500).send({ error: err.message, code: "DATABASE_ERROR" });
+         else
+             res.status(500).send({ error: "Error getting question by id", code: "UNEXPECTED_ERROR" });
+     } finally {
+         // timing the function
+         console.timeEnd("GET question by id");
+     }
+ });
+
+/**
  * POST /qna/question/:questionId/answer - add new answer
  */
 router.post("/question/:questionId/answer",
