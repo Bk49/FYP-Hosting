@@ -34,7 +34,7 @@ const GroupSchema = new Schema({
         ],
     },
     pfp: {
-        type: String
+        type: String,
     },
     posts: [PostSchema],
     qna: [qnaSchema],
@@ -121,7 +121,6 @@ const groupModel = {
                                 ],
                             },
                             owner_pfp: "$owner_name.pfp",
-
                         },
                     },
                     {
@@ -326,7 +325,7 @@ const groupModel = {
                             "qna.content": 1,
                             "qna.made_by": 1,
                             "qna.answers": 1,
-                            "qna.created_at": 1
+                            "qna.created_at": 1,
                         },
                     },
                     {
@@ -337,7 +336,7 @@ const groupModel = {
                             owner: { $first: "$owner" },
                             pfp: { $first: "$pfp" },
                             posts: { $push: "$posts" },
-                            qna: { $first: "$qna" }
+                            qna: { $first: "$qna" },
                         },
                     },
                 ]);
@@ -421,7 +420,7 @@ const groupModel = {
                 const newGame = new Group({
                     group_name,
                     owner: ObjectId(owner),
-                    members
+                    members,
                 });
                 const result = await newGame.save();
 
@@ -439,12 +438,11 @@ const groupModel = {
     updateGroupPfp: (group_id, URL) => {
         return new Promise(async (resolve, reject) => {
             try {
+                const group = await Group.findOne({ _id: ObjectId(group_id) });
+                if (!group) throw "NOT FOUND";
 
-                const group = await Group.findOne({ "_id": ObjectId(group_id) })
-                if (!group) throw "NOT FOUND"
-
-                group.pfp = URL
-                const result = await group.save()
+                group.pfp = URL;
+                const result = await group.save();
 
                 if (!result) throw "UNEXPECTED_ERROR";
 
@@ -456,7 +454,6 @@ const groupModel = {
             }
         });
     },
-
 
     // update group
     updateGroupName: (groupId, group_name) => {
@@ -1348,7 +1345,7 @@ const groupModel = {
         });
     },
 
-    // add question in a group 
+    // add question in a group
     createQuestionByGrpId: (groupId, question) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -1401,7 +1398,10 @@ const groupModel = {
                         },
                     },
                     {
-                        $unwind: { path: "$answers", preserveNullAndEmptyArrays: true }
+                        $unwind: {
+                            path: "$answers",
+                            preserveNullAndEmptyArrays: true,
+                        },
                     },
 
                     {
@@ -1409,10 +1409,16 @@ const groupModel = {
                             from: "users",
                             let: { ans_made_by: "$answers.made_by" },
                             pipeline: [
-                                { $match: { $expr: { $eq: ["$_id", "$$ans_made_by"] } } },
+                                {
+                                    $match: {
+                                        $expr: {
+                                            $eq: ["$_id", "$$ans_made_by"],
+                                        },
+                                    },
+                                },
                             ],
-                            as: "answers.user"
-                        }
+                            as: "answers.user",
+                        },
                     },
                     {
                         $group: {
@@ -1422,8 +1428,9 @@ const groupModel = {
                             content: { $first: "$content" },
                             made_by: { $first: "$made_by" },
                             created_at: { $first: "$created_at" },
-                        }
-                    }
+                            user: { $first: "$user" },
+                        },
+                    },
                 ]);
 
                 if (!result || result.length == 0) throw "NOT_FOUND";
@@ -1433,6 +1440,42 @@ const groupModel = {
             } catch (err) {
                 console.error(
                     `ERROR! Could not get answer with id ${questionId}: ${err}`
+                );
+                reject(err);
+            }
+        });
+    },
+
+    getQuestionByGroupId: (groupId) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // return postId, content, made_by
+                const result = await Group.aggregate([
+                    { $match: { _id: ObjectId(groupId) } },
+                    { $unwind: "$qna" },
+                    { $replaceRoot: { newRoot: "$qna" } },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "made_by",
+                            foreignField: "_id",
+                            as: "made_by",
+                        },
+                    },
+                    {
+                        $addFields: {
+                            answers: { $size: "$answers" },
+                        },
+                    },
+                ]);
+
+                if (!result || result.length == 0) throw "NOT_FOUND";
+
+                console.log("SUCCESS! Result", result);
+                resolve(result); //result will be an array with only 1 object
+            } catch (err) {
+                console.error(
+                    `ERROR! Could not get questions with group_id ${groupId}: ${err}`
                 );
                 reject(err);
             }
@@ -1449,7 +1492,7 @@ const groupModel = {
                 if (!group) throw "NOT_FOUND";
 
                 // find the topic in the array that matches the id
-                const found = group.qna.find(element => element._id == qnId);
+                const found = group.qna.find((element) => element._id == qnId);
                 console.log(found);
                 // append new skill to db array and save to db
                 found.answers.push(answer);
@@ -1458,39 +1501,49 @@ const groupModel = {
                 console.log("SUCCESS! Result", result);
                 resolve(result);
             } catch (err) {
-                console.error(`ERROR! Could not create skill with topic id ${qnId}: ${err}`);
+                console.error(
+                    `ERROR! Could not create skill with topic id ${qnId}: ${err}`
+                );
                 reject(err);
             }
-        })
+        });
     },
 
     // like by answer id
     likeByAnswerId: (answerId, data) => {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log("testing like")
+                console.log("testing like");
                 console.log(answerId);
-                console.log(data)
-                const group = await Group.findOne({ "qna.answers._id": answerId });
-                const qna = group.qna.find(element => element._id == data.question_id);
-                console.log(qna)
+                console.log(data);
+                const group = await Group.findOne({
+                    "qna.answers._id": answerId,
+                });
+                const qna = group.qna.find(
+                    (element) => element._id == data.question_id
+                );
+                console.log(qna);
                 if (!group) throw "NOT_FOUND";
 
                 // find the topic in the array that matches the id
-                const found = qna.answers.find(element => element._id == answerId);
+                const found = qna.answers.find(
+                    (element) => element._id == answerId
+                );
                 console.log(found);
-                console.log(data.member_id)
+                console.log(data.member_id);
                 // append new skill to db array and save to db
-                found.likes.push({member_id: data.member_id});
+                found.likes.push({ member_id: data.member_id });
                 const result = group.save();
 
                 console.log("SUCCESS! Result", result);
                 resolve(result);
             } catch (err) {
-                console.error(`ERROR! Could not create skill with topic id ${answerId}: ${err}`);
+                console.error(
+                    `ERROR! Could not create skill with topic id ${answerId}: ${err}`
+                );
                 reject(err);
             }
-        })
+        });
     },
 
     //  unlike answer
@@ -1501,15 +1554,17 @@ const groupModel = {
                     "qna.answers._id": ObjectId(answerId),
                 });
                 if (!group) throw "NOT_FOUND";
-                console.log("testing unlike")
-                const qna = group.qna.find(element => element._id == data.question_id);
-                console.log(qna)
+                console.log("testing unlike");
+                const qna = group.qna.find(
+                    (element) => element._id == data.question_id
+                );
+                console.log(qna);
                 // find index of the user in the array that matches the id
                 const foundIndex = qna.answers.findIndex(
                     (element) => element._id == answerId
                 );
                 if (isNaN(foundIndex) && !foundIndex) throw "NOT_FOUND";
-                    
+
                 const likeIndex = qna.answers[foundIndex].likes.findIndex(
                     (element) => element.member_id == data.member_id
                 );
@@ -1517,7 +1572,9 @@ const groupModel = {
                 if (isNaN(likeIndex) && !likeIndex) throw "NOT_FOUND";
 
                 // delete member from members array
-                qna.answers[foundIndex].likes.pull(qna.answers[foundIndex].likes[likeIndex]);
+                qna.answers[foundIndex].likes.pull(
+                    qna.answers[foundIndex].likes[likeIndex]
+                );
                 // save changes
                 const result = await group.save();
 
