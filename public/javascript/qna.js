@@ -127,7 +127,7 @@ $(document).on("click", ".likeBtn", function() {
         getQuestionByQnId(questionId);
         setTimeout(() => {
             tabulateExp(this.previousElementSibling.id, msg)
-        }, 3000);
+        }, 1000);
     }
     else {
         alert("You cannot like your own answer!");
