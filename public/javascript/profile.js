@@ -23,10 +23,18 @@ $(document).ready(function () {
     } else {
         document.getElementById("account-role").style.display = "none";
     }
-    $("#myModal").on("shown.bs.modal", function () {
-        $("#myInput").trigger("focus");
-    });
-});
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+      })
+
+    $("#expLevel").html(`EXP: ${userInfo.exp_points}/100`);
+    $("#rankLevel").html(`Lv${userInfo.rank_level}`);
+    $(".exp").width(userInfo.exp_points + '%');
+
+    if (userInfo.role == "teacher") {
+        $(".expContainer").css('display', 'none');
+    }
+})
 
 $(document).on("change", "#account-role", function () {
     let role = $("#account-role").val();

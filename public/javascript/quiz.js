@@ -407,6 +407,7 @@ function getQuizAjax(path, id) {
 }
 
 function submitQuiz(newQuiz) {
+    console.log(newQuiz)
     $.ajax({
         url: `quiz`,
         type: 'POST',
@@ -435,11 +436,16 @@ function submitQuiz(newQuiz) {
         },
         error: function (xhr, textStatus, errorThrown) {
             console.log(xhr);
+            console.log("fail quiz")
         }
     })
 };
 function updateUserInfo(points) {
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    if (userInfo.exp_points < 0) {
+        userInfo.exp_points = 0;
+    }
 
     let data = {
         "exp_points": points + userInfo.exp_points
@@ -448,25 +454,29 @@ function updateUserInfo(points) {
     userInfo.exp_points = data.exp_points;
 
     let max = false;
-    let mulitplier = 1;
     let final = 0;
 
-    while (!max) {
-        let x = Math.floor(data.exp_points / (1000 * mulitplier));
-        if (x >= 1) {
-            final++;
-            mulitplier++;
-            data.exp_points -= (1000 * mulitplier);
-        }
-        else {
-            max = true;
-        }
-    }
+    // while (!max) {
+    //     let x = Math.floor(data.exp_points / (1000 * mulitplier));
+    //     if (x >= 1) {
+    //         final++;
+    //         mulitplier++;
+    //         data.exp_points -= (1000 * mulitplier);
+    //     }
+    //     else {
+    //         max = true;
+    //     }
+    // }
 
-    userInfo.rank_level = final;
+    if (userInfo.exp_points >= 100) {
+        userInfo.rank_level += Math.floor(userInfo.exp_points/100);
+        userInfo.exp_points -= Math.floor(userInfo.exp_points/ 100) * 100;
+    } 
+
+    // userInfo.rank_level = final;
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-    data["rank_level"] = final;
+    data["rank_level"] = userInfo.rank_level;
 
     $.ajax({
         url: `/user/${userInfo._id}`,
