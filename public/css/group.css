@@ -118,7 +118,114 @@
 
 .group_img {
     width: 80px;
+    border-radius: 1000px;
+    aspect-ratio: 1;
+    object-fit: cover;
 }
+
+.group-icon {
+    width: 25px;
+    height: auto;
+    border-radius: 1000px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+
+button .icon {
+    height: 20px;
+    max-width: 20px;
+    vertical-align: middle;
+  }
+
+  .camera4{
+    display:block;
+    width:25%;
+    height:17%;
+    position:absolute;
+    top: 42%;
+    left: 38%;
+    background-color:#000;
+    border-radius:5px;
+  }
+  
+  .camera4:after{
+    content:"";
+    display:block;
+    width:15px;
+    height:15px;
+    border:7px solid #fff;
+    position:absolute;
+    top:15%;
+    left:25%;
+    background-color:#000;
+    border-radius:15px;
+  }
+  
+  
+  .camera4:before{
+    content:"";
+    display:block;
+    width:50%;
+    height:10px;
+    position:absolute;
+    top:-16%;
+    left:25%;
+    background-color:#000;
+    border-radius:10px;
+  }
+
+  
+
+  #group-upload:hover input.upload{
+    display:block;
+  }
+  #group-upload:hover {
+    border: 1px solid gray
+  }
+  #group-upload:hover .hvr-profile-img{
+    opacity:1;
+   }
+  .hvr-profile-img{opacity:.3;}
+  
+  #group-upload input.upload {
+    z-index:1;
+    left: 0;
+    margin: 0;
+    bottom: 0;
+    top: 0;
+    padding: 0;
+    opacity: 0;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+ 
+    width:100%;
+    display:none;
+}
+
+.group-upload{
+    justify-content: center;
+    align-content: center;
+  }
+
+  #group-upload{
+    background-image:url('');
+    background-size:cover;
+    background-position: center;
+    height: 200px; 
+    width: 200px;
+    border: 1px solid #bbb;
+    position:relative;
+    border-radius:50%;
+    overflow:hidden;
+    /* float:left; */
+    /* margin: 0 auto; */
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-left: 130px;
+  }
 
 .latest_msg {
     font-size: 14px;
@@ -135,6 +242,13 @@
 
 }
 
+.owner-image {
+    width: 25px;
+    height: auto;
+    border-radius: 1000px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
 
 .group-icon {
     font-size: 24px;

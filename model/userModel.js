@@ -67,6 +67,10 @@ const UserSchema = new Schema({
     pfp: {
         type: String,
     },
+    pfp: {
+        type: String,
+    
+    }
 });
 
 const studentExclusive = [

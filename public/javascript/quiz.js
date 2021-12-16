@@ -9,6 +9,7 @@ $(document).ready(function () {
     let id = '';
 
     $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
         document.getElementById("name").innerHTML = getName();
     });
 

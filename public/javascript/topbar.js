@@ -53,14 +53,16 @@ const renderNotification = (data) => {
                 switch (type) {
                     case "recurring":
                     case "new":
+                        const pfp = notification.teacher[0].pfp;
                         href = `quiz.html?skill=${notification.skill_id}&assignment=${notification.assignment_id}`;
                         // Temporary image to represent pfp of TEACHER
-                        imageUrl = `./avatars/panda (1).png`;
+                        imageUrl = pfp ? pfp : `./avatars/panda (1).png`;
                         break;
                     case "leaderboard":
+                        const groupPfp = notification.group[0].groupPfp;
                         href = `group_leaderboard.html?groupId=${notification.group_id}`;
                         // Temporary image to represent GROUP image
-                        imageUrl = `./images/sample_groupimg.png`;
+                        imageUrl = groupPfp ? groupPfp : `./images/sample_groupimg.png`;
                         break;
                 }
                 console.log(notification);
@@ -130,3 +132,9 @@ const getTimeDiff = (time) => {
     if (difference / 60000 > 1) return Math.floor(difference / 60000) + "m";
     return Math.floor(difference / 1000) + "s";
 };
+
+
+// return User's Profile Picture and Display at Topbar
+function img_info() {
+    return userInfo.pfp
+}

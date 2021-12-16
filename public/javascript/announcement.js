@@ -42,6 +42,7 @@ $(document).ready(function () {
         getGroupById();
     })
     $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
     });
 });
 

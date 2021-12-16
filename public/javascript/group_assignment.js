@@ -5,6 +5,7 @@ var groupId = urlSearchParams.get("groupId");
 /* WINDOWS EVENT LISTENER */
 $(document).ready(function () {
     $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
     });
     getAssignmentByGrp();
     getLevelSelect();

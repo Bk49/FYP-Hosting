@@ -5,6 +5,7 @@ var groupId = urlSearchParams.get("groupId");
 $(document).ready(function () {
     getLeaderboard(groupId, 1);
     $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
         document.getElementById("name").innerHTML = getName();
     });
 });

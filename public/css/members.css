@@ -173,6 +173,120 @@ body {
 
 /* MANAGE GROUP MODAL */
 
+button .icon {
+    height: 20px;
+    max-width: 20px;
+    vertical-align: middle;
+  }
+
+  .camera4{
+    display:block;
+    width:25%;
+    height:17%;
+    position:absolute;
+    top: 42%;
+    left: 38%;
+    background-color:#000;
+    border-radius:5px;
+  }
+  
+  .camera4:after{
+    content:"";
+    display:block;
+    width:15px;
+    height:15px;
+    border:7px solid #fff;
+    position:absolute;
+    top:15%;
+    left:25%;
+    background-color:#000;
+    border-radius:15px;
+  }
+  
+  
+  .camera4:before{
+    content:"";
+    display:block;
+    width:50%;
+    height:10px;
+    position:absolute;
+    top:-16%;
+    left:25%;
+    background-color:#000;
+    border-radius:10px;
+  }
+
+  
+
+  #group-member-upload:hover input.upload{
+    display:block;
+  }
+  #group-member-upload:hover {
+    border: 1px solid gray
+  }
+  #group-member-upload:hover .hvr-profile-img{
+    opacity:1;
+   }
+  .hvr-profile-img{opacity:.3;}
+  
+  #group-member-upload input.upload {
+    z-index:1;
+    left: 0;
+    margin: 0;
+    bottom: 0;
+    top: 0;
+    padding: 0;
+    opacity: 0;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+ 
+    width:100%;
+    display:none;
+}
+
+.group-member-upload{
+    justify-content: center;
+    align-content: center;
+  }
+
+  #group-member-upload{
+    background-image:url('');
+    background-size:cover;
+    background-position: center;
+    height: 200px; 
+    width: 200px;
+    border: 1px solid #bbb;
+    position:relative;
+    border-radius:50%;
+    overflow:hidden;
+    /* float:left; */
+    /* margin: 0 auto; */
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-left: 130px;
+  }
+
+  .btn-primary{
+    font-family: feather;
+    border: none;
+    border-radius: 8px;
+    background-color: #83CFFF;
+    margin-top: 25px;
+    font-size: 14px;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.20), inset 0px -1px 1px rgba(0, 0, 0, 0.20);
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #showText,#successText {
+    display: none;
+  }
+
+
 #exampleModalLabel {
     margin-bottom: 16px;
     font-family: Coolvetica;

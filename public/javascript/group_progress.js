@@ -9,6 +9,7 @@ $(document).ready(function () {
     getGroupMembers();
     getGroupBenchmark();
     $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
     });
 })
 
