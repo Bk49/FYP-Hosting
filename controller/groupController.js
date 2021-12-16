@@ -4,6 +4,32 @@
 
 const express = require("express");
 const router = express.Router();
+const cloudinary = require("cloudinary");
+require("dotenv").config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, __dirname + "/../uploads/");
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname)); //Appending extension
+    },
+});
+
+const upload = multer({ storage: storage });
+
+// For deleting the file uploaded
+const fs = require("fs");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 
 // model and functions
 const { groupModel } = require("../model/groupModel");
@@ -173,6 +199,76 @@ router.post(
         }
     }
 );
+
+router.put("/pfp/:groupId", upload.single("image"), async (req, res) => {
+    const { groupId } = req.params;
+    console.log("IMAGE UPLOADING")
+    try {
+        console.time("PUT new group PFP");
+        const file = req.file;
+        const filePath = `${__dirname}/../uploads/${file.filename}`;
+        let result;
+        console.log(req.file)
+        cloudinary.v2.uploader.upload(
+            filePath,
+            {
+                resource_type: "image",
+                public_id: file.filename,
+                overwrite: true,
+            },
+            async (err, { url }) => {
+                await unlinkAsync(filePath);
+                if (err) {
+                    console.log(err);
+                    throw err;
+                } else {
+                    result = await groupModel.updateGroupPfp(groupId, url);
+                }
+            }
+        );
+        return res.status(200).send({ message: "Group Updated" });
+    } catch (err) {
+        console.log("error"+ err);
+        if (err instanceof Error || err instanceof MongoError)
+            res.status(500).send({
+                error: err.message,
+                code: "DATABASE_ERROR",
+            });
+        else
+            res.status(500).send({
+                error: err.message,
+                code: "UNEXPECTED_ERROR",
+            });
+    } finally {
+        console.timeEnd("PUT new group PFP");
+    }
+});
+
+// router.post(
+//     "/pfp",
+//     async (req, res) => {
+//         const file = req.FILES;
+//         try {
+//             console.log(files)
+
+//             res.status(201).send({ });
+//         } catch (err) {
+//             if (err instanceof Error || err instanceof MongoError)
+//                 res.status(500).send({
+//                     error: err.message,
+//                     code: "DATABASE_ERROR",
+//                 });
+//             else
+//                 res.status(500).send({
+//                     error: "Error adding group",
+//                     code: "UNEXPECTED_ERROR",
+//                 });
+//         } finally {
+//             console.timeEnd("POST group");
+//         }
+//     }
+// );
+
 
 /**
  * POST /group/addMember?groupId=..&userId=..

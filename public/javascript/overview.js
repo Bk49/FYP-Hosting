@@ -1,12 +1,14 @@
 $(document).ready(function () {
     const { role, pfp } = JSON.parse(localStorage.getItem("userInfo"));
+    document.getElementById("profileimg").src = getUserPfp()
     if (role == "admin") {
         window.location.href = "/control.html";
     } else if (role == "parent" || role == "teacher") {
         window.location.href = "/group.html";
     }
     $(".header").load("topbar.html", function () {
-        document.getElementById("name").innerHTML = getName();
+        document.getElementById("profile-image").src = img_info()
+        document.getElementById("name").innerHTML = getName();       
     });
     getRecommendation();
     $(`#welcome-pfp`).attr("src", pfp)
@@ -21,6 +23,30 @@ $(document).ready(function () {
     console.log(user._id);
     getNotification(user._id);
 });
+
+function getUserPfp() {
+    if(!userInfo.pfp) {
+        return "images/frog.png"
+    } else {
+        return userInfo.pfp
+    }   
+}
+
+function getAssignmentPfp(userId) {
+    $.ajax({
+        url: `/notification/user?userId=${userId}`,
+        type: "GET",
+        dataType: "JSON",
+        success: function (data, textStatus, xhr) {
+            displayNotifications(data);
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log("ERROR!" + xhr.responseText);
+        },
+    });
+}
+
+
 
 function getNotification(userId) {
     $.ajax({

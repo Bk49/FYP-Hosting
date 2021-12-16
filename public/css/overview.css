@@ -64,7 +64,7 @@
     align-self: center;
 }
 
-.profileimg {
+#profileimg {
     width: 150px;
     border-radius: 1000px;
     aspect-ratio: 1;
@@ -445,6 +445,8 @@
     margin-bottom: 5px;
     margin-top: 10px;
     border-radius: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
 }
 
 .small-notification-header h4 {

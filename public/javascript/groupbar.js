@@ -3,7 +3,7 @@ var groupBar = document.getElementById("groupBar");
 var headingName = document.getElementById("heading")
 groupId = urlSearchParams.get("groupId");
 
-$(document).ready(function(){
+$(document).ready(function () {
     console.log("testing123")
 
     $("#sidebar div:nth-child(5)").children().addClass("active-tab");
@@ -17,6 +17,12 @@ $(document).ready(function(){
         success: function (data, textStatus, xhr) {
             console.log(data)
             document.getElementById("groupName").innerHTML = data.group_name;
+            if (data.pfp) {
+                document.getElementById("headerGroupImg").src = data.pfp;
+                document.getElementById("groupBarImg").src = data.pfp;
+            }
+
+            console.log(data)
         },
         error: function (xhr, textStatus, errorThrown) {
             console.log(errorThrown);
@@ -30,8 +36,8 @@ $(document).ready(function(){
 
 function displayGroupBar() {
     if (groupBarOpen == false) {
-        groupBar.style.transition= "width 0.3s"
-        groupBar.style.transitionTimingFunction= "ease"
+        groupBar.style.transition = "width 0.3s"
+        groupBar.style.transitionTimingFunction = "ease"
         groupBar.style.width = "220px"
         groupBarOpen = true;
     }

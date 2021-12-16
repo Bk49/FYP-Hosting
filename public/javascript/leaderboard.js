@@ -4,7 +4,8 @@ const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 $(document).ready(function () {
     getLeaderboard("Primary", 1, 1);
     $(".header").load("topbar.html", function () {
-        document.getElementById("name").innerHTML = getName();
+        document.getElementById("profile-image").src = img_info()
+        document.getElementById("name").innerHTML = getName();       
     });
 });
 

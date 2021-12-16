@@ -91,9 +91,8 @@
                 </div>
             </div>
             <div class="btn-wrapper">
-                <button class="btn" id="leaveGrpToggle" 
-                data-bs-toggle="modal"
-                data-bs-target="#leaveGrpModal">Leave Group</button>
+                <button class="btn" id="leaveGrpToggle" data-bs-toggle="modal" data-bs-target="#leaveGrpModal">Leave
+                    Group</button>
             </div>
         </div>
     </div>
@@ -106,7 +105,27 @@
                 <div class="modal-body">
                     <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h5 class="modal-title m-0" id="exampleModalLabel">Manage Group</h5>
-                    <form>
+                    <div id='group-member-upload'>
+                        <div class="hvr-profile-img">
+                            <input type="file" name="logo" onchange="readURL()" id="getval" class="upload"
+                                id="imag">
+                            <div class="icon">
+                                <div class="camera4"><span></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 mx-auto">
+                        <!-- <hr class="mt-2 mb-3"> -->
+                        <!-- <div class="d-flex flex-wrap justify-content-between align-items-center"> </div> -->
+                        <button class="btn btn-style-1 btn-primary" type="button" data-toast="" id="updateGroupBtn"
+                            data-toast-position="topRight">Edit Group Picture</button>
+                           
+                    </div>
+                    <div>
+                        <span id="showText" >There is no picture being uploaded</span>
+                        <span id="successText">Group Picture Updated</span>
+                    </div>
+                    <form>                    
                         <div class="mb-2">
                             <label for="group_name" class="col-form-label modal-label">Group Name</label>
                             <div class="group-name-wrapper">
@@ -135,8 +154,8 @@
                 </div>
                 <div class="d-flex justify-content-center pb-4">
                     <!-- <button id="updateGroup" type="button" class="btn">Update</button> -->
-                    <button type="button" class="btn btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#delGrpModal" data-bs-dismiss="modal">Delete</button>
+                    <button type="button" class="btn btn-delete" data-bs-toggle="modal" data-bs-target="#delGrpModal"
+                        data-bs-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>
@@ -170,7 +189,8 @@
                     <div class="d-flex flex-column align-items-center">
                         <i id="warning-icon" class="fas fa-exclamation-triangle"></i>
                         <h4 class="pb-1">Are you sure?</h4>
-                        <small class="text-center">This will <strong>permanently delete</strong> this group and the action cannot be undone</small>
+                        <small class="text-center">This will <strong>permanently delete</strong> this group and the
+                            action cannot be undone</small>
                     </div>
                     <div class="d-flex justify-content-center pt-3">
                         <button type="button" class="btn" data-bs-dismiss="modal">CANCEL</button>

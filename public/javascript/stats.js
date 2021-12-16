@@ -7,6 +7,7 @@ $(document).ready(function () {
     if (window.location.toString().includes("stats")) {
 
         $(".header").load("topbar.html", function () {
+            document.getElementById("profile-image").src = img_info()
             document.getElementById("name").innerHTML = getName();
         })
 

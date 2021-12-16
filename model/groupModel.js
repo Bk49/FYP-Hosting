@@ -33,6 +33,9 @@ const GroupSchema = new Schema({
             },
         ],
     },
+    pfp: {
+        type: String
+    },
     posts: [PostSchema],
     qna: [qnaSchema],
 });
@@ -85,13 +88,14 @@ const groupModel = {
                                     },
                                 },
                             },
+                            "posts.pfp": "$user.pfp",
                         },
                     },
                     {
                         $addFields: {
                             "posts.sender_name": {
                                 $last: "$posts.sender_name",
-                            }, // chg sender_name from array to obj
+                            }, // chg sender_name from array to objF
                         },
                     },
                     {
@@ -116,6 +120,8 @@ const groupModel = {
                                     "$owner_name.last_name",
                                 ],
                             },
+                            owner_pfp: "$owner_name.pfp",
+
                         },
                     },
                     {
@@ -295,6 +301,7 @@ const groupModel = {
                             group_name: 1,
                             members: 1,
                             owner: 1,
+                            pfp: 1,
                             "posts._id": 1,
                             "posts.content": 1,
                             "posts.made_by": 1,
@@ -328,6 +335,7 @@ const groupModel = {
                             group_name: { $first: "$group_name" },
                             members: { $first: "$members" },
                             owner: { $first: "$owner" },
+                            pfp: { $first: "$pfp" },
                             posts: { $push: "$posts" },
                             qna: { $first: "$qna" }
                         },
@@ -413,7 +421,7 @@ const groupModel = {
                 const newGame = new Group({
                     group_name,
                     owner: ObjectId(owner),
-                    members,
+                    members
                 });
                 const result = await newGame.save();
 
@@ -427,6 +435,28 @@ const groupModel = {
             }
         });
     },
+
+    updateGroupPfp: (group_id, URL) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+
+                const group = await Group.findOne({ "_id": ObjectId(group_id) })
+                if (!group) throw "NOT FOUND"
+
+                group.pfp = URL
+                const result = await group.save()
+
+                if (!result) throw "UNEXPECTED_ERROR";
+
+                console.log("SUCCESS! Result", result);
+                resolve(result);
+            } catch (err) {
+                console.error("ERROR! Could not create group", err);
+                reject(err);
+            }
+        });
+    },
+
 
     // update group
     updateGroupName: (groupId, group_name) => {

@@ -64,7 +64,18 @@
                 <div class="modal-body">
                     <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
                     <h5 class="modal-title text-center" id="exampleModalLabel">Create Group</h5>
+                    <div class="frm row mx-auto">
+                        <div id='group-upload'>
+                            <div class="hvr-profile-img">
+                                <input type="file" name="logo" onchange="readURL()" id="getval" class="upload" id="imag">
+                                <div class="icon">
+                                    <div class="camera4"><span></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <form>
+                        
                         <div class="mb-3">
                             <label for="group_name" class="col-form-label">Group Name</label>
                             <input type="text" class="form-control" id="group_name" placeholder="Give the group a name">
@@ -93,5 +104,4 @@
         </div>
     </div>
 </body>
-
 </html>

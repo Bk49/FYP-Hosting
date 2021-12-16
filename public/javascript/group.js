@@ -1,28 +1,43 @@
 
 /* EVENT LISTENER */
 $(document).ready(function () {
-    $(".header").load("topbar.html", function(){
+    $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
         document.getElementById("name").innerHTML = getName();
     });
     getGroupsByUser();
     displayForEducator();
 });
 
-$(document).on("focusin", "#add-members", function() {
+// console.log("Adding the change event")
+// document.getElementById('getval').addEventListener('change', readURL, true);
+function readURL() {
+    var file = document.getElementById("getval").files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        document.getElementById('group-upload').style.backgroundImage = "url(" + reader.result + ")";
+    }
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+    }
+}
+
+$(document).on("focusin", "#add-members", function () {
     searchUserEmail();
     $(".popover_content").toggleClass("display_popover");
 });
-$(document).on("focusout", "#add-members", function() {
+$(document).on("focusout", "#add-members", function () {
     $(".popover_content").toggleClass("display_popover");
 });
 
-$(document).on("keyup", "#add-members", function() {
+$(document).on("keyup", "#add-members", function () {
     searchUserEmail();
 });
 
 // MODAL
 // add user to member list
-$(document).on("click", ".result", function() {
+$(document).on("click", ".result", function () {
     const id = this.id;
     const pic = this.children[0].children[0].src
     const name = this.children[1].children[0].children[0].innerHTML;
@@ -39,27 +54,25 @@ $(document).on("click", ".result", function() {
 });
 
 // remove member from list 
-$(document).on("click", ".remove-member", function() {
+$(document).on("click", ".remove-member", function () {
     this.parentElement.parentElement.parentElement.remove();
 });
 
-$(document).on("click", "#addGroup", function() {
+$(document).on("click", "#addGroup", function () {
     createGroup();
 });
 
 // GROUP LISTING
-$(document).on("click", ".group", function() {
+$(document).on("click", ".group", function () {
     const groupId = this.id;
-    window.location.href = "/group_announcement.html?groupId="+groupId;
+    window.location.href = "/group_announcement.html?groupId=" + groupId;
 });
-
-
 
 
 /* CALL APIs */
 function getGroupsByUser() {
     var userId = JSON.parse(localStorage.getItem("userInfo"))._id;
-    
+
     $.ajax({
         url: `/group/user?userId=${userId}`,
         dataType: 'JSON',
@@ -74,7 +87,7 @@ function getGroupsByUser() {
 }
 
 function searchUserEmail() {
-    var q =  document.querySelector("#add-members").value;
+    var q = document.querySelector("#add-members").value;
 
     $.ajax({
         url: `/user/search?query=${q}`,
@@ -89,17 +102,17 @@ function searchUserEmail() {
 }
 
 function createGroup() {
-    var group_name =  document.querySelector("#group_name").value;
+    var group_name = document.querySelector("#group_name").value;
     var owner = JSON.parse(localStorage.getItem("userInfo"))._id;
     var membersList = Array.from(document.querySelector("#added-list").children);
 
     var members = [];
     membersList.forEach(memberElement => {
         var id = (memberElement.id).split("added-")[1];
-        members.push({user_id: id});
+        members.push({ user_id: id });
     });
 
-    var data =  {
+    var data = {
         group_name,
         owner,
         members
@@ -111,8 +124,34 @@ function createGroup() {
         data: JSON.stringify(data),
         dataType: 'JSON',
         contentType: 'application/json',
-        success: function (data, textStatus, xhr) {
-            window.location.href = "";
+        success: function (returnedGroupData, textStatus, xhr) {
+            const file = document.getElementById("getval").files[0]
+            if (file) {
+                const formData = new FormData();
+                formData.append("image", file);
+                console.log("There is a group file");
+                console.log(file)
+                console.log(returnedGroupData)
+                window.location.href = "";
+                $.ajax({
+                    url: `/group/pfp/${returnedGroupData.new_id}`,
+                    method: "PUT",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (returnedPfpData, textStatus, xhr) {
+                        console.log(returnedPfpData);
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log(xhr.responseText);
+                        alert("Group profile image failed to upload");
+                    },
+                })
+            } else {
+                window.location.href = "";
+            }
         },
         error: function (xhr, textStatus, errorThrown) {
             alert("Sorry, an unexpected error occured");
@@ -126,26 +165,27 @@ function createGroup() {
 
 /* DISPLAY DATA */
 function displayMyGroups(data) {
-    if(data.length >= 1) {
+    if (data.length >= 1) {
         var groupList = document.querySelector("#group-list");
 
         var content = "";
         data.forEach(group => {
+            console.log(group)
             content += `
                 <div id="${group._id}" class="group">
                     <div class="row">
                         <div class="col-md-2 col-sm-3 d-flex justify-content-center">
-                            <img src="../images/sample_groupimg.png" class="group_img img-fluid" />
+                            <img src="${group.pfp? group.pfp : '../images/sample_groupimg.png'}" class="group_img img-fluid" />
                         </div>
                         <div class="col p-0 my-auto">
                             <div class="group-body">
                                 <span class="group_name">${group.group_name}</span><br>
                                 <div class="latest-msg-wrapper">
                                     <span class="sender_name">
-                                        <i class="fas fa-user-circle"></i>
+                                    ${group.posts.pfp && group.posts.content ? `<img class="group-icon" src= "${group.posts.pfp}">`: `<span class="group-icon"><i class="fas fa-user-circle owner-image"></i></span`}
                                     </span>
                                     <span class="latest_msg">
-                                        ${group.posts && group.posts.content? group.posts.content : "No Messages"}
+                                        ${group.posts && group.posts.content ? group.posts.content : "No Messages"}
                                     </span>
                                 </div>
                             </div>
@@ -155,9 +195,9 @@ function displayMyGroups(data) {
                         <div class="col">
                             <span class="group-owner">
                                 Owner:&nbsp&nbsp
-                                <span class="group-icon">
-                                    <i class="fas fa-user-circle"></i>
-                                </span>
+                                
+                                ${group.owner_pfp? `<img class="group-icon" src= "${group.owner_pfp}">`: `<span class="group-icon"><i class="fas fa-user-circle owner-image"></i></span`}
+                                
                                 <span class="owner">${group.owner_name}</span>
                             </span>
                         </div>
@@ -176,7 +216,7 @@ function displaySearchResult(data) {
 
     var content = "";
 
-    if(data.length < 1 ) {
+    if (data.length < 1) {
         content += `
             <div class="text-center p-2" style="font-family: Poppins"><small>No result</small></div>
         `;
@@ -216,7 +256,7 @@ function displayAdded(id, pic, name, email) {
     });
 
     // add to members list if user is not already in it
-    if(!userExists) {
+    if (!userExists) {
         addedList.innerHTML += `
             <div class="added-member row" id="added-${id}">
                 <div class="col-1 m-auto">
@@ -246,7 +286,7 @@ function displayAdded(id, pic, name, email) {
 function displayForEducator() {
     let role = decodeToken().issuedRole;
 
-    if(role == "teacher" || role == "parent" || role == "admin") {
+    if (role == "teacher" || role == "parent" || role == "admin") {
         let createGroupBtn = `
             <button class="btn add-btn" data-bs-toggle="modal" data-bs-target="#addGroupModal">
                 Create Group

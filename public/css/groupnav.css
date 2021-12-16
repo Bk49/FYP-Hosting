@@ -49,7 +49,17 @@ html {
 }
 
 
+#headerGroupImg {
+    border-radius: 1000px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
 
+#groupBarImg {
+    border-radius: 1000px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
 
 .nav-a {
     display: block;

@@ -204,12 +204,13 @@ router.post("/", validate("createUser"), async (req, res) => {
 
 router.put("/pfp/:userId", upload.single("image"), async (req, res) => {
     const { userId } = req.params;
+    console.log("IMAGE UPLOADING")
     try {
         console.time("PUT new user PFP");
         const file = req.file;
         const filePath = `${__dirname}/../uploads/${file.filename}`;
         let result;
-
+        console.log(req.file)
         cloudinary.v2.uploader.upload(
             filePath,
             {
@@ -233,6 +234,7 @@ router.put("/pfp/:userId", upload.single("image"), async (req, res) => {
             }
         );
     } catch (err) {
+        console.log("error"+ err);
         if (err instanceof Error || err instanceof MongoError)
             res.status(500).send({
                 error: err.message,

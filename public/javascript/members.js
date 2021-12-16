@@ -4,7 +4,9 @@ let groupId = urlSearchParams.get("groupId");
 $(document).ready(function () {
     getGroupById();
     getGroupMembers();
-    $(".header").load("topbar.html", function () {});
+    $(".header").load("topbar.html", function () {
+        document.getElementById("profile-image").src = img_info()
+    });
 });
 
 // on click on leave group button
@@ -13,6 +15,37 @@ $(document).on("click", "#leaveGroup", function () {
     removeMemberFromGroup(groupId, userId, () => {
         window.location.href = "/group.html";
     });
+});
+
+$(document).on("click", "#updateGroupBtn", function () {
+    const file = document.getElementById("getval").files[0]
+    if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
+        console.log("There is a group file");
+        console.log(file)
+        
+        $.ajax({
+            url: `/group/pfp/${groupId}`,
+            method: "PUT",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (returnedPfpData, textStatus, xhr) {
+                console.log(returnedPfpData);
+                document.getElementById("showText").style.display="none";
+                document.getElementById("successText").style.display="block";              
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(xhr.responseText);
+                alert("Group profile image failed to retrieve");
+            },
+        })
+    } else {
+        document.getElementById("showText").style.display='block';
+        document.getElementById("successText").style.display="none";
+    }
 });
 
 // search user by mail input
@@ -125,6 +158,8 @@ function getGroupMembers() {
         },
     });
 }
+
+
 
 function searchUserEmail() {
     var q = document.querySelector("#add-members").value;
@@ -263,7 +298,9 @@ function displayGroup(data) {
 
     // display group name on modal
     document.querySelector("#group_name").value = data.group_name;
-
+    console.log(data)
+    document.getElementById("group-member-upload").style.backgroundImage =
+            "url(" + data.pfp + ")";
     // display edit button if group admin
     let decoded = decodeToken();
     let memberIndex = data.members.findIndex((member) => {
@@ -301,13 +338,11 @@ function displayMembers(data) {
     // display owner
     ownerList.innerHTML += `
         <div class="member" id="${data.owner._id}">
-            <div>${
-                data.owner.pfp
-                    ? `<img class="member-img" src=${data.owner.pfp}>`
-                    : `<i class="fas fa-user-circle fa-lg"></i>`
-            }&nbsp&nbsp<span class="member-name">${data.owner.first_name} ${
-        data.owner.last_name
-    }</span></div>
+            <div>${data.owner.pfp
+            ? `<img class="member-img" src=${data.owner.pfp}>`
+            : `<i class="fas fa-user-circle fa-lg"></i>`
+        }&nbsp&nbsp<span class="member-name">${data.owner.first_name} ${data.owner.last_name
+        }</span></div>
             <img src="images/crown.png" style="width:20px" alt="owner"/>
         </div>
     `;
@@ -322,17 +357,14 @@ function displayMembers(data) {
             if (!jQuery.isEmptyObject(member)) {
                 const insertStr = `
                 <div class="member" id="${member.user_id}">
-                    <div>${
-                        member.pfp
-                            ? `<img class="member-img" src=${member.pfp}>`
-                            : `<i class="fas fa-user-circle fa-lg"></i>`
-                    }&nbsp&nbsp<span class="member-name">${
-                    member.user_name
-                }</span></div>
-                    ${
-                        member.is_admin
-                            ? '<img src="images/crown.png" style="width:20px" alt="admin"/>'
-                            : ""
+                    <div>${member.pfp
+                        ? `<img class="member-img" src=${member.pfp}>`
+                        : `<i class="fas fa-user-circle fa-lg"></i>`
+                    }&nbsp&nbsp<span class="member-name">${member.user_name
+                    }</span></div>
+                    ${member.is_admin
+                        ? '<img src="images/crown.png" style="width:20px" alt="admin"/>'
+                        : ""
                     }
                 </div>
                 `;
@@ -352,9 +384,8 @@ function displayMembers(data) {
                     `
                 <div class="list-member" id="added-${member.user_id}">
                     <div class="col">
-                        <img src="${
-                            member.pfp ? member.pfp : `/images/monkey.png`
-                        }" alt="profileimg" class="modal-pfp"/>
+                        <img src="${member.pfp ? member.pfp : `/images/monkey.png`
+                    }" alt="profileimg" class="modal-pfp"/>
                     </div>
                     <div class="member-details">
                         <span class="added-name">${member.user_name}</span>
@@ -365,20 +396,18 @@ function displayMembers(data) {
                     `</span>
                     </div>
                     <div class="is_admin">
-                        ${
-                            member.is_admin
-                                ? '<span class="admin-tag-modal">Admin</span>'
-                                : ""
-                        }
+                        ${member.is_admin
+                        ? '<span class="admin-tag-modal">Admin</span>'
+                        : ""
+                    }
                     </div>
                     <div class="edit-member" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="fas fa-ellipsis-v"></span>
                     </div>
                     <ul class="dropdown-menu">
-                    ${
-                        member.is_admin
-                            ? '<li class="dropdown-item" id="rm-admin">Remove Admin</li>'
-                            : '<li class="dropdown-item" id="mk-admin">Make Admin</li>'
+                    ${member.is_admin
+                        ? '<li class="dropdown-item" id="rm-admin">Remove Admin</li>'
+                        : '<li class="dropdown-item" id="mk-admin">Make Admin</li>'
                     }
                         <li class="dropdown-item rmMemberToggle"
                             data-bs-toggle="modal"
@@ -412,15 +441,13 @@ function displaySearchResult(data) {
             content += `
                 <div class="result row m-auto" id="${result._id}">
                     <div class="col-1 m-auto">
-                    <img src="${
-                        result.pfp ? result.pfp : `/images/monkey.png`
-                    }" alt="profileimg" class="modal-pfp"/>
+                    <img src="${result.pfp ? result.pfp : `/images/monkey.png`
+                }" alt="profileimg" class="modal-pfp"/>
                     </div>
                     <div class="col m-auto mx-2">
                         <div class="row">
-                            <span class="member-name">${result.first_name} ${
-                result.last_name
-            }</span>
+                            <span class="member-name">${result.first_name} ${result.last_name
+                }</span>
                         </div>
                         <div class="row">
                             <span class="email">${result.email}</span>
@@ -555,5 +582,17 @@ function expandDropdown(value) {
     } else {
         selectedRole.style.display = "none";
         dropdownArrow.className = "fas fa-angle-right fa-lg";
+    }
+}
+
+function readURL() {
+    var file = document.getElementById("getval").files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+        document.getElementById('group-member-upload').style.backgroundImage = "url(" + reader.result + ")";
+    }
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
     }
 }

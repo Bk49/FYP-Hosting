@@ -4,6 +4,7 @@
 $(document).ready(function () {
     $(".header").load("topbar.html", function () {
         // document.getElementById("name").innerHTML = getName();
+        document.getElementById("profile-image").src = img_info()
     });
 
     $.ajax({
