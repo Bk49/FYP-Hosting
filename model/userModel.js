@@ -171,19 +171,7 @@ const userModel = {
     },
     // signup
     // exp_points, rank_level, token optional
-    addNewUser: (
-        first_name,
-        last_name,
-        email,
-        password,
-        gender,
-        role,
-        school,
-        grade,
-        exp_points = 0,
-        rank_level = 0,
-        token = 0
-    ) => {
+    addNewUser: (first_name, last_name, email, password, gender, role, school, grade, exp_points = 0, rank_level = 1, token = 0) => {
         return new Promise(async (resolve, reject) => {
             try {
                 //check if email or username exists

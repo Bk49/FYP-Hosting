@@ -29,11 +29,11 @@
     <script src="./javascript/auth.js"></script>
     <script src="./javascript/sidebar.js"></script>
     <script src="./javascript/groupnav.js"></script>
-    <script src="./javascript/group_assignment.js"></script>
+    <script src="./javascript/qna.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="./css/groupnav.css">
-    <link rel="stylesheet" href="./css/assignment.css">
+    <link rel="stylesheet" href="./css/qna.css">
 </head>
 
 <body class="container-fluid">
@@ -49,7 +49,47 @@
             <ul id="navigation" class="px-0 ps-2">
 
             </ul>
-
+            <div class="container" id="emptyContainer">
+                <div>
+                    <p class="text-center">There are currently no questions. Go ask one now!</p>
+                    <button id="askqnBtn" type="button" class="btn d-flex align-items-center mx-auto"><i class="fas fa-question"></i>&nbsp;&nbsp;<p class="m-0 mx-auto">Ask a Question</p></button>
+                </div>
+            </div>
+            <div class="px-5" id="askQnContainer">
+                <form id="postQnForm">
+                    <div class="form-group">
+                        <label for="qnTitle" class="mb-1">Title</label>
+                        <input type="text" class="form-control" id="qnTitleInput" required>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <label for="qnBody" class="mb-1">Body</label>
+                        <textarea rows="10" class="form-control" id="qnBodyInput" required></textarea>
+                    </div>
+                    <div class="my-4">
+                        <button id="postQnBtn" type="submit" class="btn btn-warning">Post</button>
+                        &nbsp;
+                        <button id="cancelQnBtn" type="button" class="btn btn-warning">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <div class="container row mx-auto" id="questionsContainer">
+                <div class="col">
+                    <div class="row">
+                        <div class="col d-flex justify-content-end">
+                            <button id="askqnBtn" type="button" class="btn d-flex align-items-center my-4"><i class="fas fa-question"></i>&nbsp;&nbsp;<p class="m-0 mx-auto">Ask a Question</p></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="question-list">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-5 row mx-auto" id="questionContainer">
+            
+            </div>
         </div>
     </div>
 

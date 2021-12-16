@@ -17,6 +17,7 @@ const postController = router;
 const assignmentController = require('./assignmentController');
 const notificationController = require('./notificationController');
 const gameController = require('./gameController.js');
+const qnaController = require('./qnaController.js');
 
 
 // const email = require("../email/email");
@@ -115,6 +116,9 @@ app.use('/assignment', assignmentController);
 // notification routes
 app.use("/notification", notificationController);
 app.use("/game", gameController);
+
+// QnA routes
+app.use("/qna", qnaController);
 
 // uncaught error handling
 app.use((_error, _req, res, _next) => {

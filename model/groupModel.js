@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 const { ObjectId } = mongoose.Types;
 const { QuizSchema } = require("./quizModel");
 const { PostSchema } = require("./postModel");
+const { qnaSchema } = require("./qnaModel");
 const { resetDefault } = require("./levelModel");
 const { assign } = require("nodemailer/lib/shared");
 
@@ -33,6 +34,7 @@ const GroupSchema = new Schema({
         ],
     },
     posts: [PostSchema],
+    qna: [qnaSchema],
 });
 
 const Group = mongoose.model("Group", GroupSchema);
@@ -312,6 +314,12 @@ const groupModel = {
                                     },
                                 },
                             },
+                            "qna._id": 1,
+                            "qna.title": 1,
+                            "qna.content": 1,
+                            "qna.made_by": 1,
+                            "qna.answers": 1,
+                            "qna.created_at": 1
                         },
                     },
                     {
@@ -321,6 +329,7 @@ const groupModel = {
                             members: { $first: "$members" },
                             owner: { $first: "$owner" },
                             posts: { $push: "$posts" },
+                            qna: { $first: "$qna" }
                         },
                     },
                 ]);
@@ -1233,7 +1242,8 @@ const groupModel = {
             try {
                 const group = await Group.findOne({ _id: groupId });
                 if (!group) throw "NOT_FOUND";
-
+                console.log("post created");
+                console.log(post);
                 // append new post to db array and save to db
                 group.posts.push(post);
                 let new_id = group.posts.slice(-1)[0]._id;
@@ -1302,6 +1312,190 @@ const groupModel = {
             } catch (err) {
                 console.error(
                     `ERROR! Could not delete post with id ${postId}: ${err}`
+                );
+                reject(err);
+            }
+        });
+    },
+
+    // add question in a group 
+    createQuestionByGrpId: (groupId, question) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const group = await Group.findOne({ _id: groupId });
+                if (!group) throw "NOT_FOUND";
+                console.log("post created");
+                console.log(question);
+                // append new question to db array and save to db
+                group.qna.push(question);
+                let new_id = group.qna.slice(-1)[0]._id;
+                const result = await group.save();
+
+                if (!result) throw "UNEXPECTED_ERROR";
+                console.log("SUCESS! Result", result);
+                resolve(new_id);
+            } catch (err) {
+                console.error(
+                    `ERROR! Could not add post using grp id ${groupId}, ${err}`
+                );
+                reject(err);
+            }
+        });
+    },
+
+    //Get question by question id
+    getQuestionByQnId: (questionId) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                // return postId, content, made_by
+                const result = await Group.aggregate([
+                    { $unwind: "$qna" },
+                    { $match: { "qna._id": ObjectId(questionId) } },
+                    {
+                        $project: {
+                            _id: 0,
+                            qnaId: "$qna._id",
+                            title: "$qna.title",
+                            content: "$qna.content",
+                            made_by: "$qna.made_by",
+                            answers: "$qna.answers",
+                            created_at: "$qna.created_at",
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "made_by",
+                            foreignField: "_id", //<field from users collection>
+                            as: "user", //<output array field>
+                        },
+                    },
+                    {
+                        $unwind: { path: "$answers", preserveNullAndEmptyArrays: true }
+                    },
+
+                    {
+                        $lookup: {
+                            from: "users",
+                            let: { ans_made_by: "$answers.made_by" },
+                            pipeline: [
+                                { $match: { $expr: { $eq: ["$_id", "$$ans_made_by"] } } },
+                            ],
+                            as: "answers.user"
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: "$qnaId",
+                            answers: { $push: "$answers" },
+                            title: { $first: "$title" },
+                            content: { $first: "$content" },
+                            made_by: { $first: "$made_by" },
+                            created_at: { $first: "$created_at" },
+                        }
+                    }
+                ]);
+
+                if (!result || result.length == 0) throw "NOT_FOUND";
+
+                console.log("SUCCESS! Result", result);
+                resolve(result[0]); //result will be an array with only 1 object
+            } catch (err) {
+                console.error(
+                    `ERROR! Could not get answer with id ${questionId}: ${err}`
+                );
+                reject(err);
+            }
+        });
+    },
+
+    // add answer by question id
+    createAnswerByQnId: (qnId, answer) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const group = await Group.findOne({ "qna._id": qnId });
+                console.log("find answer");
+                console.log(group);
+                if (!group) throw "NOT_FOUND";
+
+                // find the topic in the array that matches the id
+                const found = group.qna.find(element => element._id == qnId);
+                console.log(found);
+                // append new skill to db array and save to db
+                found.answers.push(answer);
+                const result = group.save();
+
+                console.log("SUCCESS! Result", result);
+                resolve(result);
+            } catch (err) {
+                console.error(`ERROR! Could not create skill with topic id ${qnId}: ${err}`);
+                reject(err);
+            }
+        })
+    },
+
+    // like by answer id
+    likeByAnswerId: (answerId, data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                console.log("testing like")
+                console.log(answerId);
+                console.log(data)
+                const group = await Group.findOne({ "qna.answers._id": answerId });
+                const qna = group.qna.find(element => element._id == data.question_id);
+                console.log(qna)
+                if (!group) throw "NOT_FOUND";
+
+                // find the topic in the array that matches the id
+                const found = qna.answers.find(element => element._id == answerId);
+                console.log(found);
+                console.log(data.member_id)
+                // append new skill to db array and save to db
+                found.likes.push({member_id: data.member_id});
+                const result = group.save();
+
+                console.log("SUCCESS! Result", result);
+                resolve(result);
+            } catch (err) {
+                console.error(`ERROR! Could not create skill with topic id ${answerId}: ${err}`);
+                reject(err);
+            }
+        })
+    },
+
+    //  unlike answer
+    unlikeByAnswerId: (answerId, data) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const group = await Group.findOne({
+                    "qna.answers._id": ObjectId(answerId),
+                });
+                if (!group) throw "NOT_FOUND";
+                console.log("testing unlike")
+                const qna = group.qna.find(element => element._id == data.question_id);
+                console.log(qna)
+                // find index of the user in the array that matches the id
+                const foundIndex = qna.answers.findIndex(
+                    (element) => element._id == answerId
+                );
+                if (isNaN(foundIndex) && !foundIndex) throw "NOT_FOUND";
+                    
+                const likeIndex = qna.answers[foundIndex].likes.findIndex(
+                    (element) => element.member_id == data.member_id
+                );
+
+                if (isNaN(likeIndex) && !likeIndex) throw "NOT_FOUND";
+
+                // delete member from members array
+                qna.answers[foundIndex].likes.pull(qna.answers[foundIndex].likes[likeIndex]);
+                // save changes
+                const result = await group.save();
+
+                console.log("SUCESS! Result", result);
+                resolve(result);
+            } catch (err) {
+                console.error(
+                    `ERROR! Could not delete like with id ${answerId}: ${err}`
                 );
                 reject(err);
             }
