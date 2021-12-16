@@ -40,7 +40,6 @@ const renderNotification = (data) => {
     } else {
         if (issuedRole === "student") {
             for (let notification of data) {
-                console.log(notification.skill_id);
                 const type =
                     notification.content.slice(0, 5) === "There"
                         ? "leaderboard"
@@ -48,7 +47,6 @@ const renderNotification = (data) => {
                         ? "recurring"
                         : "new";
                 const timeDiff = getTimeDiff(new Date(notification.created_at));
-                console.log(timeDiff);
                 let href, imageUrl;
                 switch (type) {
                     case "recurring":
@@ -65,7 +63,6 @@ const renderNotification = (data) => {
                         imageUrl = groupPfp ? groupPfp : `./images/sample_groupimg.png`;
                         break;
                 }
-                console.log(notification);
 
                 // Append the html code
                 $("#notificationList").append(`
