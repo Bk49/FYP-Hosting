@@ -182,7 +182,7 @@ function displayMyGroups(data) {
                                 <span class="group_name">${group.group_name}</span><br>
                                 <div class="latest-msg-wrapper">
                                     <span class="sender_name">
-                                    ${group.posts.pfp && group.posts.content ? `<img class="group-icon" src= "${group.posts.pfp}">`: `<span class="group-icon"><i class="fas fa-user-circle owner-image"></i></span`}
+                                    ${!Array.isArray(group.posts.pfp) && group.posts.content ? `<img class="group-icon" src= "${group.posts.pfp}">`: `<span class="group-icon"><i class="fas fa-user-circle owner-image"></i></span`}
                                     </span>
                                     <span class="latest_msg">
                                         ${group.posts && group.posts.content ? group.posts.content : "No Messages"}

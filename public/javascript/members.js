@@ -480,7 +480,7 @@ function displayAdded(id, pic, name, email, role) {
         addedList.innerHTML += `
         <div class="list-member d-flex row" id="added-${id}">
             <div class="col">
-                <img src="${pic}" alt="profileimg" style="width: 35px"/>
+                <img src="${pic}" alt="profileimg" class="modal-pfp" style="width: 30px"/>
             </div>
             <div class="member-details">
                 <span class="added-name">${name}</span>

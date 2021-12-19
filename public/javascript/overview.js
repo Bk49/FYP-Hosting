@@ -8,7 +8,7 @@ $(document).ready(function () {
     }
     $(".header").load("topbar.html", function () {
         document.getElementById("profile-image").src = img_info()
-        document.getElementById("name").innerHTML = getName();       
+        document.getElementById("name").innerHTML = getName();
     });
     getRecommendation();
     $(`#welcome-pfp`).attr("src", pfp)
@@ -25,11 +25,11 @@ $(document).ready(function () {
 });
 
 function getUserPfp() {
-    if(!userInfo.pfp) {
+    if (!userInfo.pfp) {
         return "images/frog.png"
     } else {
         return userInfo.pfp
-    }   
+    }
 }
 
 function getAssignmentPfp(userId) {
@@ -69,8 +69,8 @@ function displayNotifications(data) {
             notification.content.slice(0, 5) === "There"
                 ? "leaderboard"
                 : notification.content.slice(9, 20) === "uncompleted"
-                ? "recurring"
-                : "new";
+                    ? "recurring"
+                    : "new";
 
         let href, imageUrl;
         switch (type) {
@@ -82,9 +82,10 @@ function displayNotifications(data) {
                 imageUrl = pfp ? pfp : `./avatars/panda (1).png`;
                 break;
             case "leaderboard":
-                href = `group_leaderboard.html?groupId=${notification.group_id}`;
+                const groupPfp = notification.group[0].pfp;
+                href = `group_leaderboard.html?groupId=${notification.group[0]._id}`;
                 // Temporary image to represent GROUP image
-                imageUrl = `./images/sample_groupimg.png`;
+                imageUrl = imageUrl = groupPfp ? groupPfp : `./images/sample_groupimg.png`;;
                 break;
         }
 
@@ -96,13 +97,11 @@ function displayNotifications(data) {
                             <img src="${imageUrl}" class="notificationimg1"
                                 alt="...">
                             <h4 class="text-center">
-                                <p id="NotificationTitle-1">${
-                                    type === "leaderboard"
-                                        ? notification.group[0].group_name
-                                        : notification.teacher[0].first_name
-                                }&nbsp;${
-            type === "leaderboard" ? "" : notification.teacher[0].last_name
-        }</p>
+                                <p id="NotificationTitle-1">${type === "leaderboard"
+                ? notification.group[0].group_name
+                : notification.teacher[0].first_name
+            }&nbsp;${type === "leaderboard" ? "" : notification.teacher[0].last_name
+            }</p>
                             </h4>
                         </div>
                     </div>
@@ -219,7 +218,7 @@ function getRecommendation() {
             if (data.weakest3.length > 0) {
                 for (let i = 0; i < data.weakest3.length; i++) {
                     if (i == 0) {
-                        $(".dailyquizbutton").wrap(
+                        $(".attempt-daily-quizbutton").wrap(
                             `<a href="quiz.html?skill=${data.weakest3[i]._id}"></a>`
                         );
                     }
@@ -255,28 +254,55 @@ function getAssignmentByUser() {
 }
 
 function displayAssignments(data) {
-    for (let i = 0; i < 3; i++) {
-        console.log(data);
-        document.getElementById(`Title-${i + 1}`).innerHTML = data[i].title;
-        document.getElementById(`Skill-${i + 1}`).innerHTML =
-            data[i].skill_name;
-        document.getElementById(
-            `Date-${i + 1}`
-        ).innerHTML = `<i class="fas fa-clock"></i>${displayDate(
-            data[i].deadline
-        )}`;
-        if (data[i].pfp) $(`#Image-${i + 1}`).attr("src", data[i].pfp);
-
-        $(document).on(
-            "click",
-            `.small-assignment-side-button-${i + 1}`,
-            function () {
-                window.location.href =
-                    "/quiz.html?skill=" +
-                    data[i].skill_id +
-                    "&assignment=" +
-                    data[i]._id;
-            }
-        );
+    const assignmentIteration = data.length >= 3 ? 3 : data.length
+    var smallAssignmentBox = document.getElementById("small-assignment-box");
+    
+    if(assignmentIteration == 0) {
+        smallAssignmentBox.innerHTML = "<span class='noAssignments'>No Assignments Found</span>"
+    } else {
+        for (let i = 0; i < assignmentIteration; i++) {       
+            const href = "/quiz.html?skill=" + data[i].skill_id + "&assignment=" + data[i]._id;
+    
+            smallAssignmentBox.innerHTML += `
+    
+            <div onclick="window.location.href= '${href}'"class="row d-flex small-assignment-box">
+            <div class="col">
+                <div class="row">
+                    <div class="col d-flex small-assignment-header">
+                        <img src="${data[i].pfp? data[i].pfp : "./avatars/cat.png"}" id="Image-1" class="assignmentimg1" alt="profileImg">
+                        <h4 class="text-center">
+                             <p id= "Title">
+                                ${data[i].title}
+                             </p>
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col small-assignment-text-box">
+                        <div class="small-assignment-text">
+                            <p id="Skill">
+                                ${data[i].skill_name}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col small-assignment-text-box2">
+                        <div class="small-assignment-text">
+                           <span id="Date">
+                                <i class="fas fa-clock"></i>
+                                ${displayDate(data[i].deadline)}
+                           </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="small-assignment-side-button-1 col-1 d-flex align-items-center justify-content-center">
+                <i class="fas fa-angle-right link-light fa-lg"></i>
+            </button>
+        </div>
+        `
+        }
     }
+    
+   
+    
 }

@@ -59,7 +59,7 @@
     min-width: 410px;
     min-height: 220px;
 
-    background: linear-gradient(180deg, #ff99e9 0%, #99f1fd 100%);
+    background: linear-gradient(180deg, #ff99e9 0%, #00daf7 100%);
     border-radius: 15px;
     align-self: center;
 }
@@ -194,6 +194,17 @@
     border: none;
 }
 
+.noAssignments {
+    font-family: Coolvetica;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 24px;
+    /* identical to box height */
+    color: #003844;
+    margin-left: 75px;
+}
+
 .assignmentimg1 {
     width: 35px;
     max-height: 35px;
@@ -236,11 +247,11 @@
     padding: 0;
 }
 
-#Title-1 {
+#Title {
     margin: 0;
 }
 
-#Skill-1 {
+#Skill {
     margin-top: 5px;
     font-family: Coolvetica;
     font-style: normal;
@@ -251,7 +262,7 @@
     color: #fff;
 }
 
-#Date-1 {
+#Date{
     font-family: Coolvetica;
     font-style: normal;
     font-weight: normal;
