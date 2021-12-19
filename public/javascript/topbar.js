@@ -57,8 +57,8 @@ const renderNotification = (data) => {
                         imageUrl = pfp ? pfp : `./avatars/panda (1).png`;
                         break;
                     case "leaderboard":
-                        const groupPfp = notification.group[0].groupPfp;
-                        href = `group_leaderboard.html?groupId=${notification.group_id}`;
+                        const groupPfp = notification.group[0].pfp;
+                        href = `group_leaderboard.html?groupId=${notification.group[0]._id}`;
                         // Temporary image to represent GROUP image
                         imageUrl = groupPfp ? groupPfp : `./images/sample_groupimg.png`;
                         break;

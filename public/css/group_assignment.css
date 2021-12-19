@@ -400,19 +400,20 @@ color: #000000;
     text-align: center;
     font-size: 12px;
     justify-content: center;
-    min-width: 150px;
+    min-width: fit-content;
 }
 
 .uncomplete {
     background-color: #ffe1e5;
     color: #ef798a;
+    min-width: fit-content;
 }
 
 .toggleContent {
     margin: 0 22px 0 0;
     /* opacity: 0;
     max-height: 0; */
-    /* overflow-y: scroll; */
+    overflow-y: scroll;
     transition: 0.2s ease-in-out;
     display: none;
 }
@@ -450,17 +451,14 @@ color: #000000;
 
 
 .tag-container, .tag-container1, .tag-container2 {
-    color: #333;
+    color: #000000;
     font-size: 13px;
     margin: 8px 24px;
     font-family: Poppins;
-font-style: normal;
-font-weight: normal;
-line-height: 36px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 36px;
 /* identical to box height */
-
-
-color: #000000;
 }
 
 #pending-list ,#overdue-list, #completed-list {

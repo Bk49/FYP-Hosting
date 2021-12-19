@@ -420,7 +420,7 @@ const groupModel = {
                 const newGame = new Group({
                     group_name,
                     owner: ObjectId(owner),
-                    members,
+                    members
                 });
                 const result = await newGame.save();
 
