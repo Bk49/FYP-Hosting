@@ -36,9 +36,19 @@ import SignUp from "./components/pages/individual-pages/SignUp";
 import Stats from "./components/pages/individual-pages/Stats";
 import ViewPastQuiz from "./components/pages/individual-pages/ViewPastQuiz";
 
+// Fonts Import
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
+
 import "react-native-gesture-handler";
 
 export default App = () => {
+    const [isLoaded] = useFonts({
+        Coolvetica: require("./assets/fonts/coolvetica/coolvetica_rg.ttf"),
+    });
+    if (!isLoaded) {
+        return <AppLoading />;
+    }
     return (
         <NativeRouter>
             <Routes>
