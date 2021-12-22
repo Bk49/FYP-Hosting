@@ -79,6 +79,19 @@
 
 #account-fn {
     margin: 0;
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
+#account-ln {
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
+.profile-name-container {
+    max-width: 450px;
 }
 
 .readyForaQuizImg {
@@ -235,6 +248,7 @@
     max-height: 25px;
     margin-left: 15px;
     margin-right: 25px;
+    width: 145px;
 }
 
 .small-assignment-text-box2 {
@@ -260,6 +274,8 @@
     line-height: 14px;
     white-space: nowrap;
     color: #fff;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 #Date{
