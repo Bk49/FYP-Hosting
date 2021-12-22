@@ -11,6 +11,12 @@ body.modal-open {
   position: fixed;
 }
 
+.modal-title {
+  text-align: center;
+    font-family: Coolvetica;
+    font-size: 30px;
+}
+
 .frm{
   justify-content: center;
   align-content: center;

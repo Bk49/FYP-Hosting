@@ -411,7 +411,6 @@ font-weight: normal;
 line-height: 36px;
 /* identical to box height */
 
-
 color: #000000;
 }
 
@@ -421,6 +420,15 @@ color: #000000;
     max-height: 0;
     overflow-y: auto;
     transition: 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
 }
 
 .completed:hover {

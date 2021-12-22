@@ -301,8 +301,5 @@ function displayAssignments(data) {
         </div>
         `
         }
-    }
-    
-   
-    
+    }   
 }
