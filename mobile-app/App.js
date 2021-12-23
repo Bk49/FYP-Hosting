@@ -45,6 +45,8 @@ import "react-native-gesture-handler";
 export default App = () => {
     const [isLoaded] = useFonts({
         Coolvetica: require("./assets/fonts/coolvetica/coolvetica_rg.ttf"),
+        Poppins: require("./assets/fonts/poppins/Poppins-Regular.ttf"),
+        Feather: require("./assets/fonts/feather/feather.ttf")
     });
     if (!isLoaded) {
         return <AppLoading />;

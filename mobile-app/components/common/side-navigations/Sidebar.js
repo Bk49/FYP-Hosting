@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Header } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { Entypo, FontAwesome5, Feather } from '@expo/vector-icons'; 
 import { useNavigate } from "react-router-native";
 
@@ -15,7 +15,7 @@ const SideBar = () => {
             <Text style={styles.text}><Feather name="clipboard" size={24} color="black" /> Assignments</Text>
             <Text style={styles.text}><FontAwesome5 name="users" size={24} color="black" /> My Groups</Text>
             <Text style={styles.text} onPress={() => navigate("/stats")}><FontAwesome5 name="chart-bar" size={24} color="black" /> My Statistics</Text>
-            <Text style={styles.text}><FontAwesome5 name="award" size={24} color="black" /> Leaderboard</Text>
+            <Text style={styles.text} onPress={()=> navigate("/leaderboard")}><FontAwesome5 name="award" size={24} color="black" /> Leaderboard</Text>
             <Text style={styles.text}><FontAwesome5 name="newspaper" size={24} color="black" /> Learning Resources</Text>
         </View>
     );
