@@ -32,7 +32,7 @@ const GroupItem = ({groupId, groupName, ownerName, groupImg, ownerPic}) => {
             setProfile(
                 <Image
                     style={styles.ownerImg}
-                    source={require("../../../assets/frog.png")}>
+                    source={require("../../../assets/avatars/frog.png")}>
                 </Image>
             )
         }
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
         borderColor: '#C4C4C4',
         borderRadius: 10,
         padding: 15,
-        marginVertical: 20
+        marginVertical: 20,
+        alignSelf: 'center'
     },
     groupImg: {
         width: 100,

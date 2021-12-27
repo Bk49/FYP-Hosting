@@ -103,15 +103,14 @@ const GroupCreateModal = ({setNeedsUpdate, setLoading}) => {
         }
 
         let data = {
-            groupName: groupName,
-            members: memberArray
+            group_name: groupName,
+            members: memberArray,
         }
         
         addGroup(data)
         .then((data) => {
             let formdata = new FormData();
             formdata.append("image", {uri: image, name: 'groupimg.jpg', type: 'image/jpeg'});
-
             addGroupImg(data, formdata)
             .then((result) => {
             })

@@ -47,13 +47,11 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
     const icon = <FontAwesome5 name="ellipsis-v" size={15} color="black"/>;
 
     useEffect(() => {
-        console.log("groupimg is");
-        console.log(groupImg)
         if (groupImg != undefined) {
             setImage(<Image style={styles.groupImg} source={{uri: groupImg}}></Image>);
         }
         else {
-            setImage(<Image style={styles.groupImg} source={require("../../../assets/profile.png")}></Image>);
+            setImage(<Image style={styles.groupImg} source={require("../../../assets/sample_groupimg.png")}></Image>);
         }
         
         getGroupMembers(groupId)
@@ -154,7 +152,7 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
                 <TouchableOpacity style={styles.emailList} onPress={() => addMember(data[i], i)}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{alignSelf: 'center'}}>
-                            {image}
+                            <Image style={styles.emailListImg} source={require("../../../assets/profile.png")}></Image>
                         </View>
                         <View style={{marginLeft: 10}}>
                             <Text style={styles.listName}>{data[i].first_name + " " + data[i].last_name}</Text>

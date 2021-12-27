@@ -4,6 +4,7 @@ import { useLocation, useSearchParams } from "react-router-native";
 import GroupTopbar from "../../common/group/topbar-component/GroupTopbar";
 import SideBar from "../../common/side-navigations/Sidebar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import getGroupById from "../../../axios/group-api/getGroupById";
 
 export default GroupAnnouncement = () => {
     const {state} = useLocation();
@@ -12,7 +13,7 @@ export default GroupAnnouncement = () => {
     const [otherMsg, setOtherMsg] = useState();
     const [date, setDate] = useState();
     const [allMsg, setAllMsg] = useState();
-
+    
     const getUserData = async () => {
         const data = await AsyncStorage.getItem("userInfo");
         return JSON.parse(data)
