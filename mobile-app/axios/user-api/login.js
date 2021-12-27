@@ -16,6 +16,6 @@ export default login = async (data) => {
 };
 
 const storeToken = async (data) => {
-    await AsyncStorage.setItem("token", data.accessTK);
+    await AsyncStorage.setItem("token", JSON.stringify(data.accessTK));
     await AsyncStorage.setItem("userInfo", JSON.stringify(data.user));
 };
