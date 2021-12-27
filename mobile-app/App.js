@@ -30,6 +30,7 @@ import Game from "./components/pages/individual-pages/Game";
 import Home from "./components/pages/individual-pages/Home";
 import Leaderboard from "./components/pages/individual-pages/Leaderboard";
 import Login from "./components/pages/individual-pages/Login";
+import ResetPassword from "./components/pages/individual-pages/ResetPassword"
 import Overview from "./components/pages/individual-pages/Overview";
 import Quiz from "./components/pages/individual-pages/Quiz";
 import SignUp from "./components/pages/individual-pages/SignUp";
@@ -114,6 +115,7 @@ export default App = () => {
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/leaderboard" element={<Leaderboard />} />
                 <Route exact path="/login" element={<Login />} />
+                <Route exact path="/resetPassword" element={<ResetPassword />} />
                 <Route exact path="/overview" element={<Overview />} />
                 <Route exact path="/quiz" element={<Quiz />} />
                 <Route exact path="/signup" element={<SignUp />} />
