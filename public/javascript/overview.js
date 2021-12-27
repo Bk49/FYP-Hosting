@@ -157,8 +157,6 @@ $(document).on("click", ".assignment", function () {
     }
 });
 
-// Old code unused (For popular quizzes)
-
 function getPopularQuiz(fallback) {
     $.ajax({
         url: `/quiz/popular`,
