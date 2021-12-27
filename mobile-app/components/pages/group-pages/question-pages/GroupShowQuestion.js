@@ -25,7 +25,7 @@ export default GroupShowQuestion = () => {
             setImage(
             <Image
                 style={styles.image}
-                source={require("../../../../assets/frog.png")}>
+                source={require("../../../../assets/avatars/frog.png")}>
             </Image>
             )
         }

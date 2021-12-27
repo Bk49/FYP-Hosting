@@ -15,16 +15,19 @@ export default GroupQuestionButton = ({groupId, groupName, title, body, navigate
     function postQuestion() {
         let date = new Date();
 
-        let data = {
-            title: title,
-            content: body,
-            date: date.toISOString()
-        }
-
-        addQuestion(groupId, data)
-        .then(() => {
-            navigate("/groupqna", {state: {groupId: groupId, groupName: groupName}})        
-        });
+        getUserData()
+        .then((result) => {
+            let data = {
+                title: title,
+                content: body,
+                made_by: result._id,
+                date: date.toISOString()
+            }
+            addQuestion(groupId, data)
+            .then(() => {
+                navigate("/groupqna", {state: {groupId: groupId, groupName: groupName}})        
+            });
+        })
     }
 
     function doAction() {

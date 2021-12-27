@@ -22,7 +22,7 @@ export default GroupQuestionAnswer = ({userInfo, content, likes, questionId, ans
             setImage(
             <Image
                 style={styles.image}
-                source={require("../../../assets/frog.png")}>
+                source={require("../../../assets/avatars/frog.png")}>
             </Image>
             )
         }

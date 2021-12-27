@@ -11,7 +11,7 @@ const GroupQuestionPostItem = ({data, groupId, groupName}) => {
     const [profilePic, setPic] = useState(
     <Image
         style={styles.image}
-        source={require("../../../assets/frog.png")}>
+        source={require("../../../assets/avatars/frog.png")}>
     </Image>
     );
 
@@ -24,7 +24,7 @@ const GroupQuestionPostItem = ({data, groupId, groupName}) => {
             setPic(
             <Image
                 style={styles.image}
-                source={require("../../../assets/frog.png")}>
+                source={require("../../../assets/avatars/frog.png")}>
             </Image>
             )
         }
