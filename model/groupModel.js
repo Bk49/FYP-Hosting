@@ -1513,24 +1513,18 @@ const groupModel = {
     likeByAnswerId: (answerId, data) => {
         return new Promise(async (resolve, reject) => {
             try {
-                console.log("testing like");
-                console.log(answerId);
-                console.log(data);
                 const group = await Group.findOne({
                     "qna.answers._id": answerId,
                 });
                 const qna = group.qna.find(
                     (element) => element._id == data.question_id
                 );
-                console.log(qna);
                 if (!group) throw "NOT_FOUND";
 
                 // find the topic in the array that matches the id
                 const found = qna.answers.find(
                     (element) => element._id == answerId
                 );
-                console.log(found);
-                console.log(data.member_id);
                 // append new skill to db array and save to db
                 found.likes.push({ member_id: data.member_id });
                 const result = group.save();
@@ -1554,11 +1548,9 @@ const groupModel = {
                     "qna.answers._id": ObjectId(answerId),
                 });
                 if (!group) throw "NOT_FOUND";
-                console.log("testing unlike");
                 const qna = group.qna.find(
                     (element) => element._id == data.question_id
                 );
-                console.log(qna);
                 // find index of the user in the array that matches the id
                 const foundIndex = qna.answers.findIndex(
                     (element) => element._id == answerId

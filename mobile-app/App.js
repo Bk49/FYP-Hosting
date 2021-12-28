@@ -19,6 +19,8 @@ import GroupAssignment from "./components/pages/group-pages/GroupAssignment";
 import GroupLeaderboard from "./components/pages/group-pages/GroupLeaderboard";
 import GroupMember from "./components/pages/group-pages/GroupMember";
 import GroupProgress from "./components/pages/group-pages/GroupProgress";
+import GroupListing from "./components/pages/group-pages/GroupListing";
+
 // Learning Resources pages import
 import LearningResourcesPrimary from "./components/pages/learning-resources-pages/LearningResourcesPrimary";
 import LearningResourcesSecondary from "./components/pages/learning-resources-pages/LearningResourcesSecondary";
@@ -46,6 +48,8 @@ import AppLoading from "expo-app-loading";
 
 import "react-native-gesture-handler";
 
+import { StatusBar } from "react-native";
+
 export default App = () => {
     const [isLoaded] = useFonts({
         Coolvetica: require("./assets/fonts/coolvetica/coolvetica_rg.ttf"),
@@ -57,6 +61,7 @@ export default App = () => {
     }
     return (
         <NativeRouter>
+            <StatusBar hidden={true}/>
             <Routes>
                 {/* Error routes */}
                 <Route exact path="/403" element={<Error403 />} />
@@ -96,6 +101,11 @@ export default App = () => {
                     exact
                     path="/group_leaderboard"
                     element={<GroupLeaderboard />}
+                />
+                <Route
+                    exact
+                    path="/group_listing"
+                    element={<GroupListing />}
                 />
                 <Route
                     exact

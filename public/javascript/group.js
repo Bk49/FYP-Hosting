@@ -132,7 +132,8 @@ function createGroup() {
                 console.log("There is a group file");
                 console.log(file)
                 console.log(returnedGroupData)
-                window.location.href = "";
+                console.log(formData)
+                // window.location.href = "";
                 $.ajax({
                     url: `/group/pfp/${returnedGroupData.new_id}`,
                     method: "PUT",
@@ -150,7 +151,7 @@ function createGroup() {
                     },
                 })
             } else {
-                window.location.href = "";
+                // window.location.href = "";
             }
         },
         error: function (xhr, textStatus, errorThrown) {

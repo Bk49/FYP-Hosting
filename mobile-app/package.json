@@ -33,11 +33,10 @@
     "react-native-chart-kit": "^6.11.0",
     "react-native-chartjs": "^1.0.3",
     "react-native-dropdown-picker": "^5.2.3",
-    "react-native-gesture-handler": "~1.10.2",
+    "react-native-image-picker": "^4.6.0",
+    "react-native-loading-spinner-overlay": "^2.0.0",
+    "react-native-modal": "^13.0.0",
     "react-native-paper": "^4.11.1",
-    "react-native-reanimated": "~2.2.0",
-    "react-native-safe-area-context": "3.3.2",
-    "react-native-screens": "~3.8.0",
     "react-native-svg": "^12.1.1",
     "react-native-element-dropdown": "^1.5.5",
     "react-native-elements": "^3.4.2",
@@ -50,7 +49,8 @@
     "react-navigation": "^4.4.4",
     "react-router-dom": "^6.1.1",
     "react-router-native": "^6.0.2",
-    "react-scroll-to-component": "^1.0.2"
+    "react-scroll-to-component": "^1.0.2",
+    "expo-image-picker": "~11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

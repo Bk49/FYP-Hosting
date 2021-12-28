@@ -151,7 +151,7 @@ async (req, res) => {
     const { answerId } = req.params;
     const { member_id, question_id } = req.body;
     try {
-        console.time("POST like by answer id");
+        console.time("DELETE like by answer id");
         const result = await groupModel.unlikeByAnswerId(answerId, { member_id, question_id });
 
         res.status(200).send({ new_id: result._id });
