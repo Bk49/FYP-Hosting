@@ -47,7 +47,7 @@ export default Leaderboard = () => {
 
     return (
         <View style={styles.container}>
-            <SideBar></SideBar>
+            <SideBar currentPage="Leaderboard" />
             <ScrollView>
                 <View style={styles.leaderboardContainer}>
                     <View style={styles.topContainer}>
@@ -128,7 +128,6 @@ export default Leaderboard = () => {
                                 </Picker>
                             </View>
                         </View>
-
                         <View style={styles.dropdowns}>
                             <Text style={styles.textDropdown}>Scope: </Text>
                             <View style={styles.pickerContainer}>
@@ -146,10 +145,15 @@ export default Leaderboard = () => {
                             </View>
                         </View>
                     </View>
+
                     {lbData.length <= 0 ? (
                         <View></View>
                     ) : (
-                        <LeaderboardTable lbData={lbData} type={type} />
+                        <LeaderboardTable
+                            isLong={leaderboard.length >= 3}
+                            lbData={lbData}
+                            type={type}
+                        />
                     )}
                 </View>
             </ScrollView>
