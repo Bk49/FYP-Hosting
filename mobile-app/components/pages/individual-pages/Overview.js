@@ -18,6 +18,7 @@ import OverviewNotificationItem from "../../overview-components/OverviewNotifica
 import getRecommendation from "../../../axios/quiz-api/getRecommendation";
 import { useNavigate } from "react-router-native";
 import getPopularQuiz from "../../../axios/quiz-api/getPopularQuiz";
+import Topbar from "../../common/top-navigations/Topbar";
 
 export default Overview = () => {
     const [pfpUrl, setPfpUrl] = useState("");
@@ -46,6 +47,7 @@ export default Overview = () => {
         <View style={styles.container}>
             <SideBar></SideBar>
             <ScrollView>
+                <Topbar />
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>Overview</Text>
                 </View>
@@ -198,7 +200,7 @@ export default Overview = () => {
                                 </View>
                                 <View style={styles.assignmentButtonContainer}>
                                     <OverviewButton
-                                        onPress={()=> navigate("/assignment")}
+                                        onPress={() => navigate("/assignment")}
                                         text="View All Assignments"
                                         color="#81c6ed"
                                     />
