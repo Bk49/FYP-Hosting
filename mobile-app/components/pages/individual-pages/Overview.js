@@ -554,22 +554,4 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         height: 820,
     },
-=======
-        <SafeAreaView>
-            <View style={styles.container}>
-                <Sidebar currentPage="Overview"></Sidebar>
-                <ScrollView style={{flexDirection: 'column'}}>
-                    <Headers text={"Overview"}></Headers>
-                </ScrollView>
-            </View>
-        </SafeAreaView>
-    )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        height: '100%'
-    }
-});
-
