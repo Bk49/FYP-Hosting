@@ -483,6 +483,7 @@ function populateTopic(topics) {
             <option value="${row._id}">${row.topic_name}</option>
         `;
     });
+    topicSelect.innerHTML = `<option value="" selected disabled>Select A Topic</option>`
     topicSelect.innerHTML += content;
 }
 
@@ -494,6 +495,7 @@ function populateSkill(skills) {
             <option value="${row._id}">${row.skill_name}</option>
         `;
     });
+    skillSelect.innerHTML = `<option value="" selected disabled>Select A Skill</option>`
     skillSelect.innerHTML += content;
 }
 

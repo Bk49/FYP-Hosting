@@ -216,9 +216,9 @@ function getRecommendation() {
             if (data.weakest3.length > 0) {
                 for (let i = 0; i < data.weakest3.length; i++) {
                     if (i == 0) {
-                        $(".attempt-daily-quizbutton").wrap(
-                            `<a href="quiz.html?skill=${data.weakest3[i]._id}"></a>`
-                        );
+                        $(document).on("click", ".attempt-daily-quizbutton", function () {
+                            window.location.href = "quiz.html?skill=" + data.weakest3[i]._id
+                        })
                     }
                     content += `<div><a href="quiz.html?skill=${data.weakest3[i]._id}">${data.weakest3[i].skill_name}</a></div>`;
                 }
@@ -254,20 +254,20 @@ function getAssignmentByUser() {
 function displayAssignments(data) {
     const assignmentIteration = data.length >= 3 ? 3 : data.length
     var smallAssignmentBox = document.getElementById("small-assignment-box");
-    
-    if(assignmentIteration == 0) {
+
+    if (assignmentIteration == 0) {
         smallAssignmentBox.innerHTML = "<span class='noAssignments'>No Assignments Found</span>"
     } else {
-        for (let i = 0; i < assignmentIteration; i++) {       
+        for (let i = 0; i < assignmentIteration; i++) {
             const href = "/quiz.html?skill=" + data[i].skill_id + "&assignment=" + data[i]._id;
-    
+
             smallAssignmentBox.innerHTML += `
     
             <div onclick="window.location.href= '${href}'"class="row d-flex small-assignment-box">
             <div class="col">
                 <div class="row">
                     <div class="col d-flex small-assignment-header">
-                        <img src="${data[i].pfp? data[i].pfp : "./avatars/cat.png"}" id="Image-1" class="assignmentimg1" alt="profileImg">
+                        <img src="${data[i].pfp ? data[i].pfp : "./avatars/cat.png"}" id="Image-1" class="assignmentimg1" alt="profileImg">
                         <h4 class="text-center">
                              <p id= "Title">
                                 ${data[i].title}
@@ -299,5 +299,5 @@ function displayAssignments(data) {
         </div>
         `
         }
-    }   
+    }
 }

@@ -33,7 +33,9 @@
     "react-native": "0.64.3",
     "react-native-chart-kit": "^6.11.0",
     "react-native-chartjs": "^1.0.3",
+    "react-native-collapsible": "^1.6.0",
     "react-native-dropdown-picker": "^5.2.3",
+<<<<<<< Updated upstream
     "react-native-element-dropdown": "^1.5.5",
     "react-native-elements": "^3.4.2",
     "react-native-image-picker": "^4.6.0",
@@ -47,6 +49,14 @@
     "react-native-select-dropdown": "^1.6.0",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-snap-carousel": "^3.9.1",
+=======
+    "react-native-elements": "^3.4.2",
+    "react-native-gesture-handler": "~1.10.2",
+    "react-native-paper": "^4.11.1",
+    "react-native-reanimated": "~2.2.0",
+    "react-native-safe-area-context": "3.3.2",
+    "react-native-screens": "~3.8.0",
+>>>>>>> Stashed changes
     "react-native-svg": "^12.1.1",
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",

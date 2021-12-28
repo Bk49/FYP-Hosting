@@ -361,6 +361,11 @@
     font-size: 17px;
 }
 
+.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
 #reviewQuiz {
     font-family: Poppins;
     font-style: normal;

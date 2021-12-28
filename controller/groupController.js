@@ -559,35 +559,35 @@ router.post("/leaderboard", async (req, res) => {
 /**
  * DELETE /group/:groupId - delete quiz by id
  */
-router.delete(
-    "/:groupId",
-    //validate("quizId"),
-    async (req, res) => {
-        const { groupId, userId } = req.query;
-        try {
-            console.time("PUT dismiss admin by user id");
-            const result = await groupModel.dismissGroupAdmin(groupId, userId);
+// router.delete(
+//     "/:groupId",
+//     //validate("quizId"),
+//     async (req, res) => {
+//         const { groupId, userId } = req.query;
+//         try {
+//             console.time("PUT dismiss admin by user id");
+//             const result = await groupModel.dismissGroupAdmin(groupId, userId);
 
-            res.status(200).send({ message: "Group Updated" });
-        } catch (err) {
-            // if (err == "NOT_FOUND")
-            //     res.status(404).send({ error: "Topic ID not found", code: err });
-            // else
-            if (err instanceof Error || err instanceof MongoError)
-                res.status(500).send({
-                    error: err.message,
-                    code: "DATABASE_ERROR",
-                });
-            else
-                res.status(500).send({
-                    error: "Error updating group admin",
-                    code: "UNEXPECTED_ERROR",
-                });
-        } finally {
-            console.timeEnd("PUT dismiss admin by user id");
-        }
-    }
-);
+//             res.status(200).send({ message: "Group Updated" });
+//         } catch (err) {
+//             // if (err == "NOT_FOUND")
+//             //     res.status(404).send({ error: "Topic ID not found", code: err });
+//             // else
+//             if (err instanceof Error || err instanceof MongoError)
+//                 res.status(500).send({
+//                     error: err.message,
+//                     code: "DATABASE_ERROR",
+//                 });
+//             else
+//                 res.status(500).send({
+//                     error: "Error updating group admin",
+//                     code: "UNEXPECTED_ERROR",
+//                 });
+//         } finally {
+//             console.timeEnd("PUT dismiss admin by user id");
+//         }
+//     }
+// );
 
 /**
  * DELETE /group/:groupId - delete grp by id
@@ -596,10 +596,13 @@ router.delete(
     "/:groupId",
     //validate("quizId"),
     async (req, res) => {
+        console.log("lmao")
         const { groupId } = req.params;
         try {
             console.time("DELETE grp by id");
             const result = await groupModel.deleteGroupById(groupId);
+            
+            console.log(groupId)
 
             res.status(200).send({ message: "Group Deleted" });
         } catch (err) {

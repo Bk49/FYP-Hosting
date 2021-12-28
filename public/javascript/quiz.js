@@ -37,9 +37,9 @@ $(document).ready(function () {
 function allowDrop(ev) {
     ev.preventDefault();
 
-    
+
 }
-  
+
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.innerHTML);
     ev.dataTransfer.setData("id", ev.target.parentElement.parentElement.parentElement.id);
@@ -58,10 +58,10 @@ function drop(ev) {
     // Swap values if drag and drop in the same question
     if (ev.currentTarget.parentElement.parentElement.id == originalElement.id) {
         ev.currentTarget.children[0].innerHTML = originalElementText;
-        var originalElementText = originalElement.children[1].children[parseInt(optionId.charAt(3))-1];
+        var originalElementText = originalElement.children[1].children[parseInt(optionId.charAt(3)) - 1];
         originalElementText.children[0].innerHTML = targetInnerHTML;
     }
-    
+
 }
 
 //On back press
@@ -89,8 +89,8 @@ $(document).on("click", ".dropDownOptions", function () {
     for (let i = 0; i < array.length; i++) {
         // let check = $(".dropDownOptions").hasClass(`${array[i]}`);
         // if (check == true) {
-            path = array[i];
-            break;
+        path = array[i];
+        break;
         // }
     }
     console.log(path);
@@ -104,11 +104,11 @@ $(document).on("click", ".dropDownOptions", function () {
         //     getQuizAjax(path, id);
         // }
         // else {
-            path = "trial";
-            if (window.location.toString().includes("quiz")) {
-                path = "quiz";
-            }
-            window.open(`${path}.html?skill=${id}`);
+        path = "trial";
+        if (window.location.toString().includes("quiz")) {
+            path = "quiz";
+        }
+        window.open(`${path}.html?skill=${id}`);
         //}
     }
     else {
@@ -126,18 +126,18 @@ $(document).on("click", ".dropDownOptions", function () {
 
 })
 
-$(document).on("click", "#dropdownMenuLink", function() {
+$(document).on("click", "#dropdownMenuLink", function () {
     $(".levelNo").width($("#dropdownMenuLink").innerWidth());
 })
 
-$(document).on("click", "#secondaryDropDown", function() {
+$(document).on("click", "#secondaryDropDown", function () {
     $(".secondaryLvlNo").width($("#secondaryDropDown").innerWidth());
 })
 
-$(document).on("click", ".form-check-inline .form-check-input", function() {
+$(document).on("click", ".form-check-inline .form-check-input", function () {
     var id = this.id;
 
-    if (id == 4 ) {
+    if (id == 4) {
         for (var i = 0; i < 4; i++) {
             this.parentElement.parentElement.children[i].children[0].checked = false;
         }
@@ -145,6 +145,10 @@ $(document).on("click", ".form-check-inline .form-check-input", function() {
     else {
         this.parentElement.parentElement.children[4].children[0].checked = false;
     }
+})
+
+$(document).on("click", ".cancelBtn", function () {
+    window.location.href = "/overview.html"
 })
 
 $(document).on("click", ".click", function () {
@@ -425,8 +429,8 @@ function submitQuiz(newQuiz) {
             container.className = "row m-0 m-auto justify-content-center";
             $(container).after('<h4 class="my-5 text-center" id="reviewQuiz">Review Quiz</h4>');
 
-            
-            if(newQuiz.score.total >= 80) {
+
+            if (newQuiz.score.total >= 80) {
                 // add animation
                 confetti();
 
@@ -470,9 +474,9 @@ function updateUserInfo(points) {
     // }
 
     if (userInfo.exp_points >= 100) {
-        userInfo.rank_level += Math.floor(userInfo.exp_points/100);
-        userInfo.exp_points -= Math.floor(userInfo.exp_points/ 100) * 100;
-    } 
+        userInfo.rank_level += Math.floor(userInfo.exp_points / 100);
+        userInfo.exp_points -= Math.floor(userInfo.exp_points / 100) * 100;
+    }
 
     // userInfo.rank_level = final;
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -550,22 +554,22 @@ function after(path, data) {
         }
 
         for (let i = 0; i < data.length; i++) {
-                
-                if (data[i].level > 0 && data[i].level < 7) {
-                    head = "Primary "
-                }
-                else {
-                    head = "Secondary "
-                }
 
-                notes.push({
-                    "id": data[i]._id,
-                    "display": head + data[i][vname + end],
-                    "topic": data[i].topics,
-                    // "skill": data[i].topics[0]
-                }) 
-            
-            
+            if (data[i].level > 0 && data[i].level < 7) {
+                head = "Primary "
+            }
+            else {
+                head = "Secondary "
+            }
+
+            notes.push({
+                "id": data[i]._id,
+                "display": head + data[i][vname + end],
+                "topic": data[i].topics,
+                // "skill": data[i].topics[0]
+            })
+
+
         }
 
         displayCard(notes, vname);
@@ -653,12 +657,12 @@ function displayCard(data, name) {
         for (let i = 0; i < data.length; i++) {
 
             lvl = (data[i].display.charAt(data[i].display.length - 2) + data[i].display.charAt(data[i].display.length - 1)).trim();
-            
+
             if (lvl > 0 && lvl < 7) {
                 lvlName = "Primary " + lvl;
             }
             else {
-                lvlName = "Secondary " + (lvl - 6); 
+                lvlName = "Secondary " + (lvl - 6);
             }
 
             let content =
@@ -668,32 +672,40 @@ function displayCard(data, name) {
                         ${lvlName}<i class="fas fa-angle-down"></i>
                     </a>
                     <ul class="dropdown-menu ${name} levelNo" aria-labelledby="dropdownMenuLink" style="width:${$("#opdownMenuLink").width()}">`
-                var topics = "";
-                if (data[i].topic.length <= 0) {
-                    topics += 
+            var topics = "";
+            if (data[i].topic.length <= 0) {
+                topics +=
                     `
-                    <li><a class="dropdown-item dropDownOptions" href="">No Topics Available</a></li>
+                    <li><a class="dropdown-item dropDownOptions disabled" href="">No Topics Available</a></li>
                     `
-                }
-                else {
-                    for (x = 0; x < data[i].topic.length; x++) {
-                        for (y = 0; y < data[i].topic[x].skills.length; y++) {
-                        topics += 
-                        `
+            }
+            else {
+                for (x = 0; x < data[i].topic.length; x++) {
+                    console.log(data[i].topic[x].skills)
+                    if (data[i].topic[x].skills.length <= 0) {
+                        topics +=
+                            `
+                            <li><a class="dropdown-item dropDownOptions disabled">No Topics Available</a></li>
+                            `
+                        continue
+                    }
+                    for (y = 0; y < data[i].topic[x].skills.length; y++) {
+                        topics +=
+                            `
                         <li><a class="dropdown-item dropDownOptions" id = ${data[i].topic[x].skills[y]._id} href="">${data[i].topic[x].skills[y].skill_name}</a></li>
                         `
-                        }
                     }
                 }
-                content += topics;
-                content += "</ul></div></div>";
+            }
+            content += topics;
+            content += "</ul></div></div>";
 
-                if (lvl > 0 && lvl < 7) {
-                    primaryContainer.innerHTML += content;
-                }
-                else {
-                    secondaryContainer.innerHTML += content;
-                }
+            if (lvl > 0 && lvl < 7) {
+                primaryContainer.innerHTML += content;
+            }
+            else {
+                secondaryContainer.innerHTML += content;
+            }
         }
     }
     else {
@@ -749,7 +761,7 @@ function generateRandomDecimal(min, max, precision) {
 }
 
 function generateRandomString(array) {
-    var value = array[generateRandomNumber(0, array.length-1)];
+    var value = array[generateRandomNumber(0, array.length - 1)];
 
     return value;
 }

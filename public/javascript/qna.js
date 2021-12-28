@@ -173,7 +173,7 @@ function displayQuestions(questions) {
                                             <img src="${
                                                 question.made_by[0].pfp
                                                     ? question.made_by[0].pfp
-                                                    : "images/profile.png"
+                                                    : "avatars/frog.png"
                                             }" alt="ownerImg" class="${question.made_by[0].pfp ? "usePfp" : ''} ownerImg img-fluid" /><p class="my-2 d-inline p-0 ownerQn">${
             question.made_by[0].first_name
         } ${question.made_by[0].last_name}</p>
@@ -276,7 +276,7 @@ function displayQuestion(data) {
                         <img src="${
                             data.answers[x].user[0].pfp
                                 ? data.answers[x].user[0].pfp
-                                : "images/profile.png"
+                                : "avatars/frog.png"
                         }" alt="answerImg" class="${data.answers[x].user[0].pfp ? "usePfpDetail" : ''} answerImg" />
                     </div>
                 </div>

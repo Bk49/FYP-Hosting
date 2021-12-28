@@ -211,6 +211,10 @@
     margin-bottom: 10px;
 } */
 
+#setDefault {
+    visibility: hidden;
+}
+
 .primaryLevelButtons:hover{
     background-color: #842294;
     color: #FFFFFF
