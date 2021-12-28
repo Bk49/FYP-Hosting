@@ -18,7 +18,7 @@ import OverviewNotificationItem from "../../overview-components/OverviewNotifica
 import getRecommendation from "../../../axios/quiz-api/getRecommendation";
 import { useNavigate } from "react-router-native";
 import getPopularQuiz from "../../../axios/quiz-api/getPopularQuiz";
-import Topbar from "../../common/top-navigations/Topbar";
+
 
 export default Overview = () => {
     const [pfpUrl, setPfpUrl] = useState("");
@@ -538,4 +538,22 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         height: 820,
     },
+=======
+        <SafeAreaView>
+            <View style={styles.container}>
+                <Sidebar currentPage="Overview"></Sidebar>
+                <ScrollView style={{flexDirection: 'column'}}>
+                    <Headers text={"Overview"}></Headers>
+                </ScrollView>
+            </View>
+        </SafeAreaView>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        height: '100%'
+    }
 });
+
