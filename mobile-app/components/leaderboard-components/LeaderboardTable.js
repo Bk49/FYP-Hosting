@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 import { DataTable } from "react-native-paper";
 import LeaderboardRow from "./LeaderboardRow";
 
-export default LeaderboardTable = ({ lbData, type }) => {
+export default LeaderboardTable = ({ lbData, type, isLong }) => {
     return (
         <DataTable style={styles.table}>
             <LinearGradient
@@ -40,7 +40,7 @@ export default LeaderboardTable = ({ lbData, type }) => {
                 <View></View>
             ) : (
                 lbData.map((data, index) => (
-                    <LeaderboardRow key={index} lbData={lbData} data={data} index={index} type={type} />
+                    <LeaderboardRow key={index} isLong={isLong} lbData={lbData} data={data} index={index} type={type} />
                 ))
             )}
         </DataTable>

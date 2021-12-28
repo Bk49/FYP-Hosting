@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 
 import React from "react";
 
-export default LeaderboardRow = ({ lbData, data, index, type }) => {
+export default LeaderboardRow = ({ lbData, data, index, type, isLong }) => {
     return (
         <LinearGradient
             key={index}
@@ -19,7 +19,7 @@ export default LeaderboardRow = ({ lbData, data, index, type }) => {
                         justifyContent: "center",
                     }}
                 >
-                    <Text style={styles.cellText}>{`${index + 3}       `}</Text>
+                    <Text style={styles.cellText}>{isLong ? `${index + 4}       `: `${index + 1}       `}</Text>
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.name}>
                     <Text style={styles.cellText}>
@@ -48,9 +48,13 @@ export default LeaderboardRow = ({ lbData, data, index, type }) => {
                 <DataTable.Cell style={styles.stats}>
                     <Text style={styles.cellText}>
                         {type === 1
-                            ? data.average_score.toFixed(0)
+                            ? data.average_score
+                                ? data.average_score.toFixed(0)
+                                : ""
                             : type === 2
-                            ? data.average_time_taken.toFixed(2) + " min(s)"
+                            ? data.average_time_taken
+                                ? data.average_time_taken.toFixed(2) + " min(s)"
+                                : ""
                             : data.num_of_quiz}
                     </Text>
                 </DataTable.Cell>
