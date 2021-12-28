@@ -18,6 +18,7 @@ import OverviewNotificationItem from "../../overview-components/OverviewNotifica
 import getRecommendation from "../../../axios/quiz-api/getRecommendation";
 import { useNavigate } from "react-router-native";
 import getPopularQuiz from "../../../axios/quiz-api/getPopularQuiz";
+import Topbar from "../../common/top-navigations/Topbar"
 
 
 export default Overview = () => {
@@ -45,7 +46,7 @@ export default Overview = () => {
 
     return (
         <View style={styles.container}>
-            <SideBar></SideBar>
+            <SideBar currentPage="Overview"/>
             <ScrollView>
                 <Topbar />
                 <View style={styles.headingContainer}>
