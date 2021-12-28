@@ -19,7 +19,7 @@ const directory = {
     overview: "/Overview",
     quiz: "/Quiz",
     assignment: "/Assignment",
-    group: "/",
+    group: "/group_listing",
     statistics: "/Stats",
     leaderboard: "/Leaderboard",
     learningrss: "/LearningResourcesLevel",
