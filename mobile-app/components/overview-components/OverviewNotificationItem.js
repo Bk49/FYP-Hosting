@@ -28,11 +28,21 @@ export default OverviewNotificationItem = ({ notification, navigate }) => {
                                 style={styles.image}
                                 source={
                                     isGroup
-                                        ? notification.group[0].pfp
-                                            ? { uri: notification.group[0].pfp }
+                                        ? notification.group[0]
+                                            ? notification.group[0].pfp
+                                                ? {
+                                                      uri: notification.group[0]
+                                                          .pfp,
+                                                  }
+                                                : require("../../assets/avatars/panda (1).png")
                                             : require("../../assets/avatars/panda (1).png")
-                                        : notification.teacher[0].pfp
-                                        ? { uri: notification.teacher[0].pfp }
+                                        : notification.teacher[0]
+                                        ? notification.teacher[0].pfp
+                                            ? {
+                                                  uri: notification.teacher[0]
+                                                      .pfp,
+                                              }
+                                            : require("../../assets/avatars/panda (1).png")
                                         : require("../../assets/avatars/panda (1).png")
                                 }
                             />
@@ -40,8 +50,12 @@ export default OverviewNotificationItem = ({ notification, navigate }) => {
                         <View style={styles.nameContainer}>
                             <Text style={styles.nameText}>
                                 {isGroup
-                                    ? notification.group[0].group_name
-                                    : `${notification.teacher[0].first_name} ${notification.teacher[0].last_name}`}
+                                    ? notification.group[0]
+                                        ? notification.group[0].group_name
+                                        : "Deleted Group"
+                                    : notification.teacher[0]
+                                    ? `${notification.teacher[0].first_name} ${notification.teacher[0].last_name}`
+                                    : "Deleted Teacher"}
                             </Text>
                         </View>
                     </View>
