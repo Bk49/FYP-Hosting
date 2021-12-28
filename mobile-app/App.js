@@ -156,6 +156,8 @@ export default App = () => {
                 <Route exact path="/viewpastquiz" element={<ViewPastQuiz />} />
                 <Route exact path="/learningresourcespublic" element={<LearningResourcesPublic />} />
                 <Route exact path="/learningresourceslevelpublic" element={<LearningResourcesLevelPublic />} />
+
+                <Route exact path="/*" element={<Error404 />} />
             </Routes>
         </NativeRouter>
     );
