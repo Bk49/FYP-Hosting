@@ -39,7 +39,7 @@ export default Overview = () => {
             .then((res) => setAssignment(res.slice(0, 3)))
             .catch((e) => console.log(e));
         getUserNotifications()
-            .then((res) => setNotification([...res, ...res]))
+            .then((res) => setNotification(res))
             .catch((e) => console.log(e));
     }, []);
 
@@ -190,7 +190,15 @@ export default Overview = () => {
 
                                 {/* Inside this view contains the 3 assignment cards */}
                                 <View style={styles.assignmentCardContainer}>
-                                    {assignment.map((data, index) => (
+                                    {assignment.length <= 0 ? (
+                                    <View style={styles.noAssignmentContainer}>
+                                        <Text style={styles.noAssignmentText}>
+                                            No Assignments Found
+                                        </Text>
+                                    </View>
+                                    ) 
+                                    :
+                                    assignment.map((data, index) => (
                                         <OverviewAssignmentItem
                                             key={index}
                                             assignment={data}
@@ -487,6 +495,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flex: 1,
         flexDirection: "column",
+    },
+    noAssignmentContainer: {
+        height: 390,
+    },
+    noAssignmentText: {
+        fontSize: 25,
+        fontFamily: "Coolvetica",
+        color: "#003844",
     },
     assignmentButtonContainer: {
         width: "90%",
