@@ -1,22 +1,68 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Entypo, FontAwesome5, Feather } from '@expo/vector-icons'; 
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, Text, View, Image, Header, TouchableOpacity } from 'react-native';
+import { Entypo, FontAwesome5, Feather, Ionicons } from '@expo/vector-icons'; 
 import { useNavigate } from "react-router-native";
+import SidebarItem from './SidebarItem';
+import client from "../../../axios/clientConfig"
+import path from "../../../axios/paths";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import login from '../../../axios/user-api/login';
 
-const SideBar = () => {
+
+export default Sidebar = ({currentPage}) => {
 
     const navigate = useNavigate();
+    const [sideBar, setSideBar] = useState();
+    const [data, setData] = useState();
+    // 1. get the role of the user
+    // 2. render sidebar based on user's role
+    const getUserData = async () => {
+        const data = await AsyncStorage.getItem("userInfo");
+        return JSON.parse(data)
+    };  
 
-    return(
+    useEffect(() => {
+        console.log(currentPage === "Overview")
+        getUserData()
+        .then((data) => {
+            setData(data);
+            if (data.role == "teacher" || data.role == "parent") {
+                setSideBar(
+                    <View>
+                        <SidebarItem isHere={(currentPage === "Groups")} icon={<FontAwesome5 name="users" size={24} color="black" />} text={" My Groups"}></SidebarItem>
+                        <SidebarItem isHere={(currentPage === "Leaderboard")} icon={<FontAwesome5 name="award" size={24} color="black" />} text=" Leaderboard"></SidebarItem>
+                        <SidebarItem isHere={(currentPage === "Learning Resources")} icon={<FontAwesome5 name="newspaper" size={24} color="black" />} text=" Learning Resources"></SidebarItem>
+                    </View>
+                )
+            }
+            else if (data.role == "student") {
+                setSideBar(
+                    <View>
+                        <SidebarItem isHere={currentPage} icon={<Entypo name="home" size={24} color="black" />} text={" Overview"}></SidebarItem>
+                        <SidebarItem isHere={currentPage} icon={<FontAwesome5 name="atom" size={24} color="black" />} text={" Quiz"}></SidebarItem>
+                        <SidebarItem isHere={currentPage} icon={<Feather name="clipboard" size={24} color="black" />} text={" Assignments"}></SidebarItem>
+                        <SidebarItem isHere={currentPage} icon={<FontAwesome5 name="users" size={24} color="black" />} text={" My Groups"}></SidebarItem>
+                        <SidebarItem isHere={currentPage} icon={<FontAwesome5 name="chart-bar" size={24} color="black" />} text=" My Statistics"></SidebarItem>
+                        <SidebarItem isHere={currentPage} icon={<FontAwesome5 name="award" size={24} color="black" />} text=" Leaderboard"></SidebarItem>
+                        <SidebarItem isHere={currentPage} icon={<FontAwesome5 name="newspaper" size={24} color="black" />} text=" Learning Resources"></SidebarItem>
+                    </View>
+                )
+            }
+            else if (data.role == "admin") {
+                setSideBar(
+                    <View>
+                        <SidebarItem isHere={(currentPage === "Quiz Control Panel")} icon={<Ionicons name="settings" size={24} color="black" />} text={" Quiz Control Panel"}></SidebarItem>
+                        <SidebarItem isHere={(currentPage === "Leaderboard")} icon={<FontAwesome5 name="award" size={24} color="black" />} text={" Leaderboard"}></SidebarItem>
+                    </View>
+                )
+            }
+        });   
+    }, [])
+
+    return (
         <View style={styles.container}>
-            <Image style={styles.image} source={require('../../../assets/Psleonline_logo_transparent.png')}></Image>     
-            <Text style={styles.text} onPress={()=>navigate("/overview")}><Entypo name="home" size={24} color="black" /> Overview</Text>
-            <Text style={styles.text}><FontAwesome5 name="atom" size={24} color="black" /> Quiz</Text>
-            <Text style={styles.text}><Feather name="clipboard" size={24} color="black" /> Assignments</Text>
-            <Text style={styles.text}><FontAwesome5 name="users" size={24} color="black" /> My Groups</Text>
-            <Text style={styles.text} onPress={() => navigate("/stats")}><FontAwesome5 name="chart-bar" size={24} color="black" /> My Statistics</Text>
-            <Text style={styles.text} onPress={()=> navigate("/leaderboard")}><FontAwesome5 name="award" size={24} color="black" /> Leaderboard</Text>
-            <Text style={styles.text}><FontAwesome5 name="newspaper" size={24} color="black" /> Learning Resources</Text>
+            <Image style={styles.image} source={require('../../../assets/Psleonline_logo_transparent.png')}></Image>    
+            {sideBar}
         </View>
     );
 }
@@ -28,11 +74,12 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '25%',
         paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-        alignSelf:'flex-start'
+        
     },
-    text: {
+    buttons: {
+        paddingVertical: 5
+    },
+    buttonText: {
         // fontFamily: 'Poppins_400Regular',
         fontSize: 25,
         paddingTop: 10,
@@ -45,4 +92,3 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SideBar;

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
@@ -18,6 +19,12 @@ import OverviewNotificationItem from "../../overview-components/OverviewNotifica
 import getRecommendation from "../../../axios/quiz-api/getRecommendation";
 import { useNavigate } from "react-router-native";
 import getPopularQuiz from "../../../axios/quiz-api/getPopularQuiz";
+=======
+import React from "react";
+import { View, StyleSheet, Text, SafeAreaView, ScrollView } from "react-native";
+import Sidebar from "../../common/side-navigations/Sidebar";
+import Headers from "../../common/headers/Header";
+>>>>>>> Stashed changes
 
 export default Overview = () => {
     const [pfpUrl, setPfpUrl] = useState("");
@@ -43,6 +50,7 @@ export default Overview = () => {
     }, []);
 
     return (
+<<<<<<< Updated upstream
         <View style={styles.container}>
             <SideBar></SideBar>
             <ScrollView>
@@ -536,4 +544,23 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         height: 820,
     },
+=======
+        <SafeAreaView>
+            <View style={styles.container}>
+                <Sidebar currentPage="Overview"></Sidebar>
+                <ScrollView style={{flexDirection: 'column'}}>
+                    <Headers text={"Overview"}></Headers>
+                </ScrollView>
+            </View>
+        </SafeAreaView>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        height: '100%'
+    }
+>>>>>>> Stashed changes
 });
+

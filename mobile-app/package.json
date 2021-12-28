@@ -16,7 +16,11 @@
     "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+<<<<<<< Updated upstream
     "@use-expo/font": "^2.0.0",
+=======
+    "@types/react-native-snap-carousel": "^3.8.5",
+>>>>>>> Stashed changes
     "axios": "^0.24.0",
 <<<<<<< Updated upstream
     "chart.js": "^3.6.2",
@@ -25,8 +29,13 @@
     "bcrypt-react-native": "^1.1.1",
 >>>>>>> Stashed changes
     "expo": "~43.0.2",
+<<<<<<< Updated upstream
     "expo-app-loading": "^1.3.0",
     "expo-linear-gradient": "^10.0.3",
+=======
+    "expo-av": "~10.1.3",
+    "expo-linear-gradient": "~10.0.3",
+>>>>>>> Stashed changes
     "expo-status-bar": "~1.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -40,6 +49,7 @@
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
+<<<<<<< Updated upstream
     "react-native-svg": "^12.1.1",
 =======
     "react-native-element-dropdown": "^1.5.5",
@@ -53,10 +63,14 @@
     "react-native-select-dropdown": "^1.6.0",
     "react-native-simple-radio-button": "^2.7.4",
 >>>>>>> Stashed changes
+=======
+    "react-native-snap-carousel": "^3.9.1",
+>>>>>>> Stashed changes
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "react-router-dom": "^6.1.1",
-    "react-router-native": "^6.0.2"
+    "react-router-native": "^6.0.2",
+    "react-scroll-to-component": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

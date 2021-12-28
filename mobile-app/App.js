@@ -20,8 +20,11 @@ import GroupLeaderboard from "./components/pages/group-pages/GroupLeaderboard";
 import GroupMember from "./components/pages/group-pages/GroupMember";
 import GroupProgress from "./components/pages/group-pages/GroupProgress";
 // Learning Resources pages import
-import LearningResources from "./components/pages/learning-resources-pages/LearningResources";
+import LearningResourcesPrimary from "./components/pages/learning-resources-pages/LearningResourcesPrimary";
+import LearningResourcesSecondary from "./components/pages/learning-resources-pages/LearningResourcesSecondary";
 import LearningResourcesLevel from "./components/pages/learning-resources-pages/LearningResourcesLevel";
+import LearningResourcesPublic from "./components/pages/learning-resources-pages/LearningResourcesPublic";
+import LearningResourcesLevelPublic from "./components/pages/learning-resources-pages/LearningResourcesLevelPublic";
 // Individual pages import
 import AccountSettings from "./components/pages/individual-pages/AccountSettings";
 import Assignment from "./components/pages/individual-pages/Assignment";
@@ -59,6 +62,11 @@ export default App = () => {
                 <Route exact path="/403" element={<Error403 />} />
                 <Route exact path="/404" element={<Error404 />} />
 
+                <Route
+                    exact
+                    path="/"
+                    element={<Home />}
+                />
                 {/* Group Question Routes */}
                 <Route
                     exact
@@ -103,8 +111,23 @@ export default App = () => {
                 />
                 <Route
                     exact
-                    path="/learningresources"
-                    element={<LearningResources />}
+                    path="/learningresourcesprimary"
+                    element={<LearningResourcesPrimary />}
+                />
+                <Route
+                    exact
+                    path="/learningresourcessecondary"
+                    element={<LearningResourcesSecondary />}
+                />
+                <Route
+                    exact
+                    path="/learningresourcespublic"
+                    element={<LearningResourcesPublic />}
+                />
+                <Route
+                    exact
+                    path="/learningresourceslevelpublic"
+                    element={<LearningResourcesLevelPublic />}
                 />
 
                 {/* Individual Pages Routes */}
@@ -121,6 +144,8 @@ export default App = () => {
                 <Route exact path="/signup" element={<SignUp />} />
                 <Route exact path="/stats" element={<Stats />} />
                 <Route exact path="/viewpastquiz" element={<ViewPastQuiz />} />
+                <Route exact path="/learningresourcespublic" element={<LearningResourcesPublic />} />
+                <Route exact path="/learningresourceslevelpublic" element={<LearningResourcesLevelPublic />} />
             </Routes>
         </NativeRouter>
     );
