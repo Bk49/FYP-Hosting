@@ -31,7 +31,7 @@ $(document).ready(function () {
     $("#rankLevel").html(`Lv${userInfo.rank_level}`);
     $(".exp").width(userInfo.exp_points + '%');
 
-    if (userInfo.role == "teacher") {
+    if (userInfo.role == "teacher" || userInfo.role == "parent") {
         $(".expContainer").css('display', 'none');
     }
 })

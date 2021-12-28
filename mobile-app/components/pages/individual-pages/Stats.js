@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, ScrollView, Picker } from "react-native";
-import filter from "../../../axios/user-api/filter";
-import detailedBenchmark from "../../../axios/user-api/detailedBenchmark";
+import filter from "../../../axios/quiz-api/filter";
+import detailedBenchmark from "../../../axios/quiz-api/detailedBenchmark";
 import { FontAwesome5 } from '@expo/vector-icons'; 
 
 import SideBar from "../../common/side-navigations/Sidebar";
-import { BarChart } from 'react-native-chart-kit';
-import comparisonBenchmark from "../../../axios/user-api/comparisonBenchmark";
+import comparisonBenchmark from "../../../axios/quiz-api/comparisonBenchmark";
+import StatisticsItem from "../../statistic-components/StatisticsItem";
+
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default Stats = () => {
 
@@ -31,6 +33,8 @@ export default Stats = () => {
 
     const[benchmark, setBenchMark] = useState("detailed");
 
+    const [isReady, setReady] = useState(true);
+
     useEffect(() => {
         filter()
         .then(( data ) => {
@@ -51,10 +55,15 @@ export default Stats = () => {
             else {
 
             }
-        });
+        })
+        .finally(() => {
+            setReady(false);
+        })
     }, []);
 
     function btnClicked(btn) {
+
+        setReady(true);
 
         setLevelsEnabled(false);
         setLevels([])
@@ -86,6 +95,9 @@ export default Stats = () => {
                 else {
 
                 }
+            })
+            .finally(() => {
+                setReady(false);
             });
         }
         else {
@@ -109,8 +121,12 @@ export default Stats = () => {
                 }
 
                 setLevelsEnabled(true);
-            });
+            })
+            .finally(()=> {
+                setReady(false);
+            })
         }
+
     }
 
     function extractComparisonData(data) {
@@ -212,23 +228,8 @@ export default Stats = () => {
         if (index == 2 && title == undefined) {
             setChart(prevState => [prevState, <View style={styles.chartHeadingContainer}><Text style={styles.chartHeading}>{heading}</Text></View>]);
         }
-        setChart(prevState => [prevState, <View><Text style={{textAlign: 'center'}}>{chartName}</Text><BarChart
-            data={chartConfiguration}
-            width={chartWidth} // from react-native
-            height={220}
-            chartConfig={{
-                backgroundColor: "transparent",
-                backgroundGradientTo: "white",
-                backgroundGradientFromOpacity: 0,
-                backgroundGradientFrom: "white",
-                backgroundGradientToOpacity: 0,
-                decimalPlaces: 0,
-                color: (opacity = 1) => `white`,
-                labelColor: (opacity = 1) => `black`, 
-            }}
-            fromZero={true}
-            withCustomBarColorFromData={true}
-            flatColor={true}/></View>]);
+
+        setChart(prevState => [prevState, <View><Text style={{textAlign: 'center'}}>{chartName}</Text><StatisticsItem chartConfiguration={chartConfiguration} chartWidth={chartWidth}></StatisticsItem></View>]);
     }
 
     function populateTopicDropdown(data, value) {
@@ -265,6 +266,9 @@ export default Stats = () => {
     }
 
     function displayLevelBenchmark(itemValue, itemIndex) {
+
+        setReady(true);
+
         if (benchmark == "detailed") {
             detailedBenchmark(itemValue)
             .then(( data ) => {
@@ -291,6 +295,9 @@ export default Stats = () => {
                 else {
     
                 }
+            })
+            .finally(() => {
+                setReady(false);
             })
         }
         else {
@@ -323,12 +330,18 @@ export default Stats = () => {
                     setTopicsEnabled(true);
                 }
                 setLevelsEnabled(true);
+            })
+            .finally(()=> {
+                setReady(false);
             });
         }
         
     }
 
     function displayTopicBenchmark(itemValue, itemIndex) {
+
+        setReady(true);
+
         if (benchmark == "detailed") {
             detailedBenchmark(itemValue)
             .then(( data ) => {
@@ -351,6 +364,9 @@ export default Stats = () => {
                 else {
     
                 }
+            })
+            .finally(() => {
+                setReady(false);
             })
         }
         else {
@@ -375,12 +391,18 @@ export default Stats = () => {
                 else {
                   
                 }
-            });
+            })
+            .finally(() => {
+                setReady(false);
+            })
         }
         
     }
 
     function displaySkillBenchmark(itemValue) {
+
+        setReady(true);
+
         if (benchmark == "detailed") {
             detailedBenchmark(itemValue)
             .then(( data ) => {
@@ -393,6 +415,9 @@ export default Stats = () => {
                 else {
     
                 }
+            })
+            .finally(()=> {
+                setReady(false);
             })
         }
         else {
@@ -410,6 +435,9 @@ export default Stats = () => {
                     displayChart(extractedData[i], i, title[i]);
                 }
 
+            })
+            .finally(() => {
+                setReady(false);
             });
         }
         
@@ -417,6 +445,7 @@ export default Stats = () => {
 
     return (
         <View style={styles.container}>
+            <Spinner visible={isReady} textContent="Loading..."></Spinner>
             <SideBar></SideBar>
             <View style={styles.statsContainer}>
                 <View>
@@ -482,8 +511,8 @@ const styles = StyleSheet.create({
     heading: {
         marginTop: 50,
         marginBottom: 15,
-        fontSize: 30,
-        fontWeight: '500'
+        fontSize: 40,
+        fontWeight: 'bold'
     },
     buttonContainer: {
         flexDirection: 'row',

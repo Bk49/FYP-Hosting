@@ -91,7 +91,7 @@ function getUserGroupBenchmark(userId, params) {
             let title = []
             let isAvailable = true;
             let extractedData = [];
-
+            console.log(data)
             isAvailable = !jQuery.isEmptyObject({data});;
 
             Object.keys(data).forEach(key => {
