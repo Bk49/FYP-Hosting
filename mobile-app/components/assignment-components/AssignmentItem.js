@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, ScrollView, Picker } from "react-native";
 import { Title } from "react-native-paper";
-import getAssignmentBox from "../../axios/assignment-api/retrieveAssignment"
+import getAssignmentBox from "../../axios/assignment-api/getAssignment"
 
 const AssignmentBox = ({post, assignmentStatus}) => {
 
@@ -10,7 +10,7 @@ const AssignmentBox = ({post, assignmentStatus}) => {
     let today = new Date(Date.now());
 
     let result = (date.toDateString() == today.toDateString()) ?
-        "<strong>Today</strong>" :
+        "Today" :
         date.toDateString()
     return result;
 }

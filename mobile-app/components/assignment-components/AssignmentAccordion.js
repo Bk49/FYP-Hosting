@@ -3,7 +3,7 @@ import { List } from 'react-native-paper';
 import { View, Text, Button, StyleSheet, ScrollView, Picker } from "react-native";
 import { over, set } from "lodash";
 import AssignmentBox from "./AssignmentItem";
-import getAssignmentBox from "../../axios/assignment-api/retrieveAssignment";
+import getAssignmentBox from "../../axios/assignment-api/getAssignment";
 import Assignment from "../pages/individual-pages/Assignment";
 
 
