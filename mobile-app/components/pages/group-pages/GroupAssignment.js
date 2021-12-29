@@ -1,16 +1,8 @@
-<<<<<<< Updated upstream
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import GroupTopbar from "../../common/group/topbar-component/GroupTopbar";
 import SideBar from "../../common/side-navigations/Sidebar";
 import { useLocation } from "react-router-native";
-=======
-import React, { useEffect, useState } from "react";
-import { View, Text, Button, StyleSheet, ScrollView } from "react-native";
-import SideBar from "../../common/side-navigations/Sidebar";
-import AssignmentAccordian from "../../assignment-components/AssignmentAccordion";
-import AssignmentBox from "../../assignment-components/AssignmentItem";
->>>>>>> Stashed changes
 
 export default GroupAssignment = () => {
     const {state} = useLocation();
