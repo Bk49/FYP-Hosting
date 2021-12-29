@@ -4,7 +4,7 @@ import SideBar from "../../common/side-navigations/Sidebar";
 import AssignmentAccordian from "../../assignment-components/AssignmentAccordion";
 import AssignmentBox from "../../assignment-components/AssignmentItem";
 import NewQuizModal from "../../group-components/assignment/GroupAssignQuizModal";
-import getAssignmentBox from "../../../axios/assignment-api/retrieveAssignment";
+import getAssignmentBox from "../../../axios/assignment-api/getAssignment";
 import { List } from "react-native-paper";
 
 export default Assignment = () => {
