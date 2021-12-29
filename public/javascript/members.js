@@ -261,6 +261,7 @@ function deleteGroup(groupId) {
             window.location.href = "/group.html";
         },
         error: function (xhr, textStatus, errorThrown) {
+            console.log(groupId)
             console.log(errorThrown);
             document.querySelector("#error").innerHTML = xhr.responseJSON.error;
         },
@@ -478,7 +479,7 @@ function displayAdded(id, pic, name, email, role) {
     // add to members list if user is not already in it
     if (!userExists) {
         addedList.innerHTML += `
-        <div class="list-member d-flex row" id="added-${id}">
+        <div class="list-member d-flex " id="added-${id}">
             <div class="col">
                 <img src="${pic}" alt="profileimg" class="modal-pfp" style="width: 30px"/>
             </div>

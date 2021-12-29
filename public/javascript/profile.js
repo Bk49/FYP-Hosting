@@ -34,6 +34,10 @@ $(document).ready(function () {
     if (userInfo.role == "teacher" || userInfo.role == "parent") {
         $(".expContainer").css('display', 'none');
     }
+
+    if (userInfo.role == "admin") {
+        $(".expContainer").css('display', 'none');
+    }
 })
 
 $(document).on("change", "#account-role", function () {

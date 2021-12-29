@@ -488,7 +488,7 @@ button .icon {
 .member-details {
     display: flex;
     flex-direction: column;
-    width: 95%;
+    width: 90%;
     margin-left: 10px;
 }
 

@@ -227,6 +227,12 @@ button .icon {
     margin-left: 130px;
   }
 
+#eachMemberProfileImg {
+    border-radius: 1000px;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
 .latest_msg {
     font-size: 14px;
     color: #256573;

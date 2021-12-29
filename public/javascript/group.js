@@ -43,12 +43,12 @@ $(document).on("click", ".result", function () {
     const name = this.children[1].children[0].children[0].innerHTML;
     const email = this.children[1].children[1].children[0].innerHTML;
 
-    console.log(id);
-    console.log(pic);
+    // console.log(id);
+    // console.log(pic);
 
-    console.log(name);
+    // console.log(name);
 
-    console.log(email);
+    // console.log(email);
 
     displayAdded(id, pic, name, email);
 });
@@ -214,7 +214,7 @@ function displayMyGroups(data) {
 
 function displaySearchResult(data) {
     var searchList = document.querySelector("#search-list");
-
+    
     var content = "";
 
     if (data.length < 1) {
@@ -224,11 +224,12 @@ function displaySearchResult(data) {
     }
     else {
         data.forEach(result => {
+            console.log(result)
             content += `
 
                 <div class="result row m-auto" id="${result._id}">
                     <div class="col-1 m-auto">
-                        <img src="/images/profile.png" alt="profileimg" style="width: 35px"/>
+                        <img src="${result.pfp? result.pfp : '../avatars/frog.png'}" id="eachMemberProfileImg" style="width: 35px"/>
                     </div>
                     <div class="col m-auto mx-2">
                         <div class="row">

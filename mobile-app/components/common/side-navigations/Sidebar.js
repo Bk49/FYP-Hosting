@@ -37,6 +37,7 @@ export default Sidebar = ({ currentPage }) => {
 
     return (
         <View style={styles.container}>
+<<<<<<< Updated upstream
             <Image
                 style={styles.image}
                 source={require("../../../assets/Psleonline_logo_transparent.png")}
@@ -125,6 +126,16 @@ export default Sidebar = ({ currentPage }) => {
             ) : (
                 <View></View>
             )}
+=======
+            <Image style={styles.image} source={require('../../../assets/Psleonline_logo_transparent.png')}></Image>     
+            <Text style={styles.text}><Entypo name="home" size={24} color="black" /> Overview</Text>
+            <Text style={styles.text}><FontAwesome5 name="atom" size={24} color="black" /> Quiz</Text>
+            <Text style={styles.text} onPress={() => navigate("/assignment")}><Feather name="clipboard" size={24} color="black" /> Assignments</Text>
+            <Text style={styles.text}><FontAwesome5 name="users" size={24} color="black" /> My Groups</Text>
+            <Text style={styles.text} onPress={() => navigate("/stats")}><FontAwesome5 name="chart-bar" size={24} color="black" /> My Statistics</Text>
+            <Text style={styles.text}><FontAwesome5 name="award" size={24} color="black" /> Leaderboard</Text>
+            <Text style={styles.text}><FontAwesome5 name="newspaper" size={24} color="black" /> Learning Resources</Text>
+>>>>>>> Stashed changes
         </View>
     );
 };
