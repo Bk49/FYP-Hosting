@@ -3,12 +3,14 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons'
 import { useNavigate } from "react-router-native";
 
-const GroupItem = ({groupId, groupName, ownerName, groupImg, ownerPic}) => {
+const GroupItem = ({groupId, groupName, ownerName, groupImg, ownerPic, latestPost}) => {
 
     const navigate = useNavigate()
     
     const [image, setImage] = useState();
     const [profile, setProfile] = useState();
+    const [postOwner, setPostOwner] = useState();
+    const [postContent, setPostContent] = useState();
 
     function displayPic(groupImg, ownerPic) {
         if (groupImg == undefined) {
@@ -44,6 +46,30 @@ const GroupItem = ({groupId, groupName, ownerName, groupImg, ownerPic}) => {
                 </Image>
             )
         }
+
+        if (latestPost.pfp[0] == undefined) {
+            setPostOwner(
+                <Image
+                    style={styles.postOwnerImg}
+                    source={require("../../../assets/avatars/frog.png")}>
+                </Image>
+            )
+        }
+        else {
+            setPostOwner(
+                <Image
+                    style={styles.postOwnerImg}
+                    source={{uri: latestPost.pfp[0]}}>
+                </Image>
+            )
+        }
+
+        if (latestPost.content == undefined) {
+            setPostContent("No Messages")
+        }
+        else {
+            setPostContent(latestPost.content)
+        }
     }
 
     return (
@@ -56,8 +82,9 @@ const GroupItem = ({groupId, groupName, ownerName, groupImg, ownerPic}) => {
                     <View>
                         <Text style={{fontSize: 20}}>{groupName}</Text>
                     </View>
-                    <View>
-                        <Text style={{fontSize: 15}}>Post owner</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 15}}>
+                        {postOwner}
+                        <Text style={{fontSize: 20}}>   {postContent}</Text>
                     </View>
                 </View>
             </View>
@@ -89,6 +116,11 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 40
+    },
+    postOwnerImg: {
+        width: 35,
+        height: 35,
+        borderRadius: 35
     }
 })
 

@@ -57,7 +57,7 @@ export default GroupAssignment = () => {
             ownerPic = data.owner_pfp;
         }
 
-        setGroups(prevState => [prevState, <GroupItem groupId={data._id} groupName={data.group_name} ownerName={data.owner_name} groupImg={data.pfp} ownerPic={ownerPic} ></GroupItem>])
+        setGroups(prevState => [prevState, <GroupItem groupId={data._id} groupName={data.group_name} ownerName={data.owner_name} groupImg={data.pfp} ownerPic={ownerPic} latestPost={data.posts} ></GroupItem>])
         
     }
 

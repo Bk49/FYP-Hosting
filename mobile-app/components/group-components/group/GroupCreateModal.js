@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Image, Button } from "react-native";
 import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from "react-native-modal";
@@ -6,8 +6,9 @@ import searchUser from "../../../axios/user-api/searchUser";
 import addGroup from "../../../axios/group-api/createGroup";
 import * as ImagePicker from 'expo-image-picker';
 import addGroupImg from "../../../axios/group-api/addGroupImg";
+import getGroupMembers from "../../../axios/group-api/getGroupMembers";
 
-const GroupCreateModal = ({setNeedsUpdate, setLoading}) => {
+const GroupCreateModal = ({ setNeedsUpdate, setLoading }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [groupName, setGroupName] = useState("");
@@ -16,47 +17,51 @@ const GroupCreateModal = ({setNeedsUpdate, setLoading}) => {
     const [selectedList, setSelectedList] = useState();
     const [selectedListIndex, setSelectedListIndex] = useState([]);
     const [selectedId, setSelectedId] = useState([]);
+    const [selectedEmail, setSelectedEmail] = useState([]);
 
     const [image, setImage] = useState(null);
 
     const pickImage = async () => {
-      // No permissions request is necessary for launching the image library
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-  
-      console.log(result);
-  
-      if (!result.cancelled) {
-        setImage(result.uri);
-      }
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
     };
 
 
     function searchMembers(query) {
         searchUser(query)
-        .then(( data ) => {
-            displayEmailList(data);
-        })
+            .then((data) => {
+                displayEmailList(data);
+            })
 
     }
 
     function displayEmailList(data) {
 
         setEmailList();
-        
-        for (let i = 0; i < data.length; i++) {
 
-            setEmailList(prevState => [prevState, 
-                <TouchableOpacity style={styles.emailList} onPress={() => displaySelectedMember(data[i], i)}>
-                    <View style={{flexDirection: 'row'}}>
-                        <View style={{alignSelf: 'center'}}>
-                            <Image style={styles.emailListImg} source={require("../../../assets/profile.png")}></Image>
+        for (let i = 0; i < data.length; i++) {
+            let profilePic = <Image style={styles.emailListImg} source={require("../../../assets/avatars/frog.png")}></Image>
+
+            if (data[i].pfp != undefined) {
+                profilePic = <Image style={styles.emailListImg} source={{ uri: data[i].pfp }}></Image>
+            }
+
+            setEmailList(prevState => [prevState,
+                <TouchableOpacity style={styles.emailList} onPress={() => displaySelectedMember(data[i], "add")}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ alignSelf: 'center' }}>
+                            {profilePic}
                         </View>
-                        <View style={{marginLeft: 10}}>
+                        <View style={{ marginLeft: 10 }}>
                             <Text style={styles.listName}>{data[i].first_name + " " + data[i].last_name}</Text>
                             <Text>{data[i].email}</Text>
                         </View>
@@ -66,63 +71,126 @@ const GroupCreateModal = ({setNeedsUpdate, setLoading}) => {
         }
     }
 
-    function displaySelectedMember(data, index) {
+    function displaySelectedMember(data, action, existingIndex) {
 
         setEmailList();
-        setSelectedId(prevState => [...prevState, data._id])
-        setSelectedList(prevState => [prevState, 
-            <View style={styles.selectedEmailList}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <View style={{flexDirection: 'row'}}>
-                        <View style={{alignSelf: 'center'}}>
-                            <Image style={styles.emailListImg} source={require("../../../assets/profile.png")}></Image>
+
+        let isDuplicate = false;
+
+        let oldIdArray = selectedId;
+
+        for (let i = 0; i < oldIdArray.length; i++) {
+            if (oldIdArray[i] == data._id) {
+                isDuplicate = true;
+                break;
+            }
+        }
+
+        if (!isDuplicate || action == "remove") {
+
+            let index;
+            
+            if (action == "add") {
+                let oldIdArray = selectedId;
+                let oldEmailArray = selectedEmail;
+
+                oldIdArray.push(data._id)
+                let newIdArray = oldIdArray;
+
+                oldEmailArray.push(data.email)
+                let newEmailArray = oldEmailArray;
+
+                setSelectedId(newIdArray)
+                setSelectedEmail(newEmailArray)
+
+                index = selectedEmail.length - 1;
+
+            }
+            else if (action == "remove") {
+                index = existingIndex;
+            }
+
+            let profilePic = <Image style={styles.emailListImg} source={require("../../../assets/avatars/frog.png")}></Image>
+
+            if (data.pfp != undefined) {
+                profilePic = <Image style={styles.emailListImg} source={{ uri: data.pfp }}></Image>
+            }
+
+            setSelectedList(prevState => [prevState,
+                <View style={styles.selectedEmailList}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <View style={{ alignSelf: 'center' }}>
+                                {profilePic}
+                            </View>
+                            <View style={{ marginLeft: 10 }}>
+                                <Text style={styles.listName}>{data.first_name + " " + data.last_name}</Text>
+                                <Text>{data.email}</Text>
+                            </View>
                         </View>
-                        <View style={{marginLeft: 10}}>
-                            <Text style={styles.listName}>{data.first_name+ " " +data.last_name}</Text>
-                            <Text>{data.email}</Text>
-                        </View>
+                        <TouchableOpacity style={{ alignSelf: 'center', justifyContent: 'center' }} onPress={() => removeMember(index)}>
+                            <FontAwesome5 name="times" size={20} color="black" />
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={{alignSelf: 'center', justifyContent: 'center'}} onPress={() => removeMember(index)}>
-                        <FontAwesome5 name="times" size={20} color="black"/>
-                    </TouchableOpacity>
                 </View>
-            </View>
-        ])    
-                        
+            ])
+        }
     }
 
     function removeMember(index) {
-        setSelectedId(selectedId.splice(index, 1));
+
+        let id = selectedId;
+        id.splice(index, 1);
+
+        let email = selectedEmail;
+        email.splice(index, 1);
+
+        setSelectedId(id);
+        setSelectedEmail(email);
+        displayUpdatedList();
+    }
+
+    function displayUpdatedList() {
+        setSelectedList();
+
+        for (let i = 0; i < selectedEmail.length; i++) {
+            searchUser(selectedEmail[i])
+                .then((data) => {
+                    displaySelectedMember(data[0], "remove", i);
+                })
+        }
+
     }
 
     function createGroup() {
-        setLoading(true);
+        // setLoading(true);
         let memberArray = [];
-        for (let i = 0; i < selectedId.length; i++) {
-            memberArray.push({user_id: selectedId[i]})     
-        }
+        let selectedIdArray = selectedId;
 
+        for (let i = 0; i < selectedIdArray.length; i++) {
+            memberArray.push({ user_id: selectedIdArray[i] })
+        }
         let data = {
             group_name: groupName,
             members: memberArray,
         }
-        
+
         addGroup(data)
-        .then((data) => {
-            let formdata = new FormData();
-            formdata.append("image", {uri: image, name: 'groupimg.jpg', type: 'image/jpeg'});
-            addGroupImg(data, formdata)
-            .then((result) => {
+            .then((data) => {
+                let formdata = new FormData();
+                formdata.append("image", { uri: image, name: 'groupimg.jpg', type: 'image/jpeg' });
+                addGroupImg(data, formdata)
+                    .then((result) => {
+                    })
+                    .finally(() => {
+                        setNeedsUpdate(prevState => prevState + 1)
+                        setModalVisible(false);
+                        setLoading(false)
+                    })
             })
             .finally(() => {
-                setNeedsUpdate(prevState => prevState + 1)
-                setModalVisible(false);
                 setLoading(false)
             })
-        })
-        .finally(() => {
-            setLoading(false)
-        })
     }
 
 
@@ -133,16 +201,16 @@ const GroupCreateModal = ({setNeedsUpdate, setLoading}) => {
             </TouchableOpacity>
             <Modal isVisible={modalVisible}>
                 <ScrollView>
-                <View style={styles.modalContainer}>
-                    <TouchableOpacity style={{width: 40, alignSelf: 'flex-end', alignItems:'center'}} onPress={() => {setModalVisible(false), setEmailList(), setSelectedList(), setSelectedListIndex([]), setSelectedId([])}}>
-                        <FontAwesome5 name="times" size={40} color="black"/>
-                    </TouchableOpacity>
-                    <View style={{alignSelf: 'center'}}>
-                        <Text style={styles.modalHeader}>Create Group</Text>
-                    </View>
+                    <View style={styles.modalContainer}>
+                        <TouchableOpacity style={{ width: 40, alignSelf: 'flex-end', alignItems: 'center' }} onPress={() => { setModalVisible(false), setEmailList(), setSelectedList(), setSelectedListIndex([]), setSelectedId([]), setSelectedEmail([]) }}>
+                            <FontAwesome5 name="times" size={40} color="black" />
+                        </TouchableOpacity>
+                        <View style={{ alignSelf: 'center' }}>
+                            <Text style={styles.modalHeader}>Create Group</Text>
+                        </View>
                         <View>
                             <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-                                <FontAwesome5 name="camera" size={50} color="#b3b3b3"/>
+                                <FontAwesome5 name="camera" size={50} color="#b3b3b3" />
                                 {image && <Image source={{ uri: image }} style={styles.groupImg} />}
                             </TouchableOpacity>
                             {image && <Image source={{ uri: image }} />}
@@ -157,25 +225,25 @@ const GroupCreateModal = ({setNeedsUpdate, setLoading}) => {
                             <TextInput
                                 style={styles.input}
                                 placeholder="Search email here"
-                                onChangeText={(e) => {setEmail(e), searchMembers(e)}}
+                                onChangeText={(e) => { setEmail(e), searchMembers(e) }}
                                 value={email} onFocus={() => searchMembers("")}
                             />
-                           
+
                         </View>
-                    <View>
-                        {emailList}
-                        <View style={{borderRadius: 10, backgroundColor: '#E9E7FA', marginTop: 20 }}>
-                            {selectedList}
+                        <View>
+                            {emailList}
+                            <View style={{ borderRadius: 10, backgroundColor: '#E9E7FA', marginTop: 20 }}>
+                                {selectedList}
+                            </View>
                         </View>
+                        <TouchableOpacity style={styles.createBtn} onPress={() => createGroup()}>
+                            <Text style={styles.createBtnText}>Create</Text>
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.createBtn} onPress={() => createGroup()}>
-                        <Text style={styles.createBtnText}>Create</Text>
-                    </TouchableOpacity>
-                </View>
                 </ScrollView>
             </Modal>
         </View>
-        
+
     );
 };
 
@@ -196,7 +264,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         backgroundColor: "white",
         width: '50%',
-        alignSelf:'center',
+        alignSelf: 'center',
         borderRadius: 5,
         padding: 30,
     },
@@ -251,7 +319,8 @@ const styles = StyleSheet.create({
     },
     emailListImg: {
         width: 40,
-        height: 40
+        height: 40,
+        borderRadius: 40
     },
     listName: {
         fontWeight: 'bold'
@@ -272,7 +341,7 @@ const styles = StyleSheet.create({
         borderColor: "#b3b3b3",
     },
     groupImg: {
-        width: 250, 
+        width: 250,
         height: 250,
         position: 'absolute',
         borderRadius: 250

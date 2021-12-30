@@ -1,9 +1,11 @@
+import { result } from "lodash";
 import client from "../clientConfig";
 import path from "../paths";
 
-export default searchUser = async (query) => {
+export default deleteGroup = async (groupId) => {
+
     const result = await client
-        .get(`${path.userPath}/search?query=${query}`)
+        .delete(`${path.groupPath}/${groupId}`)
         .then(({ data }) => {
             return data;
         })

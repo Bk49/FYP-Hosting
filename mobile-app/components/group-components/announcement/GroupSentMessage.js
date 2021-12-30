@@ -9,7 +9,7 @@ const GroupSentMessage = ({post}) => {
             <Text style={styles.msgOwner}>Me</Text>
             <Text style={styles.msgContent}>{post.content}</Text>
             <GroupMessageTimeStamp time={post.created_at}></GroupMessageTimeStamp>
-        </View> 
+        </View>
     );
 };
 
@@ -30,6 +30,19 @@ const styles = StyleSheet.create({
     msgContent: {
         fontSize: 20
     },
+    modalContainer: {
+        display: 'flex',
+        backgroundColor: "white",
+        width: '50%',
+        alignSelf:'center',
+        borderRadius: 5,
+    },
+    modalButton: {
+        padding: 15
+    },
+    btnText: {
+        fontSize: 20
+    }
 })
 
 export default GroupSentMessage;

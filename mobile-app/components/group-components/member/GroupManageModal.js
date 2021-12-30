@@ -11,8 +11,10 @@ import makeGroupAdmin from "../../../axios/group-api/makeGroupAdmin";
 import removeMemberFromGroup from "../../../axios/group-api/removeMemberFromGroup";
 import * as ImagePicker from 'expo-image-picker';
 import editGroupImg from "../../../axios/group-api/editGroupImg";
+import deleteGroup from "../../../axios/group-api/deleteGroup";
+import updateGroupName from "../../../axios/group-api/updateGroupName";
 
-const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg}) => {
+const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg, navigate}) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [groupName, setGroupName] = useState(group_name);
@@ -85,12 +87,19 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
                 isAdmin = null;
                 editOptions = ["Make Admin", "Remove Member"]
             }
+
+            let profilePic = <Image style={styles.emailListImg} source={require("../../../assets/avatars/frog.png")}></Image>
+            
+            if (groupMembers.members[i].pfp != null) {
+                profilePic = <Image style={styles.emailListImg} source={{uri: groupMembers.members[i].pfp}}></Image>
+            }
+
             setSelectedList(prevState => [prevState, 
                 <View style={styles.selectedEmailList}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={{flexDirection: 'row', flex: 9}}>
                             <View style={{alignSelf: 'center'}}>
-                                <Image style={styles.emailListImg} source={require("../../../assets/profile.png")}></Image>
+                                {profilePic}
                             </View>
                             <View style={{marginLeft: 10}}>
                                 <Text style={styles.listName}>{groupMembers.members[i].user_name}</Text>
@@ -146,13 +155,19 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
     function displayEmailList(data) {
 
         setEmailList();
-        
+    
         for (let i = 0; i < data.length; i++) {
+            let profilePic = <Image style={styles.emailListImg} source={require("../../../assets/avatars/frog.png")}></Image>
+
+            if (data[i].pfp != undefined) {
+                profilePic = <Image style={styles.emailListImg} source={{uri: data[i].pfp}}></Image>
+            }
+
             setEmailList(prevState => [prevState, 
                 <TouchableOpacity style={styles.emailList} onPress={() => addMember(data[i], i)}>
                     <View style={{flexDirection: 'row'}}>
                         <View style={{alignSelf: 'center'}}>
-                            <Image style={styles.emailListImg} source={require("../../../assets/profile.png")}></Image>
+                            {profilePic}
                         </View>
                         <View style={{marginLeft: 10}}>
                             <Text style={styles.listName}>{data[i].first_name + " " + data[i].last_name}</Text>
@@ -173,29 +188,13 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
         })
     }
 
-    function removeMember(index) {
-        setSelectedId(selectedId.splice(index, 1));
-    }
-
-    function createGroup() {
-        setLoading(true);
-        let memberArray = [];
-        for (let i = 0; i < selectedId.length; i++) {
-            memberArray.push({user_id: selectedId[i]})     
-        }
-
-        let data = {
-            groupName: groupName,
-            members: memberArray
-        }
-        
-        addGroup(data)
+    function removeGroup() {
+        deleteGroup(groupId)
         .then(() => {
-            setNeedsUpdate(prevState => prevState + 1)
             setModalVisible(false);
         })
         .finally(() => {
-            setLoading(false)
+            navigate("/group_listing")
         })
     }
 
@@ -210,6 +209,15 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
         }) 
     }
 
+    function renameGroup() {
+
+        let data = {
+            group_name: groupName
+        }
+
+        updateGroupName(groupId, data);
+    }
+
     return (
         <View>
             <TouchableOpacity style={styles.iconContainer} onPress={() => {setModalVisible(true), setTimeout(() => updating(prevState => prevState + 1), 1000)}}>
@@ -218,7 +226,7 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
              <Modal isVisible={modalVisible}>
                 <ScrollView nestedScrollEnabled={true}>
                 <View style={styles.modalContainer}>
-                    <TouchableOpacity style={{width: 40, alignSelf: 'flex-end', alignItems:'center'}} onPress={() => {setModalVisible(false), setEmailList(), setTimeout(() => setUpdate(prevState => prevState + 1), 1000)}}>
+                    <TouchableOpacity style={{width: 40, alignSelf: 'flex-end', alignItems:'center'}} onPress={() => {renameGroup(), setModalVisible(false), setEmailList(), setTimeout(() => setUpdate(prevState => prevState + 1), 1000)}}>
                         <FontAwesome5 name="times" size={40} color="black"/>
                     </TouchableOpacity>
                     <View>
@@ -258,7 +266,7 @@ const GroupManageModal = ({groupId, group_name, setUpdate, groupImg, setGroupImg
                             </ScrollView>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.deleteBtn} onPress={() => createGroup()}>
+                    <TouchableOpacity style={styles.deleteBtn} onPress={() => removeGroup()}>
                         <Text style={styles.deleteBtnText}>Delete</Text>
                     </TouchableOpacity>
                 </View>
@@ -340,7 +348,8 @@ const styles = StyleSheet.create({
     },
     emailListImg: {
         width: 40,
-        height: 40
+        height: 40,
+        borderRadius: 40
     },
     ownerName: {
         marginVertical: 15,

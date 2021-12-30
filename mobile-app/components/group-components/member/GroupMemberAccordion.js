@@ -11,6 +11,7 @@ const GroupMemberAccordion = ({state, loading, update}) => {
     const [parentArrow, setParentArrow] = useState("chevron-right")
     const [studentArrow, setStudentArrow] = useState("chevron-right")
     const [owner, setOwner] = useState();
+    const [ownerPic, setOwnerPic] = useState();
     const [teachers, setTeacher] = useState();
     const [parents, setParent] = useState();
     const [students, setStudent] = useState();
@@ -44,16 +45,14 @@ const GroupMemberAccordion = ({state, loading, update}) => {
         setTeacher();
         setParent();
         setStudent();
-        
-        setOwner(data.owner.first_name + " " + data.owner.last_name)
-
+        setOwner(data.owner.first_name + " " + data.owner.last_name);
+        setOwnerPic(data.owner.pfp);
         let teacher = 0;
         let parent = 0;
         let student = 0;
 
         for (let i = 0; i < groupMembers.length; i++) {
-
-            var user = <GroupMemberItem username={groupMembers[i].user_name}></GroupMemberItem>
+            var user = <GroupMemberItem username={groupMembers[i].user_name} profileImg={groupMembers[i].pfp} isAdmin={groupMembers[i].is_admin}></GroupMemberItem>
 
             if (groupMembers[i].role == "teacher" || groupMembers[i].role == "admin") {
                 setTeacher(prevState => [prevState, user])
@@ -75,7 +74,6 @@ const GroupMemberAccordion = ({state, loading, update}) => {
     }
 
     return (
-
         <List.Section title="" style={{flex: 1, marginHorizontal: 40, marginVertical: 50}}>
             <List.Accordion
                 left={props => <List.Icon {...props} icon={ownerArrow} />}
@@ -86,7 +84,7 @@ const GroupMemberAccordion = ({state, loading, update}) => {
                 onPress={() => {
                     toggleArrow(ownerArrow, setOwnerArrow)
                 }}>
-                <GroupMemberItem username={owner}></GroupMemberItem>
+                <GroupMemberItem username={owner} profileImg={ownerPic} isAdmin={true}></GroupMemberItem>
             </List.Accordion>
 
             <List.Accordion

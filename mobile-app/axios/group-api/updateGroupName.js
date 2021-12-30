@@ -1,9 +1,11 @@
+import { result } from "lodash";
 import client from "../clientConfig";
 import path from "../paths";
 
-export default searchUser = async (query) => {
+export default updateGroupName = async (groupId, data) => {
+
     const result = await client
-        .get(`${path.userPath}/search?query=${query}`)
+        .put(`${path.groupPath}/?groupId=${groupId}`, data)
         .then(({ data }) => {
             return data;
         })

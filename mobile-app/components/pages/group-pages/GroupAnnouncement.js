@@ -70,27 +70,7 @@ export default GroupAnnouncement = () => {
                     else {
                         displayOwnMsg(post);
                     }   
-
-                    break;
-                }
-                case "duplicate member": { // if user creates another annoucements tab
-                    console.log("Closing connection due to multiple windows")
-                    // var myModal = new bootstrap.Modal(document.getElementById('errorModal'), {
-                    //     backdrop: 'static',
-                    //     keyboard: false
-                    //     })
-                    // myModal.show();
-                    break;
-                }
-                case "update message": {
-                    console.log("Message updated", message);
-                    console.log(allMsg)
-                    // document.querySelector(`.text-row[data-post-id='${message.postId}']`).querySelector(".post-content").textContent = message.content;
-                    break;
-                }
-                case "delete message": {
-                    console.log("Message deleted", message);
-                    // document.querySelector(`.text-row[data-post-id='${message.postId}']`).remove();
+               
                     break;
                 }
             }
@@ -132,7 +112,6 @@ export default GroupAnnouncement = () => {
             getGroupById(state.groupId)
                 .then((result) => {
                     let tempDate;
-                    console.log("object is")
                     
                     for (let i = 0; i < result.posts.length; i++) {
                         if (result.posts[0].created_at == undefined) {
@@ -145,7 +124,7 @@ export default GroupAnnouncement = () => {
                             if (tempDate == undefined || differentDay(tempDate, newDate)) {
                                 setAllMsg(prevState => [prevState, <Text style={styles.date}>{newDate.getDate()} {getMonth(newDate.getMonth())}</Text>]);
                             }
-                            tempDate = newDate
+                            tempDate = newDate;
                             if (result.posts[i].made_by == data._id) {
                                 displayOwnMsg(result.posts[i]);    
                             }
@@ -239,6 +218,16 @@ export default GroupAnnouncement = () => {
             socket.send(JSON.stringify(data));
             setMsg("");
         }
+        
+    }
+
+    function deleteAnnouncement(postId) {
+        let data = {
+            action: "delete message",
+            postId: postId,
+            group_id: state.groupId
+        };
+        socket.send(JSON.stringify(data));
     }
 
     return (
@@ -262,7 +251,7 @@ export default GroupAnnouncement = () => {
                         onChangeText={(e) => setMsg(e)}
                         value={msg}
                     />
-                    <TouchableOpacity  style={{alignSelf: 'center'}} onPress={() => sendMsg()}>
+                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => sendMsg()}>
                         <Image
                             style={styles.sendBtn}
                             source={require("../../../assets/send.png")}
