@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 36,
         fontFamily: "Coolvetica",
+        zIndex: 1
     },
     cardContainer: {
         marginTop: 50,

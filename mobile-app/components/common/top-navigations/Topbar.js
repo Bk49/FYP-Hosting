@@ -1,14 +1,25 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import NotificationContainer from "./notifications/NotificationContainer";
 
 export default Topbar = ({navigate}) => {
     const [pfp, setPfp] = useState("");
+    const [displayNotifications, setDisplayNotifications] = useState();
 
     useEffect(async () => {
         const userInfo = await AsyncStorage.getItem("userInfo");
         setPfp(JSON.parse(userInfo).pfp);
     }, []);
+
+    function showNotifications() {
+        if (displayNotifications == undefined) {
+            setDisplayNotifications(<NotificationContainer closeOverlay={setDisplayNotifications}></NotificationContainer>);
+        }
+        else {
+            setDisplayNotifications();
+        }   
+    }
 
     return (
         <View style={styles.container}>
@@ -28,7 +39,7 @@ export default Topbar = ({navigate}) => {
                         />
                     </View>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => showNotifications()}>
                     <View style={styles.bellImageContainer}>
                         <Image
                             source={require("../../../assets/bell.png")}
@@ -36,6 +47,7 @@ export default Topbar = ({navigate}) => {
                         />
                     </View>
                 </Pressable>
+                {displayNotifications}
             </View>
         </View>
     );
@@ -47,6 +59,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         height: 60,
         backgroundColor: "#b1dbff",
+        zIndex: 20,
     },
     textContainer: {
         flex: 1,
