@@ -6,7 +6,7 @@ import NotificationContainer from "./notifications/NotificationContainer";
 export default Topbar = ({navigate}) => {
     const [pfp, setPfp] = useState("");
     const [displayNotifications, setDisplayNotifications] = useState();
-
+    
     useEffect(async () => {
         const userInfo = await AsyncStorage.getItem("userInfo");
         setPfp(JSON.parse(userInfo).pfp);
