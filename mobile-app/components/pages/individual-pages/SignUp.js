@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-native";
 import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 import { Entypo, FontAwesome5, Feather } from '@expo/vector-icons';
 import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import { CheckBox, Icon } from 'react-native-elements';
+// import * as ImagePicker from 'expo-image-picker';
+
 // import bcrypt from '../node_modules/bcrypt';
 import BcryptReactNative from 'bcrypt-react-native';
 import {
@@ -20,6 +22,7 @@ import {
     KeyboardAvoidingView
 } from "react-native";
 import signup from "../../../axios/user-api/signup";
+import getSchool from "../../../axios/user-api/getSchool";
 
 const SignUp = () => {
     const [firstName, setFirstName] = useState("");
@@ -32,16 +35,44 @@ const SignUp = () => {
         { label: 'Teacher', value: 'teacher' },
         { label: 'Student', value: 'student' },
     ];
+    const grade = [
+        { label: 'Primary 1', value: 1 },
+        { label: 'Primary 2', value: 2 },
+        { label: 'Primary 3', value: 3 },
+        { label: 'Primary 4', value: 4 },
+        { label: 'Primary 5', value: 5 },
+        { label: 'Primary 6', value: 6 },
+    ];
+    // const school = [
+        
+    // ]
     const genderButtons = [
         { label: 'M', value: 'M' },
         { label: 'F', value: 'F' },
     ];
-    const [dropdown, setDropdown] = useState(null);
+    // const schoolOptions
+
+    const [dropdownRole, setDropdownRole] = useState(null);
+    const [dropdownGrade, setDropdownGrade] = useState(null);
+    const [dropdownSchool, setDropdownSchool] = useState ([]);
+    const [dropdownGradeText, setDropdownGradeText] = useState("");
+    const [dropdownSchoolText, setDropdownSchoolText] = useState("");
     const [gender, setGender] = useState();
     const [isSelected, setSelection] = useState(false);
-    // const [selected, setSelected] = useState([]);
+    
     let navigate = useNavigate();
-
+    useEffect(() => {
+        getSchool()
+        .then((data) => {
+            // console.log(data.data.result.records)
+            for (let i = 0; i < data.data.result.records.length; i++){
+                let array = dropdownSchool;
+                array.push({label: data.data.result.records[i].school_name, value: data.data.result.records[i].school_name})
+                setDropdownSchool(array)
+                
+            }
+        })
+    },[])
     // const salt = await BcryptReactNative.getSalt(10);
     // const bcrypt = require('bcrypt');
     // const saltRounds = 10;
@@ -75,7 +106,7 @@ const SignUp = () => {
                     initial={null}
                     onPress={(value) => setGender(value)}
                     buttonSize={13}
-                    labelStyle={{fontSize: 13, color: 'white', marginRight: 10,}}
+                    labelStyle={{ fontSize: 13, color: 'white', marginRight: 10, }}
                 />
                 <View style={styles.dropdown}>
                     <Dropdown
@@ -85,11 +116,49 @@ const SignUp = () => {
                         valueField="value"
                         label="Dropdown"
                         placeholder="Select"
-                        value={dropdown}
+                        value={dropdownRole}
                         onChange={item => {
-                            setDropdown(item.value);
+                            setDropdownRole(item.value)
+                            console.log(item.value)
+                            if (item.value == "student") {
+                                setDropdownGrade(
+                                    <View style={styles.dropdown}>
+                                        <Dropdown
+                                            containerStyle={styles.shadow}
+                                            data={grade}
+                                            labelField="label"
+                                            valueField="value"
+                                            label="Dropdown"
+                                            placeholder="Select"
+                                            value={dropdownGradeText}
+                                            onChange={item => {
+                                                setDropdownGradeText(item.value)
+                                            }} />
+                                    </View>
+                                )
+                                setDropdownSchool(
+                                    <View style={styles.dropdown}>
+                                        <Dropdown
+                                            containerStyle={styles.shadow}
+                                            data={dropdownSchool}
+                                            labelField="label"
+                                            valueField="value"
+                                            label="Dropdown"
+                                            placeholder="Select"
+                                            value={dropdownSchoolText}
+                                            onChange={item => {
+                                                setDropdownSchoolText(item.value)
+                                            }} />
+                                    </View>
+                                )
+                            } else {
+                                setDropdownGrade()
+                                setDropdownSchool()
+                            }
                         }} />
                 </View>
+                {dropdownGrade}
+                {dropdownSchool}
                 <TextInput
                     style={styles.input}
                     placeholder="Email"
@@ -159,24 +228,35 @@ const SignUp = () => {
                     <Button
                         title="Sign Up"
                         onPress={() => {
-                            signup({
-                                first_name: firstName,
-                                last_name: lastName,
-                                gender: gender,
-                                email: email,
-                                password: password,
-                                role: dropdown,
-                            })
+                            let data;
+                            if(dropdownRole == 'student'){
+                                data = {
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    gender: gender,
+                                    email: email,
+                                    password: password,
+                                    role: dropdownRole,
+                                    grade: dropdownGradeText,
+                                    school: dropdownSchoolText,
+                                }
+                            }
+                            else{
+                                data = {
+                                    first_name: firstName,
+                                    last_name: lastName,
+                                    gender: gender,
+                                    email: email,
+                                    password: password,
+                                    role: dropdownRole,    
+                                }
+                            }
+                            signup(data)
                                 .then((res) => {
-                                    // const { role } = user;
-                                    // if (role === "admin") navigate("/control");
-                                    // else navigate("/overview");
                                     navigate("/login")
                                     console.log(res)
                                 })
                                 .catch((e) => {
-                                    // if (Array.isArray(e)) setErrorMsg(e.error[0]);
-                                    // else setErrorMsg(e.error);
                                     console.log(e)
                                 });
                         }}

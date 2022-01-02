@@ -48,7 +48,7 @@ export default Overview = () => {
         <View style={styles.container}>
             <SideBar currentPage="Overview"/>
             <ScrollView>
-                <Topbar />
+                <Topbar navigate={navigate}/>
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>Overview</Text>
                 </View>
