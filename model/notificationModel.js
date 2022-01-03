@@ -239,12 +239,14 @@ const notificationModel = {
                 }
 
                 if (content) {
-                    result = await Notification.collection.insertOne({
-                        owner: assignment.assigned_by,
-                        assignment_id: assignment._id,
-                        group_id: assignment.group_id,
-                        content: content,
-                    });
+                    result = await Notification.collection.insertOne(
+                        new Notification({
+                            owner: assignment.assigned_by,
+                            assignment_id: assignment._id,
+                            group_id: assignment.group_id,
+                            content: content,
+                        })
+                    );
                 }
                 return resolve(result);
             } catch (err) {
