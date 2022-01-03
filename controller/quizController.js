@@ -226,8 +226,9 @@ router.post("/", validate("createQuiz"), async (req, res) => {
         // When there is a new quiz being added, check if changes to leaderboard to push notifications if needed
         if (assignment_id && result) {
             // If there is assignment, check if need to create notifications for assignment
+            const assignment = await assignmentModel.getAsgById(assignment_id)
             await notificationModel.createAssignmentMarkingNotification(
-                assignment_id,
+                assignment,
                 true
             ); // Specify true to mention that it is checking for all students complete before deadline
 

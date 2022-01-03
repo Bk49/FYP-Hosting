@@ -226,10 +226,6 @@ const notificationModel = {
                     await assignmentModel.getAsgProgressbyAsgId(assignment._id)
                 ).map(({ user_id }) => user_id);
 
-                // // Get the teacher that assigns the assignment
-                // const { assigned_by, group_id } =
-                //     await assignmentModel.getAsgById(assignment_id);
-
                 let result, content;
 
                 if (userIds.length > 0 && !early) {
