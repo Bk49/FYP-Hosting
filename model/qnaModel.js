@@ -6,28 +6,29 @@ const { answerSchema } = require("./answerModel");
 const qnaSchema = new Schema({
     title: {
         type: String,
-        required: "Title required"
+        required: "Title required",
     },
     content: {
         type: String,
-        required: "Content required"
+        required: "Content required",
     },
     // any educator with admin rights can post? admin
     made_by: {
         type: ObjectId,
-        required: "QnA Post owner is required"
+        required: "QnA Post owner is required",
     },
     answers: [answerSchema],
-
+    image: {
+        type: String,
+    },
     created_at: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
-
 
 const qnaModel = {
     qnaSchema,
-}
+};
 
 module.exports = qnaModel;

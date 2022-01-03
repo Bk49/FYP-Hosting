@@ -7,6 +7,7 @@ var askQnContainer;
 var questionsContainer;
 var questionContainer;
 var questionId;
+let qnImageInput;
 
 var ownerName = "";
 
@@ -32,17 +33,30 @@ function submitted(event) {
     var qnBodyInput = document.getElementById("qnBodyInput");
     let userId = decodeToken().sub;
     let date = new Date();
+    const files = $("#qnImageInput").prop("files");
+    console.log(files);
+    const formData = new FormData();
+
+    formData.append("group_id", groupId);
+    formData.append("title", qnTitleInput.value);
+    formData.append("content", qnBodyInput.value);
+    formData.append("made_by", userId);
+    formData.append("created_at", date.toISOString());
+    formData.append("image", files[0]);
 
     $.ajax({
         url: `/qna/group/${groupId}`,
         type: "POST",
-        data: {
-            group_id: groupId,
-            title: qnTitleInput.value,
-            content: qnBodyInput.value,
-            made_by: userId,
-            created_at: date.toISOString(),
-        },
+        data: formData,
+        // data: {
+        //     group_id: groupId,
+        //     title: qnTitleInput.value,
+        //     content: qnBodyInput.value,
+        //     made_by: userId,
+        //     created_at: date.toISOString(),
+        // },
+        processData: false,
+        contentType: false,
         success: function (data, textStatus, xhr) {
             console.log("Successfully posted question");
             document.location.reload();
@@ -163,38 +177,39 @@ function displayQuestions(questions) {
         console.log(question);
         questionList.innerHTML += `
         <div class="row mx-auto questionPost" id="${question._id}">
-                                    <div class="col my-4">
-                                        <div class="row mx-auto">
-                                            <p class="mb-4 titleQn">${
-                                                question.title
-                                            }</p>
-                                        </div>
-                                        <div class="row mx-auto d-inline">
-                                            <img src="${
-                                                question.made_by[0].pfp
-                                                    ? question.made_by[0].pfp
-                                                    : "avatars/frog.png"
-                                            }" alt="ownerImg" class="${question.made_by[0].pfp ? "usePfp" : ''} ownerImg img-fluid" /><p class="my-2 d-inline p-0 ownerQn">${
-            question.made_by[0].first_name
-        } ${question.made_by[0].last_name}</p>
-                                        </div>
-                                    </div>
-                                    <div class="col d-flex my-3 answerRow">
-                                        <div class="answerCount d-flex justify-content-center align-items-center row">
-                                            <div class="col p-0">
-                                                <div class="row mx-auto">
-                                                    <p class="count m-0 text-center">${
-                                                        question.answers
-                                                    }</p>
-                                                </div>
-                                                <div class="row mx-auto">
-                                                    <p class="countLabel m-0 p-0 text-center">answer(s)</p>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="col my-4">
+                <div class="row mx-auto">
+                    <p class="mb-4 titleQn">${question.title}</p>
+                </div>
+                <div class="row mx-auto d-inline">
+                    <img src="${
+                        question.made_by[0].pfp
+                            ? question.made_by[0].pfp
+                            : "avatars/frog.png"
+                    }" alt="ownerImg" class="${
+            question.made_by[0].pfp ? "usePfp" : ""
+        } 
+                    ownerImg img-fluid" />
+                    <p class="my-2 d-inline p-0 ownerQn">
+                    ${question.made_by[0].first_name} ${
+            question.made_by[0].last_name
+        }
+                    </p>
+                </div>
+            </div>
+        <div class="col d-flex my-3 answerRow">
+            <div class="answerCount d-flex justify-content-center align-items-center row">
+                <div class="col p-0">
+                    <div class="row mx-auto">
+                        <p class="count m-0 text-center">${question.answers}</p>
+                    </div>
+                    <div class="row mx-auto">
+                        <p class="countLabel m-0 p-0 text-center">answer(s)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         `;
     }
 }
@@ -277,7 +292,9 @@ function displayQuestion(data) {
                             data.answers[x].user[0].pfp
                                 ? data.answers[x].user[0].pfp
                                 : "avatars/frog.png"
-                        }" alt="answerImg" class="${data.answers[x].user[0].pfp ? "usePfpDetail" : ''} answerImg" />
+                        }" alt="answerImg" class="${
+                    data.answers[x].user[0].pfp ? "usePfpDetail" : ""
+                } answerImg" />
                     </div>
                 </div>
                 <div id="line"></div>
@@ -285,6 +302,8 @@ function displayQuestion(data) {
             }
         }
     }
+
+    console.log(data)
 
     questionContainer.innerHTML = `
     <div class="col">
@@ -299,13 +318,22 @@ function displayQuestion(data) {
             </div>
         </div>
         <div class="row">
+            <div class="col1">
+                ${data.image ? `<img src="${data.image}" alt="questionImage" class="questionImage">` : ``}  
+            </div>
+        </div>
+        <div class="row">
             <div class="col-10 d-flex align-items-end">
-                <p id="questionOwner" class="m-0">Asked by: ${data.user[0].first_name} ${data.user[0].last_name}</p>
+                <p id="questionOwner" class="m-0">Asked by: ${
+                    data.user[0].first_name
+                } ${data.user[0].last_name}</p>
             </div>
             <div class="col d-flex" id="ownerImgContainer">
                 <img src="${
                     data.user[0].pfp ? data.user[0].pfp : "images/profile.png"
-                }" alt="ownerImg" class="${data.user[0].pfp ? "usePfpDetail" : ''} ownerImg" />
+                }" alt="ownerImg" class="${
+        data.user[0].pfp ? "usePfpDetail" : ""
+    } ownerImg" />
             </div>
         </div>
         <div id="line"></div>

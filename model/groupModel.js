@@ -420,7 +420,7 @@ const groupModel = {
                 const newGame = new Group({
                     group_name,
                     owner: ObjectId(owner),
-                    members
+                    members,
                 });
                 const result = await newGame.save();
 
@@ -1351,8 +1351,6 @@ const groupModel = {
             try {
                 const group = await Group.findOne({ _id: groupId });
                 if (!group) throw "NOT_FOUND";
-                console.log("post created");
-                console.log(question);
                 // append new question to db array and save to db
                 group.qna.push(question);
                 let new_id = group.qna.slice(-1)[0]._id;
@@ -1387,6 +1385,7 @@ const groupModel = {
                             made_by: "$qna.made_by",
                             answers: "$qna.answers",
                             created_at: "$qna.created_at",
+                            image: "$qna.image",
                         },
                     },
                     {
@@ -1428,6 +1427,7 @@ const groupModel = {
                             content: { $first: "$content" },
                             made_by: { $first: "$made_by" },
                             created_at: { $first: "$created_at" },
+                            image: { $first: "$image" },
                             user: { $first: "$user" },
                         },
                     },
