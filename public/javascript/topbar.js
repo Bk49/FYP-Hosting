@@ -60,7 +60,9 @@ const renderNotification = (data) => {
                         const groupPfp = notification.group[0].pfp;
                         href = `group_leaderboard.html?groupId=${notification.group[0]._id}`;
                         // Temporary image to represent GROUP image
-                        imageUrl = groupPfp ? groupPfp : `./images/sample_groupimg.png`;
+                        imageUrl = groupPfp
+                            ? groupPfp
+                            : `./images/sample_groupimg.png`;
                         break;
                 }
 
@@ -88,6 +90,7 @@ const renderNotification = (data) => {
         } else {
             // Teacher's notification
             for (let notification of data) {
+                const timeDiff = getTimeDiff(new Date(notification.created_at));
                 $("#notificationList").append(`
                 <a class="notification-link" href="group_assignment.html?groupId=${
                     notification.group_id
@@ -98,7 +101,11 @@ const renderNotification = (data) => {
                             : ""
                     }"> 
                         <div class="notification-image-container">
-                            <img src="${notification.group[0].pfp ? notification.group[0].pfp : "./images/sample_groupimg.png"}" class="notification-image" />
+                            <img src="${
+                                notification.group[0].pfp
+                                    ? notification.group[0].pfp
+                                    : "./images/sample_groupimg.png"
+                            }" class="notification-image" />
                         </div>
                         <div class="notification-right-items-container">
                             <div class="notification-content-container">
@@ -107,9 +114,7 @@ const renderNotification = (data) => {
                                 }</span>
                             </div>
                             <div class="notification-time-container">
-                                <span class="notification-time">${
-                                    new Date() - notification.created_at
-                                }</span>
+                                <span class="notification-time">${timeDiff}</span>
                             </div>
                         </div>
                     </div>
@@ -130,8 +135,7 @@ const getTimeDiff = (time) => {
     return Math.floor(difference / 1000) + "s";
 };
 
-
 // return User's Profile Picture and Display at Topbar
 function img_info() {
-    return userInfo.pfp
+    return userInfo.pfp;
 }
