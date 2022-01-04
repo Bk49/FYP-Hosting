@@ -4,14 +4,36 @@ import { useNavigate, useLocation } from "react-router-native";
 import SideBar from "../../../common/side-navigations/Sidebar";
 import GroupQuestionButton from "../../../group-components/question/GroupQuestionButton";
 import GroupTopbar from "../../../common/group/topbar-component/GroupTopbar";
+import * as ImagePicker from 'expo-image-picker';
 
 export default GroupCreateQuestion = () => {
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
-    
+    const [imgName, setImgName] = useState("No file chosen")
+    const [imageURI, setImageURI] = useState(null);
+
     let navigate = useNavigate();
     const {state} = useLocation();
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+            setImageURI(result.uri);
+
+            let imgName = (result.uri).slice((result.uri).indexOf("ImagePicker/") + "ImagePicker/".length);
+            setImgName(imgName);
+        }
+      };
 
     return (
         <View style={styles.container}>
@@ -33,8 +55,12 @@ export default GroupCreateQuestion = () => {
                         numberOfLines={15}
                         multiline={true}
                     />
+                    <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+                        <Text style={[styles.imgText, {backgroundColor: '#e9ecef', borderRightColor: 'black', borderRightWidth: 1}]}>Choose File</Text>
+                        <Text style={styles.imgText}>{imgName}</Text>
+                    </TouchableOpacity>
                     <View style={{flexDirection: 'row', marginVertical: 20}}>
-                        <GroupQuestionButton groupId={state.groupId} groupName={state.groupName} title={title} body={body} navigate={navigate} action="question"></GroupQuestionButton>
+                        <GroupQuestionButton groupId={state.groupId} groupName={state.groupName} title={title} body={body} navigate={navigate} imageURI={imageURI} action="question"></GroupQuestionButton>
                         <TouchableOpacity style={styles.btn} onPress={() => navigate("/groupqna", {state: {groupId: state.groupId, groupName: state.groupName}})}>
                             <Text style={styles.btnText}>Cancel</Text>
                         </TouchableOpacity>
@@ -87,4 +113,16 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold'
     },
+    imagePicker: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 5,
+        overflow: 'hidden',
+        marginTop: 30
+    },
+    imgText: {
+        padding: 10,
+        fontSize: 20
+    }
 })

@@ -13,6 +13,7 @@ export default GroupShowQuestion = () => {
     const [answer, setAnswer] = useState("");
     const [answers, setAnswers] = useState();
     const [update, setUpdate] = useState(0);
+    const [questionImg, setQuestionImg] = useState();
 
     useEffect(() => {
         setAnswer("");
@@ -36,6 +37,18 @@ export default GroupShowQuestion = () => {
                 source={{uri: data.made_by[0].pfp}}>
             </Image>
             )
+        }
+
+        if (data.image != undefined) {
+            setQuestionImg(
+                <Image
+                    style={{width: 400, height: 400, resizeMode: 'contain'}}
+                    source={{uri: data.image}}>
+                </Image>
+            );
+        }
+        else {
+            setQuestionImg();
         }
     }
 
@@ -70,6 +83,7 @@ export default GroupShowQuestion = () => {
                         <View>
                             <Text style={styles.title}>{state.questionData.title}</Text>
                             <Text style={styles.content}>{state.questionData.content}</Text>
+                            {questionImg}
                             <Text style={styles.madeBy}>Asked by: {state.questionData.made_by[0].first_name + " " + state.questionData.made_by[0].last_name}</Text>
                         </View>
                         <View style={{alignSelf: 'flex-end'}}>
