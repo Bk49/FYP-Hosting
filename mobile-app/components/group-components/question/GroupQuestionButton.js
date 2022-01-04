@@ -5,7 +5,7 @@ import addAnswer from "../../../axios/qna-api/postAnswer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigate } from "react-router-native";
 
-export default GroupQuestionButton = ({groupId, groupName, title, body, navigate, answer, action, questionData, update}) => {
+export default GroupQuestionButton = ({groupId, groupName, title, body, navigate, answer, action, questionData, imageURI, update}) => {
 
     const getUserData = async () => {
         const data = await AsyncStorage.getItem("userInfo");
@@ -17,13 +17,20 @@ export default GroupQuestionButton = ({groupId, groupName, title, body, navigate
 
         getUserData()
         .then((result) => {
-            let data = {
-                title: title,
-                content: body,
-                made_by: result._id,
-                date: date.toISOString()
+            let formData = new FormData();
+
+            
+            formData.append("group_id", groupId);
+            formData.append("title", title);
+            formData.append("content", body);
+            formData.append("made_by", result._id);
+            formData.append("created_at", date.toISOString());
+
+            if (imageURI != undefined) {
+                formData.append("image", {uri: imageURI, name: 'groupimg.jpg', type: 'image/jpeg'});
             }
-            addQuestion(groupId, data)
+
+            addQuestion(groupId, formData)
             .then(() => {
                 navigate("/groupqna", {state: {groupId: groupId, groupName: groupName}})        
             });

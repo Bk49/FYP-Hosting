@@ -42,7 +42,7 @@ function submitted(event) {
     formData.append("content", qnBodyInput.value);
     formData.append("made_by", userId);
     formData.append("created_at", date.toISOString());
-    formData.append("image", files[0]);
+    if (files.length > 0) formData.append("image", files[0]);
 
     $.ajax({
         url: `/qna/group/${groupId}`,

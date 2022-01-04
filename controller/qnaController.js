@@ -44,10 +44,10 @@ router.post("/group/:groupId", upload.single("image"), async (req, res) => {
     const { groupId } = req.params;
     const { title, content, made_by, answers } = req.body;
     const file = req.file;
-    const filePath = `${__dirname}/../uploads/${file.filename}`;
     try {
         console.time("POST question");
         if (file) {
+            const filePath = `${__dirname}/../uploads/${file.filename}`;
             cloudinary.v2.uploader.upload(
                 filePath,
                 {
