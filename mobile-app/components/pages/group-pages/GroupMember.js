@@ -10,6 +10,7 @@ import getGroupMembers from "../../../axios/group-api/getGroupMembers";
 import GroupManageModal from "../../group-components/member/GroupManageModal";
 import { useNavigate } from "react-router-native";
 import removeMemberFromGroup from "../../../axios/group-api/removeMemberFromGroup";
+import Topbar from "../../common/top-navigations/Topbar"
 
 export default GroupMember = () => {
 
@@ -18,7 +19,7 @@ export default GroupMember = () => {
         return JSON.parse(data)
     };
 
-    const {state} = useLocation();
+    const { state } = useLocation();
     const [isReady, setReady] = useState(true);
     const [modal, setModal] = useState();
     const [needsUpdate, setUpdate] = useState(0);
@@ -32,40 +33,40 @@ export default GroupMember = () => {
         let groupMembers;
 
         getGroupMembers(state.groupId)
-        .then((data) => {
-            ownerId = data.owner._id;
-            groupMembers = data.members;
-            getUserData()
             .then((data) => {
-                if (data._id == ownerId) {
-                    setModal(<GroupManageModal groupId={state.groupId} group_name={state.groupName} setUpdate={setUpdate} groupImg={groupImg} setGroupImg={setGroupImg} navigate={navigate}></GroupManageModal>)
-                }
+                ownerId = data.owner._id;
+                groupMembers = data.members;
+                getUserData()
+                    .then((data) => {
+                        if (data._id == ownerId) {
+                            setModal(<GroupManageModal groupId={state.groupId} group_name={state.groupName} setUpdate={setUpdate} groupImg={groupImg} setGroupImg={setGroupImg} navigate={navigate}></GroupManageModal>)
+                        }
 
-                checkIfAdmin(groupMembers, data._id);
-            });
-        })
+                        checkIfAdmin(groupMembers, data._id);
+                    });
+            })
     }, [needsUpdate]);
 
     function checkIfAdmin(membersArray, userId) {
         for (let i = 0; i < membersArray.length; i++) {
             if (membersArray[i].user_id == userId) {
                 setLeaveGroupBtn(
-                <TouchableOpacity style={styles.leaveGroupBtn} onPress={() => leaveGroup(userId)}>
-                    <Text style={{fontSize: 25, color: "#f39aa7"}}>Leave Group</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.leaveGroupBtn} onPress={() => leaveGroup(userId)}>
+                        <Text style={{ fontSize: 25, color: "#f39aa7" }}>Leave Group</Text>
+                    </TouchableOpacity>
                 );
                 if (membersArray[i].is_admin) {
                     setModal(<GroupManageModal groupId={state.groupId} group_name={state.groupName} setUpdate={setUpdate} groupImg={groupImg} setGroupImg={setGroupImg} navigate={navigate}></GroupManageModal>)
-                } 
-            } 
+                }
+            }
         }
     }
 
     function leaveGroup(userId) {
         removeMemberFromGroup(state.groupId, userId)
-        .then(() => {
-            navigate("/group_listing");
-        })
+            .then(() => {
+                navigate("/group_listing");
+            })
     }
 
     return (
@@ -73,6 +74,9 @@ export default GroupMember = () => {
             <Spinner visible={isReady} textContent="Loading..."></Spinner>
             <SideBar></SideBar>
             <View style={styles.memberContainer}>
+                <View style={styles.topbar}>
+                    <Topbar navigate={navigate} />
+                </View>
                 <GroupTopbar item={3} heading={"Members"} groupId={state.groupId} groupName={state.groupName} groupImg={groupImg}></GroupTopbar>
                 <ScrollView>
                     <View style={styles.contentContainer}>
@@ -81,7 +85,7 @@ export default GroupMember = () => {
                 </ScrollView>
                 {leaveGroupBtn}
                 {modal}
-            </View>  
+            </View>
         </View>
     )
 }
@@ -109,5 +113,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 20,
         marginHorizontal: 70,
-    }
+    },
+    topbar: {
+        height: 60,
+    },
 });

@@ -11,7 +11,7 @@ import Modal from "react-native-modal";
 import updateProfileImage from "../../../axios/user-api/updateProfileImage";
 import updateProfile from "../../../axios/user-api/updateProfile";
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import Topbar from "../../common/top-navigations/Topbar"
 import {
     Button,
     TextInput,
@@ -34,6 +34,22 @@ import * as ImagePicker from 'expo-image-picker';
 
 const AccountSettings = () => {
     const [isSelected, setSelection] = useState(false);
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [name, setName] = useState();
+    const [email, setEmail] = useState();
+    const [gender, setGender] = useState();
+    const [radio, setRadio] = useState();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [dropdownSchoolData, setDropdownSchoolData] = useState([]);
+    const [dropdownSchool, setDropdownSchool] = useState();
+    const [dropdownGrade, setDropdownGrade] = useState(null);
+    const [dropdownGradeText, setDropdownGradeText] = useState("");
+    const [dropdownSchoolText, setDropdownSchoolText] = useState("");
+    const [imageURI, setImageURI] = useState(null);
+    const [image, setImage] = useState();
+    const [exp, setExp] = useState();
+    const [isReady, setReady] = useState(true);
     let navigate = useNavigate();
 
     const getUserData = async () => {
@@ -56,165 +72,148 @@ const AccountSettings = () => {
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
         });
-    
+
         console.log(result);
-    
+
         if (!result.cancelled) {
             setImageURI(result.uri);
-            setImage(<Image style={styles.groupImg} source={{uri: result.uri}}></Image>);
+            setImage(<Image style={styles.groupImg} source={{ uri: result.uri }}></Image>);
         }
-      };
-      
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [name, setName] = useState();
-    const [email, setEmail] = useState();
-    const [gender, setGender] = useState();
-    const [radio, setRadio] = useState();
-    const [modalVisible, setModalVisible] = useState(false);
-    const [dropdownSchoolData, setDropdownSchoolData] = useState([]);
-    const [dropdownSchool, setDropdownSchool] = useState();
-    const [dropdownGrade, setDropdownGrade] = useState(null);
-    const [dropdownGradeText, setDropdownGradeText] = useState("");
-    const [dropdownSchoolText, setDropdownSchoolText] = useState("");
-    const [imageURI, setImageURI] = useState(null);
-    const [image, setImage] = useState();
-    const [exp, setExp] = useState();
-    const [isReady, setReady] = useState(true);
+    };
 
     useEffect(() => {
         getSchool()
-        .then((data) => {
-            for (let i = 0; i < data.data.result.records.length; i++){
-                let array = dropdownSchoolData;
-                array.push({label: data.data.result.records[i].school_name, value: data.data.result.records[i].school_name})
-                setDropdownSchoolData(array)
-            }
-            getUserData()
             .then((data) => {
-                setFirstName(data.first_name)
-                setLastName(data.last_name)
-                setName(<View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 25}}><Text style={styles.name}>{data.first_name} {data.last_name}</Text><FontAwesome5
-                    name="edit"
-                    style={styles.editIcon}
-                    onPress={() => setModalVisible(true)}>
-                </FontAwesome5></View>)
-                setEmail(<Text style={styles.email}>{data.email}</Text>)
-
-                if (data.pfp != undefined) {
-                    setImage(
-                        <Image style={styles.groupImg} source={{uri: data.pfp}}></Image> 
-                    )
+                for (let i = 0; i < data.data.result.records.length; i++) {
+                    let array = dropdownSchoolData;
+                    array.push({ label: data.data.result.records[i].school_name, value: data.data.result.records[i].school_name })
+                    setDropdownSchoolData(array)
                 }
+                getUserData()
+                    .then((data) => {
+                        setFirstName(data.first_name)
+                        setLastName(data.last_name)
+                        setName(<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 25 }}><Text style={styles.name}>{data.first_name} {data.last_name}</Text><FontAwesome5
+                            name="edit"
+                            style={styles.editIcon}
+                            onPress={() => setModalVisible(true)}>
+                        </FontAwesome5></View>)
+                        setEmail(<Text style={styles.email}>{data.email}</Text>)
 
-                if (data.gender == 'M') {
-                    setGender(0)
-                    setRadio(
-                        <RadioForm
-                            style={styles.radioButtonContainer}
-                            formHorizontal={true}
-                            animation={true}
-                            radio_props={genderButtons}
-                            initial={0}
-                            onPress={(value) => setGender(value)}
-                            buttonSize={13}
-                            labelStyle={{ fontSize: 15, color: 'black', marginRight: 20, }}
-                        />
+                        if (data.pfp != undefined) {
+                            setImage(
+                                <Image style={styles.groupImg} source={{ uri: data.pfp }}></Image>
+                            )
+                        }
 
-                    )
-                }
-                else {
-                    setGender(1)
-                    setRadio(
-                        <RadioForm
-                            style={styles.radioButtonContainer}
-                            formHorizontal={true}
-                            animation={true}
-                            radio_props={genderButtons}
-                            initial={1}
-                            onPress={(value) => setGender(value)}
-                            buttonSize={13}
-                            labelStyle={{ fontSize: 15, color: 'black', marginRight: 20, }}
-                        />
+                        if (data.gender == 'M') {
+                            setGender(0)
+                            setRadio(
+                                <RadioForm
+                                    style={styles.radioButtonContainer}
+                                    formHorizontal={true}
+                                    animation={true}
+                                    radio_props={genderButtons}
+                                    initial={0}
+                                    onPress={(value) => setGender(value)}
+                                    buttonSize={13}
+                                    labelStyle={{ fontSize: 15, color: 'black', marginRight: 20, }}
+                                />
 
-                    )
-                }
-                // setGender(data.gender)
-                // console.log(data.gender)
+                            )
+                        }
+                        else {
+                            setGender(1)
+                            setRadio(
+                                <RadioForm
+                                    style={styles.radioButtonContainer}
+                                    formHorizontal={true}
+                                    animation={true}
+                                    radio_props={genderButtons}
+                                    initial={1}
+                                    onPress={(value) => setGender(value)}
+                                    buttonSize={13}
+                                    labelStyle={{ fontSize: 15, color: 'black', marginRight: 20, }}
+                                />
 
-                if (data.role == "student") {
-                    let currentExp = data.exp_points/100 * 610;
+                            )
+                        }
+                        // setGender(data.gender)
+                        // console.log(data.gender)
 
-                    setExp(
-                        <View style={{alignItems: 'center', marginVertical: 25}}>
-                            <Text>Lv{data.rank_level}</Text>
-                            <View style={styles.expBar}>
-                                <View style={[styles.currentExp, {width: currentExp}]}></View>
-                            </View>
-                            <Text>EXP: {data.exp_points}/100</Text>
-                        </View>
+                        if (data.role == "student") {
+                            let currentExp = data.exp_points / 100 * 610;
 
-                    )
+                            setExp(
+                                <View style={{ alignItems: 'center', marginVertical: 25 }}>
+                                    <Text>Lv{data.rank_level}</Text>
+                                    <View style={styles.expBar}>
+                                        <View style={[styles.currentExp, { width: currentExp }]}></View>
+                                    </View>
+                                    <Text>EXP: {data.exp_points}/100</Text>
+                                </View>
 
-                    setDropdownGradeText(data.grade)
-                    setDropdownGrade(
-                        <View style={styles.dropdown}>
-                            <Dropdown
-                                containerStyle={styles.shadow}
-                                data={grade}
-                                labelField="label"
-                                valueField="value"
-                                label="Dropdown"
-                                placeholder="Select"
-                                value={data.grade}
-                                onChange={item => {
-                                    setDropdownGradeText(item.value)
-                                }} />
-                        </View>
-                    )
+                            )
 
-                    setDropdownSchoolText(data.school);
-            
-                    setDropdownSchool(
-                        <View style={styles.dropdown}>
-                            <Dropdown
-                                containerStyle={styles.shadow}
-                                data={dropdownSchoolData}
-                                labelField="label"
-                                valueField="value"
-                                label="Dropdown"
-                                placeholder="Select"
-                                value= {data.school}
-                                onChange={item => {
-                                    setDropdownSchoolText(item.value)
-                                }} />
-                        </View>
-                    )
-                }
+                            setDropdownGradeText(data.grade)
+                            setDropdownGrade(
+                                <View style={styles.dropdown}>
+                                    <Dropdown
+                                        containerStyle={styles.shadow}
+                                        data={grade}
+                                        labelField="label"
+                                        valueField="value"
+                                        label="Dropdown"
+                                        placeholder="Select"
+                                        value={data.grade}
+                                        onChange={item => {
+                                            setDropdownGradeText(item.value)
+                                        }} />
+                                </View>
+                            )
+
+                            setDropdownSchoolText(data.school);
+
+                            setDropdownSchool(
+                                <View style={styles.dropdown}>
+                                    <Dropdown
+                                        containerStyle={styles.shadow}
+                                        data={dropdownSchoolData}
+                                        labelField="label"
+                                        valueField="value"
+                                        label="Dropdown"
+                                        placeholder="Select"
+                                        value={data.school}
+                                        onChange={item => {
+                                            setDropdownSchoolText(item.value)
+                                        }} />
+                                </View>
+                            )
+                        }
+                    })
+                    .finally(() => {
+                        setReady(false);
+                    })
+
             })
-            .finally(() => {
-                setReady(false);
-            })
-
-        })
     }, [])
 
     function editProfilePic() {
 
         let formData = new FormData();
-        formData.append("image", {uri: imageURI, name: 'profileimg.jpg', type: 'image/jpeg'});
+        formData.append("image", { uri: imageURI, name: 'profileimg.jpg', type: 'image/jpeg' });
 
         updateProfileImage(formData)
-        .then((data) => {
-        }) 
+            .then((data) => {
+            })
     }
 
-    function updateUser() {
+    function updateStudent() {
 
         let genderType;
 
@@ -237,19 +236,49 @@ const AccountSettings = () => {
         }
 
         updateProfile(data)
-        .then((data) => {
+            .then((data) => {
 
-        })
+            })
     }
+
+    function updateUser() {
+        let genderType;
+
+        if (image != undefined) {
+            editProfilePic();
+        }
+
+        if (gender == 0) {
+            genderType = "M";
+        } else {
+            genderType = "F";
+        }
+
+        let data = {
+            first_name: firstName,
+            last_name: lastName,
+            gender: genderType,
+        }
+
+        updateProfile(data)
+            .then((data) => {
+
+            })
+    }
+
+
 
     return (
         <SafeAreaView style={styles.container}>
             <Spinner visible={isReady} textContent="Loading..."></Spinner>
             <Sidebar></Sidebar>
             <ScrollView>
+                <View style={styles.topbar}>
+                    <Topbar navigate={navigate} />
+                </View>
                 <Text style={styles.title}>Profile</Text>
                 <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
-                    <FontAwesome5 name="camera" style={{zIndex: 100, opacity: 0.8}} size={50} color="#b3b3b3"/>
+                    <FontAwesome5 name="camera" style={{ zIndex: 100, opacity: 0.8 }} size={50} color="#b3b3b3" />
                     {image}
                 </TouchableOpacity>
                 <View style={styles.nameContainer} behavior="padding">
@@ -281,14 +310,14 @@ const AccountSettings = () => {
                             <View style={styles.modalContainer3} behavior="padding">
                                 <TouchableOpacity style={styles.editBtn} onPress={() => {
                                     setName(
-                                    <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 25}}>
-                                        <Text style={styles.name}>{firstName} {lastName}</Text>
-                                        <FontAwesome5
-                                            name="edit"
-                                            style={styles.editIcon}
-                                            onPress={() => setModalVisible(true)}>
-                                        </FontAwesome5>
-                                    </View>);
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 25 }}>
+                                            <Text style={styles.name}>{firstName} {lastName}</Text>
+                                            <FontAwesome5
+                                                name="edit"
+                                                style={styles.editIcon}
+                                                onPress={() => setModalVisible(true)}>
+                                            </FontAwesome5>
+                                        </View>);
 
                                     setModalVisible(false);
                                 }}>
@@ -303,37 +332,25 @@ const AccountSettings = () => {
                 {exp}
                 <Text style={styles.genderTitle}>Gender</Text>
                 {radio}
-                <View style={{alignItems: 'center'}}>
+                <View style={{ alignItems: 'center' }}>
                     {dropdownGrade}
                     {dropdownSchool}
                 </View>
                 <TouchableHighlight
                     style={styles.submit}
-                    onPress={() => {
-                        // signup({
-                        //     first_name: firstName,
-                        //     last_name: lastName,
-                        //     gender: gender,
-                        //     email: email,
-                        //     password: password,
-                        //     role: dropdown,
-                        // })
-                        //     .then((res) => {
-                        //         // const { role } = user;
-                        //         // if (role === "admin") navigate("/control");
-                        //         // else navigate("/overview");
-                        //         navigate("/login")
-                        //         console.log(res)
-                        //     })
-                        //     .catch((e) => {
-                        //         // if (Array.isArray(e)) setErrorMsg(e.error[0]);
-                        //         // else setErrorMsg(e.error);
-                        //         console.log(e)
-                        //     });
-
-                    }}
                     underlayColor='#fff'>
-                    <Text style={styles.submitBtn} onPress={() => updateUser()}>Submit Changes</Text>
+                    <Text
+                        style={styles.submitBtn}
+                        onPress={() => {
+                                if (dropdownGradeText != "" && dropdownSchoolText != "") {
+                                    updateStudent();
+                                }
+                                else {
+                                    updateUser();
+                                }
+                        }
+                        }
+                    >Submit Changes</Text>
                 </TouchableHighlight>
                 <Text style={styles.title}>Notifications</Text>
                 <View style={styles.tncContainer}>
@@ -592,7 +609,7 @@ const styles = StyleSheet.create({
         borderColor: "#b3b3b3",
     },
     groupImg: {
-        width: 250, 
+        width: 250,
         height: 250,
         position: 'absolute',
         borderRadius: 250,

@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import login from "../../../axios/user-api/login";
 import rememberMe from "../../../axios/user-api/rememberMe";
+import { getMediaLibraryPermissionsAsync } from "expo-image-picker";
 // import { startCase } from "lodash";
 // import math, { row } from "mathjs";
 

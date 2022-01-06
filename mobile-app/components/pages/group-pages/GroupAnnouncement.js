@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, TextInput, Image, Text, ScrollView, TouchableOpacity, SectionList } from "react-native";
 import { useLocation, useSearchParams } from "react-router-native";
 import GroupTopbar from "../../common/group/topbar-component/GroupTopbar";
@@ -8,27 +8,30 @@ import getGroupById from "../../../axios/group-api/getGroupById";
 import GroupSentMessage from "../../group-components/announcement/GroupSentMessage";
 import GroupReceivedMessage from "../../group-components/announcement/GroupReceivedMessage";
 import Spinner from 'react-native-loading-spinner-overlay';
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
+import Topbar from "../../common/top-navigations/Topbar"
+import { useNavigate } from "react-router-native";
 
 export default GroupAnnouncement = () => {
-    const {state} = useLocation();
+    const { state } = useLocation();
     const [msg, setMsg] = useState("")
     const [allMsg, setAllMsg] = useState();
     const [userId, setUserId] = useState();
     const [userName, setUserName] = useState();
     const [socket, setSocket] = useState();
+    const navigate = useNavigate();
     const getUserData = async () => {
         const data = await AsyncStorage.getItem("userInfo");
         return JSON.parse(data)
     };
     const [isReady, setReady] = useState(true);
-    const [centerEmptyAnnouncement, setEmpty] = useState({flexGrow: 1, justifyContent: 'center'});
+    const [centerEmptyAnnouncement, setEmpty] = useState({ flexGrow: 1, justifyContent: 'center' });
 
     let websocket;
 
     function initWebSocket(userId) {
         let countReconn = 0;
-         // Create WebSocket connection.
+        // Create WebSocket connection.
         let ws = new WebSocket('ws://10.0.2.2:3000');
         // Connection opened
         let socket = websocket;
@@ -54,7 +57,7 @@ export default GroupAnnouncement = () => {
         ws.onmessage = function (event) {
             console.log('Message from server:', event.data);
             let message = JSON.parse(event.data);
-            switch(message.action) {
+            switch (message.action) {
                 case "message": {
                     console.log("Message received", message);
 
@@ -69,8 +72,8 @@ export default GroupAnnouncement = () => {
                     }
                     else {
                         displayOwnMsg(post);
-                    }   
-               
+                    }
+
                     break;
                 }
             }
@@ -102,45 +105,45 @@ export default GroupAnnouncement = () => {
         setSocket(ws);
         return ws;
     }
-    
+
     useEffect(() => {
         getUserData()
-        .then((data) => {
-            websocket = initWebSocket(data._id);
-            setUserId(data._id);
-            setUserName(data.first_name + " " + data.last_name)
-            getGroupById(state.groupId)
-                .then((result) => {
-                    let tempDate;
-                    
-                    for (let i = 0; i < result.posts.length; i++) {
-                        if (result.posts[0].created_at == undefined) {
-                            setEmpty({flexGrow: 1, justifyContent: 'center'});
-                            setAllMsg(<View style={{alignSelf: 'center'}}><FontAwesome5 style={styles.announcementEmpty} name="bullhorn" size={100}></FontAwesome5><Text style={{textAlign: 'center', fontSize: 20}}>No Announcements</Text></View>)
-                        }
-                        else {
-                            setEmpty();
-                            let newDate = new Date(result.posts[i].created_at);
-                            if (tempDate == undefined || differentDay(tempDate, newDate)) {
-                                setAllMsg(prevState => [prevState, <Text style={styles.date}>{newDate.getDate()} {getMonth(newDate.getMonth())}</Text>]);
-                            }
-                            tempDate = newDate;
-                            if (result.posts[i].made_by == data._id) {
-                                displayOwnMsg(result.posts[i]);    
+            .then((data) => {
+                websocket = initWebSocket(data._id);
+                setUserId(data._id);
+                setUserName(data.first_name + " " + data.last_name)
+                getGroupById(state.groupId)
+                    .then((result) => {
+                        let tempDate;
+
+                        for (let i = 0; i < result.posts.length; i++) {
+                            if (result.posts[0].created_at == undefined) {
+                                setEmpty({ flexGrow: 1, justifyContent: 'center' });
+                                setAllMsg(<View style={{ alignSelf: 'center' }}><FontAwesome5 style={styles.announcementEmpty} name="bullhorn" size={100}></FontAwesome5><Text style={{ textAlign: 'center', fontSize: 20 }}>No Announcements</Text></View>)
                             }
                             else {
-                                displayOtherMsg(result.posts[i]);
+                                setEmpty();
+                                let newDate = new Date(result.posts[i].created_at);
+                                if (tempDate == undefined || differentDay(tempDate, newDate)) {
+                                    setAllMsg(prevState => [prevState, <Text style={styles.date}>{newDate.getDate()} {getMonth(newDate.getMonth())}</Text>]);
+                                }
+                                tempDate = newDate;
+                                if (result.posts[i].made_by == data._id) {
+                                    displayOwnMsg(result.posts[i]);
+                                }
+                                else {
+                                    displayOtherMsg(result.posts[i]);
+                                }
                             }
-                        }      
-                    }
-                })
-                .finally(() => {
-                    setReady(false);
-                })
-        });
-        
+                        }
+                    })
+                    .finally(() => {
+                        setReady(false);
+                    })
+            });
+
     }, [])
-    
+
     function displayOwnMsg(post) {
         setAllMsg(prevState => [prevState, <GroupSentMessage post={post}></GroupSentMessage>])
     }
@@ -160,41 +163,41 @@ export default GroupAnnouncement = () => {
 
         switch (month) {
             case 1:
-               monthLong = "January";
-               break; 
+                monthLong = "January";
+                break;
             case 2:
                 monthLong = "Feburary";
-                break; 
+                break;
             case 3:
                 monthLong = "March";
-                break; 
+                break;
             case 4:
                 monthLong = "April";
-                break; 
+                break;
             case 5:
                 monthLong = "May";
-                break; 
+                break;
             case 6:
                 monthLong = "June";
-                break; 
+                break;
             case 7:
                 monthLong = "July";
-                break; 
+                break;
             case 8:
                 monthLong = "August";
-                break; 
+                break;
             case 9:
                 monthLong = "September";
-                break; 
+                break;
             case 10:
                 monthLong = "October";
-                break; 
+                break;
             case 11:
                 monthLong = "November";
-                break; 
+                break;
             case 12:
                 monthLong = "December";
-                break; 
+                break;
         }
 
         return monthLong;
@@ -202,7 +205,7 @@ export default GroupAnnouncement = () => {
 
     function sendMsg() {
         let date = new Date();
-    
+
         if (msg != "") {
             let data = {
                 action: "message",
@@ -218,7 +221,7 @@ export default GroupAnnouncement = () => {
             socket.send(JSON.stringify(data));
             setMsg("");
         }
-        
+
     }
 
     function deleteAnnouncement(postId) {
@@ -235,11 +238,14 @@ export default GroupAnnouncement = () => {
             <Spinner visible={isReady} textContent="Loading..."></Spinner>
             <SideBar></SideBar>
             <View style={styles.announcementContainer}>
+                <View style={styles.topbar}>
+                    <Topbar navigate={navigate} />
+                </View>
                 <GroupTopbar item={0} heading={"Announcements"} groupId={state.groupId} groupName={state.groupName} groupImg={state.groupImg}></GroupTopbar>
-                <ScrollView 
+                <ScrollView
                     contentContainerStyle={centerEmptyAnnouncement}
-                    ref={ref => {this.scrollView = ref}} 
-                    onContentSizeChange={() => this.scrollView.scrollToEnd({animated: true})}>
+                    ref={ref => { this.scrollView = ref }}
+                    onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}>
                     <View style={styles.msgContainer}>
                         {allMsg}
                     </View>
@@ -251,14 +257,14 @@ export default GroupAnnouncement = () => {
                         onChangeText={(e) => setMsg(e)}
                         value={msg}
                     />
-                    <TouchableOpacity style={{alignSelf: 'center'}} onPress={() => sendMsg()}>
+                    <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => sendMsg()}>
                         <Image
                             style={styles.sendBtn}
                             source={require("../../../assets/send.png")}
                         ></Image>
-                    </TouchableOpacity> 
+                    </TouchableOpacity>
                 </View>
-                
+
             </View>
         </View>
     )
@@ -269,6 +275,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         zIndex: 1
+    },
+    topbar:{
+        height: 60,
     },
     announcementContainer: {
         flex: 1

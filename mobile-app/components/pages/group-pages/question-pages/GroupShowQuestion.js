@@ -6,6 +6,8 @@ import GroupTopbar from "../../../common/group/topbar-component/GroupTopbar";
 import SideBar from "../../../common/side-navigations/Sidebar";
 import GroupQuestionAnswer from "../../../group-components/question/GroupQuestionAnswer";
 import GroupQuestionButton from "../../../group-components/question/GroupQuestionButton";
+import Topbar from "../../../common/top-navigations/Topbar"
+import { useNavigate } from "react-router-native";
 
 export default GroupShowQuestion = () => {
     const {state} = useLocation();
@@ -14,6 +16,7 @@ export default GroupShowQuestion = () => {
     const [answers, setAnswers] = useState();
     const [update, setUpdate] = useState(0);
     const [questionImg, setQuestionImg] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         setAnswer("");
@@ -77,6 +80,9 @@ export default GroupShowQuestion = () => {
         <View style={styles.container}>
             <SideBar></SideBar>
             <View style={styles.qnaContainer}>
+            <View style={styles.topbar}>
+                    <Topbar navigate={navigate} />
+                </View>
                 <GroupTopbar item={2} heading={"Ask a Question"} groupId={state.groupId} groupName={state.groupName} groupImg={state.groupImg}></GroupTopbar>
                 <ScrollView>
                     <View style={styles.questionContainer}>
@@ -156,5 +162,8 @@ const styles = StyleSheet.create({
     answerLabel: {
         fontSize: 25,
         marginBottom: 20
-    }
+    },
+    topbar: {
+        height: 60,
+    },
 });

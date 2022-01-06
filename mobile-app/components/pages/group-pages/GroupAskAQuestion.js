@@ -3,13 +3,14 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-nati
 import SideBar from "../../common/side-navigations/Sidebar";
 import GroupTopbar from "../../common/group/topbar-component/GroupTopbar";
 import { useLocation, useNavigate } from "react-router-native";
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
 import getGroupQuestionsById from "../../../axios/qna-api/getGroupQuestionsById";
 import GroupQuestionPostItem from "../../group-components/question/GroupQuestionPostItem";
 import Spinner from 'react-native-loading-spinner-overlay';
+import Topbar from "../../common/top-navigations/Topbar"
 
 export default GroupAskAQuestion = () => {
-    const {state} = useLocation();
+    const { state } = useLocation();
 
     const [isReady, setReady] = useState(true);
     const [content, setContent] = useState(
@@ -25,44 +26,44 @@ export default GroupAskAQuestion = () => {
     let navigate = useNavigate();
 
     function createQuestion() {
-        navigate("/group_create_question", {state: {groupId: state.groupId, groupName: state.groupName }});
+        navigate("/group_create_question", { state: { groupId: state.groupId, groupName: state.groupName } });
     }
 
     useEffect(() => {
         getGroupQuestionsById(state.groupId)
-        .then(( data ) => {
-            if (data.length > 0) {
-                setContent();
-                setContent(
-                        <TouchableOpacity style={[styles.qnaBtn, {alignSelf: 'flex-end', marginHorizontal: 40, marginVertical: 20}]} onPress={() => createQuestion()}>
+            .then((data) => {
+                if (data.length > 0) {
+                    setContent();
+                    setContent(
+                        <TouchableOpacity style={[styles.qnaBtn, { alignSelf: 'flex-end', marginHorizontal: 40, marginVertical: 20 }]} onPress={() => createQuestion()}>
                             <FontAwesome5 name="question" size={25} color='white'></FontAwesome5>
                             <Text style={styles.qnaBtnText}>Ask a Question</Text>
                         </TouchableOpacity>
-                );
-                for (let i = 0; i < data.length; i++) {
-                    setContent(prevState => [prevState, <GroupQuestionPostItem data={data[i]} groupId={state.groupId} groupName={state.groupName}></GroupQuestionPostItem>])
-                }
+                    );
+                    for (let i = 0; i < data.length; i++) {
+                        setContent(prevState => [prevState, <GroupQuestionPostItem data={data[i]} groupId={state.groupId} groupName={state.groupName}></GroupQuestionPostItem>])
+                    }
 
-                setContent(prevState => <ScrollView style={{marginVertical: 20}}>{prevState}</ScrollView>)
-            }
-            else {
-                
-            }
-        })
-        .catch(() => {
-            setContent(
-                <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyQnA}>There are currently no questions. Go ask one now!</Text>
-                    <TouchableOpacity style={styles.qnaBtn} onPress={() => createQuestion()}>
-                        <FontAwesome5 name="question" size={25} color='white'></FontAwesome5>
-                        <Text style={styles.qnaBtnText}>Ask a Question</Text>
-                    </TouchableOpacity>
-                </View>
-            )        
-        })
-        .finally(() => {
-            setReady(false);
-        })
+                    setContent(prevState => <ScrollView style={{ marginVertical: 20 }}>{prevState}</ScrollView>)
+                }
+                else {
+
+                }
+            })
+            .catch(() => {
+                setContent(
+                    <View style={styles.emptyContainer}>
+                        <Text style={styles.emptyQnA}>There are currently no questions. Go ask one now!</Text>
+                        <TouchableOpacity style={styles.qnaBtn} onPress={() => createQuestion()}>
+                            <FontAwesome5 name="question" size={25} color='white'></FontAwesome5>
+                            <Text style={styles.qnaBtnText}>Ask a Question</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+            })
+            .finally(() => {
+                setReady(false);
+            })
     }, []);
 
     return (
@@ -70,9 +71,12 @@ export default GroupAskAQuestion = () => {
             <Spinner visible={isReady} textContent="Loading..."></Spinner>
             <SideBar></SideBar>
             <View style={styles.qnaContainer}>
+                <View style={styles.topbar}>
+                    <Topbar navigate={navigate} />
+                </View>
                 <GroupTopbar item={2} heading={"Ask a Question"} groupId={state.groupId} groupName={state.groupName} groupImg={state.groupImg}></GroupTopbar>
                 {content}
-            </View>  
+            </View>
         </View>
     )
 }
@@ -85,6 +89,9 @@ const styles = StyleSheet.create({
     },
     qnaContainer: {
         flex: 1
+    },
+    topbar: {
+        height: 60,
     },
     emptyContainer: {
         flex: 1,

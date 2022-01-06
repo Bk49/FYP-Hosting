@@ -5,11 +5,14 @@ import AssignmentAccordian from "../../assignment-components/AssignmentAccordion
 import NewQuizModal from "../../group-components/assignment/GroupAssignQuizModal";
 import { List } from "react-native-paper";
 import getAssignment from "../../../axios/assignment-api/getAssignment";
+import Topbar from "../../common/top-navigations/Topbar"
+import { useNavigate } from "react-router-native";
 
 export default Assignment = () => {
     const [pendingAsg, setPendingAsg] = useState([]);
     const [overdueAsg, setOverdueAsg] = useState([]);
     const [completedAsg, setCompletedAsg] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getAssignment().then((res) => {
@@ -30,6 +33,7 @@ export default Assignment = () => {
         <View style={styles.container}>
             <SideBar></SideBar>
             <ScrollView style={styles.scrollView}>
+                <Topbar navigate={navigate} />
                 <View style={styles.Assignment}>
                     <View>
                         <Text style={styles.heading}>My Assignments</Text>
