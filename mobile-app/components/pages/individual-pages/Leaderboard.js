@@ -7,6 +7,8 @@ import getLeaderboard from "../../../axios/quiz-api/getLeaderboard";
 import { Picker } from "@react-native-picker/picker";
 import LeaderboardTop from "../../leaderboard-components/LeaderboardTop";
 import LeaderboardTable from "../../leaderboard-components/LeaderboardTable";
+import Topbar from "../../common/top-navigations/Topbar"
+import { useNavigate } from "react-router-native";
 
 export default Leaderboard = () => {
     const [school, setSchool] = useState("Secondary");
@@ -14,7 +16,7 @@ export default Leaderboard = () => {
     const [type, setType] = useState(1);
     const [scope, setScope] = useState(1);
     const [level, setLevel] = useState("Primary");
-
+    const navigate = useNavigate();
     const [top3, setTop3] = useState([]);
     const [lbData, setLbData] = useState([]);
 
@@ -49,6 +51,7 @@ export default Leaderboard = () => {
         <View style={styles.container}>
             <SideBar currentPage="Leaderboard" />
             <ScrollView>
+            <Topbar navigate={navigate} />
                 <View style={styles.leaderboardContainer}>
                     <View style={styles.topContainer}>
                         <View style={styles.headingContainer}>
