@@ -378,12 +378,21 @@ $(document).on("click", ".addSkillBtn", function () {
     let percentage_easy = document.querySelector("#percentage_easy").value;
     let percentage_medium = document.querySelector("#percentage_medium").value;
     let percentage_difficult = document.querySelector("#percentage_difficult").value;
-    let easy_values_min = document.querySelector("#easy_values_min").value;
-    let easy_values_max = document.querySelector("#easy_values_max").value;
-    let medium_values_min = document.querySelector("#medium_values_min").value;
-    let medium_values_max = document.querySelector("#medium_values_max").value;
-    let difficult_values_min = document.querySelector("#difficult_values_min").value;
-    let difficult_values_max = document.querySelector("#difficult_values_max").value;
+    let easy_values_min = 0;
+    let easy_values_max = 0;
+    let medium_values_min = 0;
+    let medium_values_max = 0;
+    let difficult_values_min = 0;
+    let difficult_values_max = 0;
+
+    if (skill_code == "FRAC_SIMPLIFY" || skill_code == "FRAC_ADD" || skill_code == "FRAC_MULTIPLY") {
+        easy_values_min = document.querySelector("#easy_values_min").value;
+        easy_values_max = document.querySelector("#easy_values_max").value;
+        medium_values_min = document.querySelector("#medium_values_min").value;
+        medium_values_max = document.querySelector("#medium_values_max").value;
+        difficult_values_min = document.querySelector("#difficult_values_min").value;
+        difficult_values_max = document.querySelector("#difficult_values_max").value;
+    }
 
     let data = {
         skill_name,
@@ -716,6 +725,30 @@ function displayLevel(data, name) {
         // `;
     }
 
+}
+
+function handleDifficultySettings(value) {
+
+    let difficultyContainer = document.getElementById("difficultyContainer")
+
+    if (value == "FRAC_ADD" || value == "FRAC_SIMPLIFY" || value == "FRAC_MULTIPLY") {
+        difficultyContainer.style.display = "block";
+        document.querySelector("#easy_values_min").value = "";
+        document.querySelector("#easy_values_max").value = "";
+        document.querySelector("#medium_values_min").value = "";
+        document.querySelector("#medium_values_max").value = "";
+        document.querySelector("#difficult_values_min").value = "";
+        document.querySelector("#difficult_values_max").value = "";
+    }
+    else {
+        difficultyContainer.style.display = "none";
+        document.querySelector("#easy_values_min").value = 0;
+        document.querySelector("#easy_values_max").value = 0;
+        document.querySelector("#medium_values_min").value = 0;
+        document.querySelector("#medium_values_max").value = 0;
+        document.querySelector("#difficult_values_min").value = 0;
+        document.querySelector("#difficult_values_max").value = 0;
+    }
 }
 
 function testing() {

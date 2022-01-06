@@ -23,7 +23,7 @@ const directory = {
     statistics: "/Stats",
     leaderboard: "/Leaderboard",
     learningrss: "/LearningResourcesLevel",
-    control: "/",
+    control: "/control",
 };
 
 export default Sidebar = ({ currentPage }) => {
