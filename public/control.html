@@ -46,7 +46,6 @@
       <div class="header"></div>
       <a href="" id="back"><i class="fas fa-chevron-left"></i></a>
       <h1 class="title">Quiz Control Panel</h1>
-      <button id="setDefault" class="btn btn-warning mt-2 text-center" style="border-radius:15px;">Set Default</button>
 
       <h4 id="levelTag" class="title"></h4>
       <div id="syllabusContainer" class="row mx-auto">
@@ -162,7 +161,7 @@
                 <div class="mb-2 col-md-6">
                   <label for="skill_code" class="col-form-label">Skill Code</label>
                   <!-- <input type="text" class="form-control" id="skill_code"> -->
-                  <select name="skillCode" id="skill_code" class="form-select">
+                  <select name="skillCode" id="skill_code" class="form-select" onchange="handleDifficultySettings(this.value)">
                     <option value="none" selected disabled>Choose the algorithm used for the topic</option>
                     <option value="FRAC_SIMPLIFY">FRAC_SIMPLIFY</option>
                     <option value="FRAC_ADD">FRAC_ADD</option>
@@ -254,7 +253,7 @@
               </div>
               <!-- </div> -->
 
-              <div class="mb-4 row mx-auto">
+              <div class="mb-4 row mx-auto" id="difficultyContainer">
                 <div class="col-10">
                   <div class="row">
                     <p>Difficulty Settings</p>

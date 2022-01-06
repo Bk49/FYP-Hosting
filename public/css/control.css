@@ -211,10 +211,6 @@
     margin-bottom: 10px;
 } */
 
-#setDefault {
-    visibility: hidden;
-}
-
 .primaryLevelButtons:hover{
     background-color: #842294;
     color: #FFFFFF
@@ -584,6 +580,10 @@
 
 label .fas:hover {
     color: #ffcb45;
+}
+
+#difficultyContainer {
+    display: none;
 }
 
 @media (max-width: 768px) {

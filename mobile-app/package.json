@@ -53,7 +53,8 @@
     "react-navigation": "^4.4.4",
     "react-router-dom": "^6.1.1",
     "react-router-native": "^6.0.2",
-    "react-scroll-to-component": "^1.0.2"
+    "react-scroll-to-component": "^1.0.2",
+    "expo-calendar": "~10.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
