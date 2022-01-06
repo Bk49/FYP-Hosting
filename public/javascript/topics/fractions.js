@@ -80,8 +80,6 @@ const fraction = {
             result = question.a + "/" + question.b + operator + question.c + "/" + question.d;
         }
 
-        console.log("result is");
-        console.log(result);
         return result;
     },
     stringAnswer: (answer) => {
@@ -212,7 +210,6 @@ const fraction = {
                 sorted.push(operationArray);
                 sorted.push(answer);
                 questionArray.push(sorted);
-                console.log(questionArray)
             }
 
             // FRAC_SIMPLIFY, FRAC_ADD, FRAC_MULTIPLY
@@ -247,7 +244,6 @@ const fraction = {
                 }
 
                 questionArray.push(sorted);
-                console.log(questionArray);
                 if ('whole' in ans) questionArray[i].ans = ans.whole;
                 if ('numerator' in ans) questionArray[i].ansA = ans.numerator / gcd;
                 if ('denominator' in ans) questionArray[i].ansB = ans.denominator / gcd;
@@ -493,11 +489,6 @@ const fraction = {
         const numOfMedium = numOfQ * (percentDifficulty[1] / 100);
         const numOfDifficult = numOfQ * (percentDifficulty[2] / 100);
 
-           console.log(numOfEasy)
-           console.log(numOfMedium)
-
-           console.log(numOfDifficult)
-
         for (let i = 0; i < numOfQ; i++) {
             let review = '<i class="fas fa-check" style="color: #42FE00"></i>';
             let difficulty = 'difficult';
@@ -534,7 +525,6 @@ const fraction = {
                     numerator = -questionArray[i][2].n;
                 }
 
-                console.log(numerator);
                 
                 if (inputA == numerator && inputB == denominator) {
                     if (i < numOfEasy) {
@@ -589,7 +579,6 @@ const fraction = {
             }
             
             document.getElementById(`review${i}`).innerHTML = review;
-            console.log(difficulty);
 
             questions.push({
                 "skill_id": quizData.skillId,
@@ -601,7 +590,6 @@ const fraction = {
                 "difficulty": difficulty
             });
 
-            console.log(questions);
         }
 
         score = {
