@@ -1,36 +1,43 @@
-import { conformsTo } from "lodash";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Entypo, FontAwesome5, Feather } from '@expo/vector-icons';
-import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
-import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
-import { CheckBox, Icon } from 'react-native-elements';
+import { FontAwesome5 } from '@expo/vector-icons';
+import RadioForm from 'react-native-simple-radio-button';
+import { Dropdown } from 'react-native-element-dropdown';
+import { CheckBox } from 'react-native-elements';
 import Modal from "react-native-modal";
 import updateProfileImage from "../../../axios/user-api/updateProfileImage";
 import updateProfile from "../../../axios/user-api/updateProfile";
 import Spinner from 'react-native-loading-spinner-overlay';
 import Topbar from "../../common/top-navigations/Topbar"
 import {
-    Button,
     TextInput,
     Image,
     View,
     Text,
-    Switch,
     ScrollView,
     StyleSheet,
     TouchableHighlight,
     TouchableOpacity,
-    KeyboardAvoidingView,
-    KeyboardAwareScrollView,
 } from "react-native";
 import logout from "../../../axios/user-api/logout";
 import Sidebar from "../../common/side-navigations/Sidebar";
 import * as ImagePicker from 'expo-image-picker';
 
 // import { styles } from "react-native-element-dropdown/src/TextInput/styles";
+const genderButtons = [
+    { label: 'M', value: 0 },
+    { label: 'F', value: 1 },
+];
+const grade = [
+    { label: 'Primary 1', value: 1 },
+    { label: 'Primary 2', value: 2 },
+    { label: 'Primary 3', value: 3 },
+    { label: 'Primary 4', value: 4 },
+    { label: 'Primary 5', value: 5 },
+    { label: 'Primary 6', value: 6 },
+];
 
 const AccountSettings = () => {
     const [isSelected, setSelection] = useState(false);
@@ -50,24 +57,12 @@ const AccountSettings = () => {
     const [image, setImage] = useState();
     const [exp, setExp] = useState();
     const [isReady, setReady] = useState(true);
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const getUserData = async () => {
         const data = await AsyncStorage.getItem("userInfo");
         return JSON.parse(data)
     };
-    const genderButtons = [
-        { label: 'M', value: 0 },
-        { label: 'F', value: 1 },
-    ];
-    const grade = [
-        { label: 'Primary 1', value: 1 },
-        { label: 'Primary 2', value: 2 },
-        { label: 'Primary 3', value: 3 },
-        { label: 'Primary 4', value: 4 },
-        { label: 'Primary 5', value: 5 },
-        { label: 'Primary 6', value: 6 },
-    ];
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -77,8 +72,6 @@ const AccountSettings = () => {
             aspect: [4, 3],
             quality: 1,
         });
-
-        console.log(result);
 
         if (!result.cancelled) {
             setImageURI(result.uri);
@@ -143,10 +136,8 @@ const AccountSettings = () => {
 
                             )
                         }
-                        // setGender(data.gender)
-                        // console.log(data.gender)
 
-                        if (data.role == "student") {
+                        if (data.role === "student") {
                             let currentExp = data.exp_points / 100 * 610;
 
                             setExp(
@@ -204,66 +195,35 @@ const AccountSettings = () => {
     }, [])
 
     function editProfilePic() {
-
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append("image", { uri: imageURI, name: 'profileimg.jpg', type: 'image/jpeg' });
-
         updateProfileImage(formData)
-            .then((data) => {
-            })
     }
 
     function updateStudent() {
-
-        let genderType;
-
-        if (image != undefined) {
-            editProfilePic();
-        }
-
-        if (gender == 0) {
-            genderType = "M";
-        } else {
-            genderType = "F";
-        }
+        if (image) editProfilePic();
 
         let data = {
             first_name: firstName,
             last_name: lastName,
-            gender: genderType,
+            gender: gender === 0 ? "M" : "F",
             school: dropdownSchoolText,
             grade: dropdownGradeText
         }
 
         updateProfile(data)
-            .then((data) => {
-
-            })
     }
 
     function updateUser() {
-        let genderType;
-
-        if (image != undefined) {
-            editProfilePic();
-        }
-
-        if (gender == 0) {
-            genderType = "M";
-        } else {
-            genderType = "F";
-        }
+        if (image) editProfilePic();
 
         let data = {
             first_name: firstName,
             last_name: lastName,
-            gender: genderType,
+            gender: gender === 0 ? "M" : "F",
         }
 
         updateProfile(data)
-            .then((data) => {
-
-            })
     }
 
 
