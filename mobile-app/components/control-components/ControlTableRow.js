@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import ControlSkillEditAddModal from "./ControlSkillEditAddModal";
 
-export default ControlTableRow = ({skill}) => {
+export default ControlTableRow = ({skill, setUpdate}) => {
 
-    const [icon, setIcon] = useState("plus")
+    const [icon, setIcon] = useState("plus");
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalType, setModalType] = useState();
 
     function displaySkills() {
         if (icon == "plus") {
@@ -29,7 +31,7 @@ export default ControlTableRow = ({skill}) => {
                 <Text style={[styles.cellSpace, {flex: 2, textAlign: 'center'}]}>{skill.num_of_qn}</Text>
                 <Text style={[styles.cellSpace, {flex: 2, textAlign: 'center'}]}>{skill.duration}</Text >
                 <View style={[styles.cellSpace, {flex: 1, alignItems: 'center'}]}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => {setModalType("edit"), setModalVisible(true)}}>
                         <FontAwesome5 name="pen" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -62,6 +64,7 @@ export default ControlTableRow = ({skill}) => {
                 </View>
             </View> : 
             <View></View>}
+            <ControlSkillEditAddModal isVisible={modalVisible} setModalVisible={setModalVisible} skill={skill} update={setUpdate} modalType={modalType}></ControlSkillEditAddModal>
         </View>
       
     );

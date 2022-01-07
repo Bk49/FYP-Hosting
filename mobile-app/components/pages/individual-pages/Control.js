@@ -18,8 +18,10 @@ export default Control = () => {
     const [isReady, setReady] = useState(true);
     const [currentPage, setCurrentPage] = useState("main");
     const [selectedLevel, setSelectedLevel] = useState();
+    const [needsUpdate, setUpdate] = useState(0);
 
     useEffect(() => {
+        setCurrentPage("main");
         setPrimaryLevels([]);
         setSecondaryLevels([]);
 
@@ -38,7 +40,7 @@ export default Control = () => {
             .finally(() => {
                 setReady(false);
             })
-    }, []);
+    }, [needsUpdate]);
 
     return (
         <SafeAreaView>
@@ -103,11 +105,12 @@ export default Control = () => {
                         : currentPage == "Topics" ? 
                         <View>
                             <Text style={styles.levelHeader}>{selectedLevel.level > 6 ? "Secondary " + (selectedLevel.level - 6) : "Primary " +selectedLevel.level}</Text>
-                            <ControlAddTopicModal></ControlAddTopicModal>
+                            <ControlAddTopicModal selectedLevel={selectedLevel} setUpdate={setUpdate}></ControlAddTopicModal>
                             {selectedLevel.topics.length > 0 ? 
                             <List.Section title="" style={{marginHorizontal: 40, marginVertical: 50}}>
                                 {selectedLevel.topics.map((topic, index) => (
                                     <ControlAccordion
+                                        setUpdate={setUpdate}
                                         key={index}
                                         topic={topic}
                                     />
@@ -116,7 +119,7 @@ export default Control = () => {
                             : <View></View>}
                         </View>
                         : 
-                        <Text>Is not topic</Text>}
+                        <View></View>}
                 </ScrollView>
             </View>
         </SafeAreaView>

@@ -471,6 +471,15 @@ $(document).on("click", ".updateSkillBtn", function () {
     let difficult_values_min = document.querySelector("#difficult_values_min").value;
     let difficult_values_max = document.querySelector("#difficult_values_max").value;
 
+    if (skill_code != "FRAC_MULTIPLY" && skill_code != "FRAC_SIMPLIFY" && skill_code != "FRAC_ADD") {
+        easy_values_min = 0;
+        easy_values_max = 0;
+        medium_values_min = 0;
+        medium_values_max = 0;
+        difficult_values_min = 0;
+        difficult_values_max = 0;
+    }
+
     let data = {
         skill_name,
         skill_code,
@@ -490,6 +499,8 @@ $(document).on("click", ".updateSkillBtn", function () {
             max: difficult_values_max,
         },
     };
+
+    console.log(data);
     // update skill details by id
     checkAuth(() => $.ajax({
         url: `/skill/${id}`,
@@ -733,21 +744,21 @@ function handleDifficultySettings(value) {
 
     if (value == "FRAC_ADD" || value == "FRAC_SIMPLIFY" || value == "FRAC_MULTIPLY") {
         difficultyContainer.style.display = "block";
-        document.querySelector("#easy_values_min").value = "";
-        document.querySelector("#easy_values_max").value = "";
-        document.querySelector("#medium_values_min").value = "";
-        document.querySelector("#medium_values_max").value = "";
-        document.querySelector("#difficult_values_min").value = "";
-        document.querySelector("#difficult_values_max").value = "";
+        // document.querySelector("#easy_values_min").value = "";
+        // document.querySelector("#easy_values_max").value = "";
+        // document.querySelector("#medium_values_min").value = "";
+        // document.querySelector("#medium_values_max").value = "";
+        // document.querySelector("#difficult_values_min").value = "";
+        // document.querySelector("#difficult_values_max").value = "";
     }
     else {
         difficultyContainer.style.display = "none";
-        document.querySelector("#easy_values_min").value = 0;
-        document.querySelector("#easy_values_max").value = 0;
-        document.querySelector("#medium_values_min").value = 0;
-        document.querySelector("#medium_values_max").value = 0;
-        document.querySelector("#difficult_values_min").value = 0;
-        document.querySelector("#difficult_values_max").value = 0;
+        // document.querySelector("#easy_values_min").value = 0;
+        // document.querySelector("#easy_values_max").value = 0;
+        // document.querySelector("#medium_values_min").value = 0;
+        // document.querySelector("#medium_values_max").value = 0;
+        // document.querySelector("#difficult_values_min").value = 0;
+        // document.querySelector("#difficult_values_max").value = 0;
     }
 }
 
@@ -970,9 +981,10 @@ function displaySkillDetail(data) {
     id.value = data.skillId;
     skill_name.value = data.skill_name;
     skill_code.value = data.skill_code;
-
     num_of_qn.value = data.num_of_qn;
     duration.value = data.duration;
+
+    handleDifficultySettings(skill_code.value)
 
     let difficulty = data.percent_difficulty.split("-");
     percentage_easy.value = difficulty[0];
