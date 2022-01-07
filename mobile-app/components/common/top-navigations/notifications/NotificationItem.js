@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { TouchableOpacity} from 'react-native-gesture-handler'
+import { useNavigate } from "react-router-native";
 
 export default NotificationItem = ({data}) => {
+
+    let navigate = useNavigate();
 
     const [img, setImg] = useState();
 
@@ -19,32 +22,61 @@ export default NotificationItem = ({data}) => {
     };
 
     function displayImg() {
-        if (data.teacher[0].pfp != undefined) {
-            setImg(
-                <Image
-                    style={styles.image}
-                    source={{uri: data.teacher[0].pfp}}
-                ></Image>
-            )
+        if (data.teacher.length != 0) {
+            if (data.teacher[0].pfp != undefined) {
+                setImg(
+                    <Image
+                        style={styles.image}
+                        source={{uri: data.teacher[0].pfp}}
+                    ></Image>
+                )
+            }
+            else {
+                setImg(
+                    <Image
+                        style={styles.image}
+                        source={require("../../../../assets/avatars/frog.png")}
+                    ></Image>
+                )
+            }
         }
         else {
-            setImg(
-                <Image
-                    style={styles.image}
-                    source={require("../../../../assets/avatars/frog.png")}
-                ></Image>
-            )
+            if (data.group[0].pfp != undefined) {
+                setImg(
+                    <Image
+                        style={styles.image}
+                        source={{uri: data.group[0].pfp}}
+                    ></Image>
+                )
+            }
+            else {
+                setImg(
+                    <Image
+                        style={styles.image}
+                        source={require("../../../../assets/sample_groupimg.png")}
+                    ></Image>
+                )
+            }
+        }
+    }
+
+    function redirect() {
+        if (data.assignment_id != undefined) {
+            navigate("/quiz")
+        }
+        else if (data.group[0]._id != undefined) {
+            navigate("/group_leaderboard", {state: {groupId: data.group[0]._id, groupName: data.group[0].group_name, groupImg: data.group[0].pfp}})
         }
     }
 
     return (
-        <TouchableOpacity onLayout={() => displayImg()} style={{padding: 10, justifyContent: 'space-between', flexDirection: 'row'}}>                
+        <TouchableOpacity onLayout={() => displayImg()} style={{padding: 10, justifyContent: 'space-between', flexDirection: 'row'}} onPress={() => redirect()}>                
             <View style={{flexDirection: 'row'}}>
                 {img}
                 <Text style={{width: 300, textAlignVertical: 'center'}}>{data.content}</Text>
             </View>
             <View>
-                <Text>{getTimeDiff(new Date(data.created_at))}</Text>
+                <Text style={{fontWeight: 'bold'}}>{getTimeDiff(new Date(data.created_at))}</Text>
             </View>
         </TouchableOpacity>
 
@@ -56,6 +88,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50,
-        marginRight: 10
+        marginRight: 10,
     }
 });
