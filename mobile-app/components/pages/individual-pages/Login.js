@@ -13,6 +13,7 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     KeyboardAwareScrollView,
+    TouchableOpacity,
 } from "react-native";
 import login from "../../../axios/user-api/login";
 import rememberMe from "../../../axios/user-api/rememberMe";
@@ -25,7 +26,8 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [isSelected, setSelection] = useState(false);
-    const [isClose, setEye] = useState(false);
+    const [isClose, setEye] = useState(true);
+
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -48,6 +50,15 @@ const Login = () => {
         //     });
     }, [])
 
+    function handlePwdMask() {
+        if (isClose) {
+            setEye(false);
+        }
+        else {
+            setEye(true);
+        }
+    }
+
     return (
         <ScrollView style={styles.wholeContainer}>
             <KeyboardAvoidingView style={styles.container} >
@@ -67,18 +78,15 @@ const Login = () => {
                     <TextInput
                         style={styles.passwordInput}
                         placeholder="Password"
+                        secureTextEntry={isClose}
                         onChangeText={(e) => setPassword(e)}
                         value={password}>
                     </TextInput>
-                    <View>
+                    <TouchableOpacity onPress={() => handlePwdMask()}>
                         <FontAwesome5
                             name="eye"
-                            style={styles.eyeIcon}
-                            onPress={() => {
-                                // setEye(isClose)
-                                // { isClose ? "eye" : "eye slash" }
-                            }} />
-                    </View>
+                            style={styles.eyeIcon}/>
+                    </TouchableOpacity>
                 </View>
                 {/* <View>
                 <Switch
