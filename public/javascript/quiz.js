@@ -5,7 +5,7 @@ var intervalId,
 
 /* EVENT LISTENER */
 $(document).ready(function () {
-    // Facebook setup
+    // Facebook Sharing setup
     $.ajaxSetup({ cache: true });
     $.getScript("https://connect.facebook.net/en_US/sdk.js", function () {
         FB.init({
@@ -14,13 +14,32 @@ $(document).ready(function () {
             xfbml: true,
             version: "v12.0",
         });
-        
-        window.fb_share = () => {
+
+        window.fb_share = async () => {
             // facebook share dialog
+            const uploadImage = () => {
+                return new Promise((resolve, reject) => {
+                    domtoimage
+                        .toPng(document.body)
+                        .then((dataUrl) => {
+                            console.log("Uploading share image");
+                            $.ajax({
+                                url: `/share`,
+                                method: "POST",
+                                data: { dataUrl: dataUrl },
+                                success: (data) => resolve(data),
+                                error: (err) => reject(err),
+                            });
+                        })
+                        .catch((e) => console.log(e));
+                });
+            };
+            const { url } = await uploadImage();
+            console.log(url)
             FB.ui({
                 method: "feed",
                 name: "image-PSLE",
-                picture: "http://fbrell.com/f8.jpg",
+                picture: url,
             });
         };
     });
