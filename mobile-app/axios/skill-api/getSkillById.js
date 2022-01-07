@@ -1,7 +1,7 @@
 import client from "../clientConfig";
 import path from "../paths";
 
-export default editSkill = async () => {
+export default getSkillById = async (id) => {
     const result = await client
         .get(`${path.skillPath}/${id}`)
         .then(({ data }) => {

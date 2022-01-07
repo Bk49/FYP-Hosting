@@ -1,9 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import ControlSkillEditAddModal from "./ControlSkillEditAddModal";
 import ControlTableRow from "./ControlTableRow";
 
-export default ControlNestedTableRow = ({topic}) => {
+export default ControlNestedTableRow = ({topic, setUpdate}) => {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalType, setModalType] = useState();
+
     return (
         <View>
             <View style={[styles.row, {backgroundColor: '#6696ca', borderTopLeftRadius: 7, borderTopRightRadius: 7}]}>
@@ -16,14 +21,15 @@ export default ControlNestedTableRow = ({topic}) => {
             </View>
             <View style={{backgroundColor: '#e1f1ff'}}>
                 {topic.skills.map((skill, index) => (
-                    <ControlTableRow key={index} skill={skill}></ControlTableRow>
+                    <ControlTableRow setUpdate={setUpdate} key={index} skill={skill}></ControlTableRow>
                 ))}
             </View>
             <View style={{backgroundColor: '#e1f1ff', borderBottomRightRadius: 7, borderBottomLeftRadius: 7}}>
-                <TouchableOpacity style={styles.addSkillBtn}>
+                <TouchableOpacity style={styles.addSkillBtn} onPress={() => {setModalType("add"), setModalVisible(true)}}>
                     <Text style={styles.addSkillBtnText}>Add Skill</Text>
                 </TouchableOpacity>
             </View>
+            <ControlSkillEditAddModal isVisible={modalVisible} setModalVisible={setModalVisible} update={setUpdate} modalType={modalType} topic={topic}></ControlSkillEditAddModal>
         </View>
     );
 };
